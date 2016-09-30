@@ -92,7 +92,9 @@ namespace EpsonPOSReport
 
         private bool formattingSet = false;
 
-        public xRow()
+        public xRow(
+            object rsNumber, object rsName, object esName, object date, object invoice, object partNumber, object mfgNumber,
+            object delimittedSerials, object enVisionCode, object qty, object cost, object rebate, object fulfillmentPcnt)
         {
 
         }
