@@ -11,6 +11,82 @@ namespace EpsonPOSReport
 {
     public partial class ThisAddIn
     {
+        private class xRow
+        {
+            private enum xCols
+            {
+                ZEROINDEX,
+                ResellerNo,
+                ResellerName,
+                EndUserName,
+                InvDt,
+                InvNo,
+                Part,
+                ItemNumber,
+                SerialNo,
+                PgrmCd,
+                Units,
+                UnitCost,
+                UnitRebate,
+                AdjUnitCost,
+                FFUnitPcnt,
+                FFUnitRebate,
+                TotalUnitRebate,
+                TotalExtRebate,
+                EpsonenVision
+            }
+
+            private enum enVisionLevels
+            {
+                ZEROINDEX,
+                NO,
+                PartnerSelect,
+                PlusPremier,
+                eFi,
+                Member,
+                Special,
+                Colorworks
+            }
+
+            public string resellerNo { get; }
+            public string resellerName { get; }
+            public string endUserName { get; }
+            public DateTime invoiceDate { get; }
+            public string invoiceNo { get; }
+            public string part { get; }
+            public string itemNumber { get; }
+            public string[] serialNumbers { get; }
+            public int pgrmCd { get; }
+            public int quantity { get; }
+            public int unitCost { get; }
+            public int unitRebate { get; }
+            public int adjUnitCost { get; }
+            public int ffUnitPcnt { get; }
+            public int ffUnitRebate { get; }
+            public int totalUnitRebate { get; }
+            public int totalExtRebate { get; }
+            public string enVisionStatus { get; }
+
+            private bool formattingSet = false;
+
+            public xRow(
+                object rsNumber, object rsName, object esName, object date, object invoice, object partNumber, object mfgNumber,
+                object delimittedSerials, object enVisionCode, object qty, object cost, object rebate, object fulfillmentPcnt)
+            {
+                resellerNo = rsNumber.ToString().Trim();
+                resellerName = rsName.ToString().Trim();
+                endUserName = esName.ToString().Trim();
+                invoiceDate = (DateTime)date;
+                part = partNumber.ToString().Trim();
+                itemNumber = mfgNumber.ToString().Trim();
+                serialNumbers = delimittedSerials.ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+            }
+        }
+
+
+
+
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
         }
@@ -34,69 +110,4 @@ namespace EpsonPOSReport
         #endregion
     }
 
-    private class xRow
-    {
-        private enum xCols
-        {
-            ZEROINDEX,
-            ResellerNo,
-            ResellerName,
-            EndUserName,
-            InvDt,
-            InvNo,
-            Part,
-            ItemNumber,
-            SerialNo,
-            PgrmCd,
-            Units,
-            UnitCost,
-            UnitRebate,
-            AdjUnitCost,
-            FFUnitPcnt,
-            FFUnitRebate,
-            TotalUnitRebate,
-            TotalExtRebate,
-            EpsonenVision
-        }
-
-        private enum enVisionLevels
-        {
-            ZEROINDEX,
-            NO,
-            PartnerSelect,
-            PlusPremier,
-            eFi,
-            Member,
-            Special,
-            Colorworks
-        }
-
-        public string resellerNo { get; }
-        public string resellerName { get; }
-        public string endUserName { get; }
-        public DateTime invoiceDate { get; }
-        public string invoiceNo { get; }
-        public string part { get; }
-        public string itemNumber { get; }
-        public string[] serialNumbers { get; } 
-        public int pgrmCd { get; }
-        public int quantity { get; }
-        public int unitCost { get; }
-        public int unitRebate { get; }
-        public int adjUnitCost { get; }
-        public int ffUnitPcnt { get; }
-        public int ffUnitRebate { get; }
-        public int totalUnitRebate { get; }
-        public int totalExtRebate { get; }
-        public string enVisionStatus { get; }
-
-        private bool formattingSet = false;
-
-        public xRow(
-            object rsNumber, object rsName, object esName, object date, object invoice, object partNumber, object mfgNumber,
-            object delimittedSerials, object enVisionCode, object qty, object cost, object rebate, object fulfillmentPcnt)
-        {
-
-        }
-    }
 }
