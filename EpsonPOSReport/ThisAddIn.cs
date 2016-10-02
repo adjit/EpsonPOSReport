@@ -80,7 +80,19 @@ namespace EpsonPOSReport
                 part = partNumber.ToString().Trim();
                 itemNumber = mfgNumber.ToString().Trim();
                 serialNumbers = delimittedSerials.ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                pgrmCd = Convert.ToInt32(enVisionCode);
+                quantity = Convert.ToInt32(qty);
+                unitCost = Convert.ToInt32(cost);
+                unitRebate = Convert.ToInt32(rebate);
 
+                switch (pgrmCd)
+                {
+                    case (int)enVisionLevels.PartnerSelect:
+                        ffUnitPcnt = 0; break;
+                    case (int)enVisionLevels.PlusPremier:
+                        ffUnitPcnt = Convert.ToInt32(fulfillmentPcnt); break;
+                    default: ffUnitPcnt = 0; break;
+                }
             }
         }
 
