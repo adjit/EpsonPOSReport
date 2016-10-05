@@ -31,16 +31,43 @@ namespace EpsonPOSReport
 
         public bool initializeSpaListings(string filePath)
         {
+            int SPA_LIST_SHEET = 1;
+            int ENVISION_NUMBER = 1;
+            int CUSTOMER_NUMBER = 2;
+            int CUSTOMER_NAME = 3;
+            int PART_NUMBER = 4;
+            int REBATE = 5;
+            int FULFILLMENT = 6;
+
             Excel.Workbook spaListWorkbook;
+            Excel.Worksheet spaWorksheet;
+            Excel.Range range;
+
+            bool flag = false;
+
+            int rows,
+                columns,
+                thisRow,
+                thisColumn;
+
             try
             {
                 spaListWorkbook = Globals.ThisAddIn.Application.Workbooks.Open(filePath, false, true);
+                flag = true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                System.Windows.Forms.MessageBox.Show("Error opening Spa List\n" + Exception, System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Error opening Spa List\n" + e, "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return false;
             }
-            return false;
+
+            spaWorksheet = spaListWorkbook.Worksheets[SPA_LIST_SHEET];
+            range = spaWorksheet.UsedRange;
+            rows = range.Rows.Count;
+            columns = range.Columns.Count;
+            thisRow = thisColumn = 1;
+
+            return flag;
         }
 
     }
