@@ -49,6 +49,7 @@ namespace EpsonPOSReport
             }
 
             public string resellerNo { get; }
+            public string customerNumber { get; }
             public string resellerName { get; }
             public string endUserName { get; }
             public DateTime invoiceDate { get; }
@@ -70,10 +71,11 @@ namespace EpsonPOSReport
             private bool formattingSet = false;
 
             public xRow(
-                object rsNumber, object rsName, object esName, object date, object invoice, object partNumber, object mfgNumber,
+                object rsNumber, object custNum, object rsName, object esName, object date, object invoice, object partNumber, object mfgNumber,
                 object delimittedSerials, object enVisionCode, object qty, object cost, object rebate, object fulfillmentPcnt)
             {
                 resellerNo = rsNumber.ToString().Trim();
+                customerNumber = custNum.ToString().Trim();
                 resellerName = rsName.ToString().Trim();
                 endUserName = esName.ToString().Trim();
                 invoiceDate = (DateTime)date;
@@ -88,10 +90,12 @@ namespace EpsonPOSReport
                 switch (pgrmCd)
                 {
                     case (int)enVisionLevels.PartnerSelect:
-                        ffUnitPcnt = 0; break;
+                        ffUnitPcnt = 0; enVisionStatus = "Partner-Select"; break;
                     case (int)enVisionLevels.PlusPremier:
                         ffUnitPcnt = Convert.ToInt32(fulfillmentPcnt); break;
-                    default: ffUnitPcnt = 0; break;
+                    case (int)enVisionLevels.eFi:
+
+                    default: ffUnitPcnt = 0; enVisionStatus = "Plus/Premier"; break;
                 }
             }
         }
