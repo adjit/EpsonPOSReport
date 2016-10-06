@@ -67,6 +67,36 @@ namespace EpsonPOSReport
             columns = range.Columns.Count;
             thisRow = thisColumn = 1;
 
+            Excel.ListObject spaTable = null;
+            Excel.Range spaDataRange = null;
+            bool spaTableExists = false;
+
+            for (int i = 0; i < spaWorksheet.ListObjects.Count; i++)
+            {
+                if (spaWorksheet.ListObjects[i].DisplayName == "EPSON_SPA_LIST")
+                {
+                    spaTable = spaWorksheet.ListObjects[i];
+                    spaDataRange = spaTable.DataBodyRange;
+                    spaTableExists = true;
+                    break;
+                }
+            }
+
+            if (!spaTableExists)
+            {
+                System.Windows.Forms.MessageBox.Show("Could not find EPSON_SPA_LIST table. Please check spreadsheet and table name.", "Error",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return false;
+            }
+
+            int rowCount = spaDataRange.Rows.Count;
+            int colCount = spaDataRange.Columns.Count;
+
+            for(int i = rowCount; i >= 0; i--)
+            {
+                spaDataRange.Item[i] = 1;
+            }
+
             return flag;
         }
 
