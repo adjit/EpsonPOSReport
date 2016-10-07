@@ -1,11 +1,14 @@
 ﻿SELECT
 	enVisionNumber.[enVision Number] AS [ResellerNo],
-	customerNameTable.Extender_Key_Values_1 AS [ResellerName],
+	invoiceNumbers.CUSTNMBR AS [Customer Number],
+/*	customerNameTable.Extender_Key_Values_1 AS [ResellerName],*/
+	invoiceNumbers.CUSTNAME AS [ResellerName],
 	partNumbers.[Ship To Customer] AS [EndUserName],
 	invoiceNumbers.[Invoice Date] AS [InvDt],
 	invoiceNumbers.[Invoice Number] AS [InvNo],
 	partNumbers.ITEMNMBR AS [Part],
 	partNumbers.ITMSHNAM AS [Item Number],
+	isnull(enVisionFulfillment.[Is enVision], 0) AS [Is enVision],
 	serialNumberTable.CMMTTEXT AS [Serial Numbers],
 	enVision.[enVision Status] AS [PgrmCd],
 	partNumbers.QUANTITY AS [Units],
@@ -25,7 +28,7 @@
 			enVisionNumberTable.Extender_Record_ID,
 			enVisionNumberTable.STRGA255 AS [enVision Number]
 			From METRO.dbo.EXT01101 enVisionNumberTable
-			where enVisionNumberTable.Field_ID = 240 AND enVisionNumberTable.STRGA255 <> '' AND enVisionNumberTable.STRGA255 <> 'RSLAVU'
+			where enVisionNumberTable.Field_ID = 240 /*AND enVisionNumberTable.STRGA255 <> '' AND enVisionNumberTable.STRGA255 <> 'RSLAVU'*/
 		) enVisionNumber
 		JOIN
 			METRO.dbo.EXT01100 customerNameTable
@@ -45,17 +48,18 @@
 					FROM METRO.dbo.EXT01103 WHERE Field_ID = 241) fulfillment
 				ON fulfillment.Extender_Record_ID = enVisionNumber.Extender_Record_ID
 
-			JOIN
+			LEFT JOIN
 				(SELECT
 					Extender_Record_ID,
 					TOTAL AS [% Fulfillment]
 					FROM METRO.dbo.EXT01103 WHERE Field_ID = 242) fulfillmentPercent
 				ON fulfillmentPercent.Extender_Record_ID = enVisionNumber.Extender_Record_ID
 
-			LEFT JOIN
+			RIGHT JOIN
 				(SELECT
 					tHeader.SOPNUMBE AS [Invoice Number],
 					tHeader.ACTLSHIP AS [Invoice Date],
+					tHeader.CUSTNMBR,
 					tHeader.CUSTNAME
 					FROM METRO.dbo.SOP30200 tHeader WHERE MONTH(ACTLSHIP) = {0} AND YEAR(ACTLSHIP) = {1} AND SOPNUMBE like 'I%'
 				) invoiceNumbers
@@ -82,7 +86,8 @@
 								parts.ITEMNMBR,
 								parts.SOPNUMBE,
 								parts.LNITMSEQ,
-								parts.ShipToName AS [Ship To Customer],
+								parts.ShipToName,
+								parts.CNTCPRSN AS [Ship To Customer],
 								parts.UNITCOST,
 								parts.QUANTITY
 								FROM METRO.dbo.SOP30300 parts WHERE SOPNUMBE like 'I%'
@@ -141,3 +146,4 @@
 				ON enVisionFulfillment.[enVision Part Number] = partNumbers.ITEMNMBR
 
 				WHERE partNumbers.ITEMNMBR IS NOT NULL
+				ORDER BY invoiceNumbers.CUSTNMBR, partNumbers.ITEMNMBR
