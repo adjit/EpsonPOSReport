@@ -22,30 +22,64 @@ namespace EpsonPOSReport
         TECH
     }
 
-    public enum priceLevels
+    public enum priceLevelIndex
     {
-        Select = 2,
-        Plus = 3,
-        Premier = 3,
-        eFi = 4,
-        mSelect
+        SELECT = 0,     //2
+        PLUS = 1,       //3
+        PREMIER = 2,    //3
+        EFI = 3,        //4
+        MSELECT = 4,    //5
+        SPECIAL = 5     //6
+    }
+
+    class PriceLevels
+    {
+        public int[] priceLevels { get; }
+        private readonly int[] defaultPriceLevels = { 2, 3, 3, 4, 5, 6 };
+
+        /*public PriceLevels(int[] newPriceLevels = defaultPriceLevels)
+        {
+            priceLevels = newPriceLevels;
+        }*/
+
+        public PriceLevels(int[] newPriceLevels = null)
+        {
+            if (newPriceLevels == null) priceLevels = defaultPriceLevels;
+            else priceLevels = newPriceLevels;
+        }
+        /*Decided not to use the PriceLevel class for each customer
+         * Instead - going to keep it simple, and in the main program
+         * contain an integer array in which the priceLevel enum
+         * will be responsible for the proper indecies
+         * 
+         * public override string ToString()
+        {
+            string myString = "No Level Set";
+
+            if (priceLevelIndex == (int)priceLevel.SELECT) return "Partner-Select";
+            if (priceLevelIndex == (int)priceLevel.PLUS) return "Plus/Premier";
+            if (priceLevelIndex == (int)priceLevel.PREMIER) return "Plus/Premier";
+            if (priceLevelIndex == (int)priceLevel.EFI) return "eFi Plus-SPA";
+            if (priceLevelIndex == (int)priceLevel.MSELECT) return "mSelect";
+            if (priceLevelIndex == (int)priceLevel.SPECIAL) return "Special";
+
+            return myString;
+        }*/
     }
 
     class enVisionPartnerList
     {
         public List<enVisionCustomer> customers { get; }
 
-        public void addCustomer(int priceLevelIndex, string enVisionLevel, string customer,
-                                string enVisionNumber, string priceLevel)
+        public void addCustomer(string enVisionLevel, string customer,
+                                string enVisionNumber, int priceLevel)
         {
-            customers.Add(new enVisionCustomer(priceLevelIndex, enVisionLevel, customer,
+            customers.Add(new enVisionCustomer(enVisionLevel, customer,
                                                 enVisionNumber, priceLevel));
         }
 
         public enVisionCustomer getCustomer(string identifier, bool isEnVisionNumber)
         {
-            enVisionCustomer customer = null;
-
             if(isEnVisionNumber)
             {
                 for (int i = 0; i < customers.Count; i++)
@@ -61,26 +95,24 @@ namespace EpsonPOSReport
                 }
             }
 
-            return customer;
+            return null;
         }
     }
 
     class enVisionCustomer
     {
-        public int priceLevelIndex { get; }
         public string enVisionLevel { get; }
         public string customer { get; }
         public string enVisionNumber { get; }
-        public string priceLevel { get; }
+        public int priceLevelIndex { get; }
 
-        public enVisionCustomer(int priceLevelIndex, string enVisionLevel, string customer,
-                                string enVisionNumber, string priceLevel)
+        public enVisionCustomer(string enVisionLevel, string customer,
+                                string enVisionNumber, int priceLevelIndex)
         {
-            this.priceLevelIndex = priceLevelIndex;
             this.enVisionLevel = enVisionLevel;
             this.customer = customer;
             this.enVisionNumber = enVisionNumber;
-            this.priceLevel = priceLevel;
+            this.priceLevelIndex= priceLevelIndex;
         }
     }
 }
