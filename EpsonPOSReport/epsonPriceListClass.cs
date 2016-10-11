@@ -29,15 +29,15 @@ namespace EpsonPOSReport
     {
         public string cCode { get; set; }
         public double Cost { get; set; }
-        public priceLevel Select { get; set; }
-        public priceLevel Plus { get; set; }
-        public priceLevel Premier { get; set; }
-        public priceLevel mSelect { get; set; }
-        public priceLevel eFi { get; set; }
-        public priceLevel Colorworks { get; set; }
+        public enVisionPriceLevel Select { get; set; }
+        public enVisionPriceLevel Plus { get; set; }
+        public enVisionPriceLevel Premier { get; set; }
+        public enVisionPriceLevel mSelect { get; set; }
+        public enVisionPriceLevel eFi { get; set; }
+        public enVisionPriceLevel Colorworks { get; set; }
     }
 
-    public class priceLevel
+    public class enVisionPriceLevel
     {
         public double rebate { get; set; }
         public double fulfillment { get; set; }
