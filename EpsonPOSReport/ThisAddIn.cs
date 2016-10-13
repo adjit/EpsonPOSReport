@@ -11,6 +11,18 @@ namespace EpsonPOSReport
 {
     public partial class ThisAddIn
     {
+        private PriceLevels pls;
+
+        public void runReport()
+        {
+        }
+
+        public bool initializePriceLevels()
+        {
+            //check for settings file (need to come up with a settings structure)
+            return false;
+        }
+
         private class xRow
         {
             private enum xCols
@@ -99,7 +111,6 @@ namespace EpsonPOSReport
                 }
             }
         }
-
 
 
 

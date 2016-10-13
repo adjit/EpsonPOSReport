@@ -42,10 +42,14 @@ namespace EpsonPOSReport
             priceLevels = newPriceLevels;
         }*/
 
-        public PriceLevels(int[] newPriceLevels = null)
+        public PriceLevels()
         {
-            if (newPriceLevels == null) priceLevels = defaultPriceLevels;
-            else priceLevels = newPriceLevels;
+            priceLevels = defaultPriceLevels;
+        }
+        
+        public PriceLevels(int[] newPriceLevels)
+        {
+            priceLevels = newPriceLevels;
         }
         /*Decided not to use the PriceLevel class for each customer
          * Instead - going to keep it simple, and in the main program
