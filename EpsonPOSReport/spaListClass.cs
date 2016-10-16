@@ -10,136 +10,221 @@ namespace EpsonPOSReport
     /*
      * 
      * */
-    class spaList
+    class SpaList
     {
-        private List<customerItemFulfillment> customers;
-
-        public customerItemFulfillment addNewCustomer(string customerNumber, string customerName)
+        private class spaItemFulfillment
         {
-            customers.Add(new customerItemFulfillment(customerNumber, customerName));
-            return customers[customers.Count - 1];
-        }
+            private List<string> spaCustomers;
+            private List<itemFulfillment> spaItems;
 
-        public customerItemFulfillment getCustomerFulfillment(string customerNumber)
-        {
-            for(int i = 0; i < customers.Count; i++)
+            public spaItemFulfillment(List<string> customers, List<itemFulfillment> items)
             {
-                if (customers[i].customerNumber == customerNumber) return customers[i];
+                spaCustomers = customers;
+                spaItems = items;
             }
-            return null;
+
+            public bool hasCustomer(string customerNumber)
+            {
+                for (int i = 0; i < spaCustomers.Count; i++)
+                {
+                    if (spaCustomers[i] == customerNumber) return true;
+                }
+                return false;
+            }
+
+            public List<itemFulfillment> getItems()
+            {
+                return spaItems;
+            }
         }
 
-        public bool initializeSpaListings(string filePath)
+
+        private List<spaItemFulfillment> spaItems = new List<spaItemFulfillment>();
+
+        private void addNewSpaListItem(List<string> customers, List<itemFulfillment> items)
         {
-            int SPA_LIST_SHEET = 1;
-            int ENVISION_NUMBER = 1;
-            int CUSTOMER_NUMBER = 2;
-            int CUSTOMER_NAME = 3;
-            int PART_NUMBER = 4;
-            int REBATE = 5;
-            int FULFILLMENT = 6;
+            spaItems.Add(new spaItemFulfillment(customers, items));
+        }
+
+        public List<itemFulfillment> getCustomerSpaItems(string customerNumber)
+        {
+            List<int> spaIndecies = new List<int>();
+            List<itemFulfillment> customerSpaItems = new List<itemFulfillment>();
+            bool hasSpa = false;
+
+            for (int i = 0; i < spaItems.Count; i++)
+            {
+                if (spaItems[i].hasCustomer(customerNumber))
+                {
+                    hasSpa = true;
+                    customerSpaItems.AddRange(spaItems[i].getItems());
+                }
+            }
+
+            if (hasSpa) return customerSpaItems;
+            else return null;
+        }
+
+        public bool initializeSpaList(string filePath)
+        {
+            int SPA_CUSTOMER_SHEET = 1;
+            int SPA_ITEMS_SHEET = 2;
+            int SPA_TABLE_PREFIX = 0;
+            int SPA_TABLE_NAME = 1;
+
+            bool _spaItemsAdded = false;
 
             Excel.Workbook spaListWorkbook;
-            Excel.Worksheet spaWorksheet;
-            Excel.Range range;
-
-            bool flag = false;
-
-            int rows,
-                columns,
-                thisRow,
-                thisColumn;
+            Excel.Worksheet spaCustomerSheet;
+            Excel.Worksheet spaItemsSheet;
 
             try
             {
                 spaListWorkbook = Globals.ThisAddIn.Application.Workbooks.Open(filePath, false, true);
-                flag = true;
             }
             catch (Exception e)
             {
                 System.Windows.Forms.MessageBox.Show("Error opening Spa List\n" + e, "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+
                 return false;
             }
 
-            spaWorksheet = spaListWorkbook.Worksheets[SPA_LIST_SHEET];
-            range = spaWorksheet.UsedRange;
-            rows = range.Rows.Count;
-            columns = range.Columns.Count;
-            thisRow = thisColumn = 1;
+            spaCustomerSheet = spaListWorkbook.Worksheets[SPA_CUSTOMER_SHEET];
+            spaItemsSheet = spaListWorkbook.Worksheets[SPA_ITEMS_SHEET];
 
-            Excel.ListObject spaTable = null;
-            Excel.Range spaDataRange = null;
-            bool spaTableExists = false;
-
-            for (int i = 0; i < spaWorksheet.ListObjects.Count; i++)
+            /*  For loop looping through the ListObjects of the customer sheet
+             *  which contain the corresponding table names and customers who
+             *  are applicable for those spa part numbers
+             * */
+            for (int i = 0; i < spaCustomerSheet.ListObjects.Count; i++)
             {
-                if (spaWorksheet.ListObjects[i].DisplayName == "EPSON_SPA_LIST")
+                string[] tableName = spaCustomerSheet.ListObjects[i].Name.Split('_');
+
+                if (tableName[SPA_TABLE_PREFIX] == "spaCustomers")
                 {
-                    spaTable = spaWorksheet.ListObjects[i];
-                    spaDataRange = spaTable.DataBodyRange;
-                    spaTableExists = true;
-                    break;
-                }
-            }
+                    for (int j = 0; j < spaItemsSheet.ListObjects.Count; i++)
+                    {
+                        if (spaItemsSheet.ListObjects[j].Name == tableName[SPA_TABLE_NAME])
+                        {
+                            Excel.ListRows customerRows = spaCustomerSheet.ListObjects[i].ListRows;
+                            Excel.ListRows itemsRows = spaItemsSheet.ListObjects[j].ListRows;
 
-            if (!spaTableExists)
+                            List<string> customers = new List<string>();
+                            List<itemFulfillment> items = new List<itemFulfillment>();
+
+                            /*  For loop to iterate through the customerRows ListRows.
+                             *  Each row contains a single customer number and the
+                             *  rows should only be 1 column wide
+                             * */
+                            for (int k = 0; k < customerRows.Count; k++)
+                            {
+                                /*  This works because we know that the customer number table
+                                 *  will only be one column wide. Therefore the range of 1 row
+                                 *  is only 1 cell, which we get the value from - the customer
+                                 *  number
+                                 * */
+                                customers.Add((string)customerRows.Item[k].Range.Value2());
+                            }
+
+                            /*  For loop iterating through the items Rows which should be
+                             *  3 columns wide. If we need to increase the information input
+                             *  it should be easy to scale. Inside this for loop, iterating
+                             *  through each row, and then iterating through all of the 
+                             *  cells (3) in each row, and getting the proper values.  
+                             * */
+                            for (int k = 0; k < itemsRows.Count; k++)
+                            {
+                                Excel.Range cols = itemsRows.Item[k].Range.Columns;
+                                string itemNumber = "";
+                                double rebateAmount = 0.00;
+                                double fulfillmentPercent = 0.00;
+                                int counter = 0;
+                                bool allValuesSet = false;
+
+                                foreach (Excel.Range cell in cols.Cells)
+                                {
+                                    switch (counter)
+                                    {
+                                        case 0:
+                                            {
+                                                itemNumber = (string)cell.Value2;
+                                                counter++;
+                                                break;
+                                            }
+                                        case 1:
+                                            {
+                                                rebateAmount = (double)cell.Value2;
+                                                counter++;
+                                                break;
+                                            }
+                                        case 2:
+                                            {
+                                                fulfillmentPercent = (double)cell.Value2;
+                                                allValuesSet = true;
+                                                counter++;
+                                                break;
+                                            }
+                                        default: break;
+                                    }
+
+                                    //Used to break out of the foreach loop.
+                                    //If more variables are needed later
+                                    //we can easily add cases.
+                                    if (allValuesSet) break;
+                                }
+
+                                if (allValuesSet)
+                                {
+                                    items.Add(new itemFulfillment(itemNumber, rebateAmount, fulfillmentPercent));
+                                }
+                                else continue;
+                            }  //End for loop looping through item table rows
+
+                            addNewSpaListItem(customers, items);
+                            _spaItemsAdded = true;
+
+                            releaseObject(customerRows);
+                            releaseObject(itemsRows);
+                        } //End if table names match
+                        else
+                        {
+                            System.Windows.Forms.MessageBox.Show(
+                                "Could not find corresponding spa items table with the name: " + tableName[SPA_TABLE_NAME] + "\n\n Skipping...",
+                                "Warning",
+                                System.Windows.Forms.MessageBoxButtons.OK,
+                                System.Windows.Forms.MessageBoxIcon.Warning
+                            );
+                            continue;
+                        }
+                    } //End for loop looping through spaItemSheet ListObjects
+                } //End if SPA_TABLE_PREFIX = "spaCustomers"
+            } //End for loop looping through customerSheet ListObjects containing tables of customer numbers
+
+            spaListWorkbook.Close(false, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
+
+            releaseObject(spaListWorkbook);
+            releaseObject(spaCustomerSheet);
+            releaseObject(spaItemsSheet);
+
+            return _spaItemsAdded;
+        }
+
+        private void releaseObject(object obj)
+        {
+            try
             {
-                System.Windows.Forms.MessageBox.Show("Could not find EPSON_SPA_LIST table. Please check spreadsheet and table name.", "Error",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                return false;
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                obj = null;
             }
-
-            int rowCount = spaDataRange.Rows.Count;
-            int colCount = spaDataRange.Columns.Count;
-
-            for(int i = rowCount; i >= 0; i--)
+            catch (Exception ex)
             {
-                spaDataRange.Item[i] = 1;
+                obj = null;
+                System.Windows.Forms.MessageBox.Show("Unable to release the Object " + ex.ToString());
             }
-
-            return flag;
-        }
-
-    }
-
-    public class customerItemFulfillment
-    {
-        public string customerNumber { get; }
-        public string customerName { get; }
-        public List<itemFulfillment> fulfillmentItems { get; }
-
-        public void addItem(string itemNumber, double rebateAmount, double fulfillmentPercent)
-        {
-            fulfillmentItems.Add(new itemFulfillment(itemNumber, rebateAmount, fulfillmentPercent));
-        }
-
-        public itemFulfillment getItemFulfillment(string itemNumber)
-        {
-            for(int i = 0; i < fulfillmentItems.Count; i++)
+            finally
             {
-                if (fulfillmentItems[i].item == itemNumber) return fulfillmentItems[i];
+                GC.Collect();
             }
-            return null;
-        }
-
-        public customerItemFulfillment(string customerNumber, string customerName)
-        {
-            this.customerNumber = customerNumber;
-            this.customerName = customerName;
-        }
-    }
-
-    public class itemFulfillment
-    {
-        public string item { get; }
-        public double rebate { get; }
-        public double fulfillment { get; }
-
-        public itemFulfillment(string itemNumber, double rebateAmount, double fulfillmentPercent)
-        {
-            item = itemNumber;
-            rebate = rebateAmount;
-            fulfillment = fulfillmentPercent;
         }
     }
 }
