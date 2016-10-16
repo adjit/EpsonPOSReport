@@ -12,42 +12,32 @@ namespace EpsonPOSReport
      * */
     class SpaList
     {
-        private class spaItemFulfillment
-        {
-            private List<string> spaCustomers;
-            private List<itemFulfillment> spaItems;
-
-            public spaItemFulfillment(List<string> customers, List<itemFulfillment> items)
-            {
-                spaCustomers = customers;
-                spaItems = items;
-            }
-
-            public bool hasCustomer(string customerNumber)
-            {
-                for (int i = 0; i < spaCustomers.Count; i++)
-                {
-                    if (spaCustomers[i] == customerNumber) return true;
-                }
-                return false;
-            }
-
-            public List<itemFulfillment> getItems()
-            {
-                return spaItems;
-            }
-        }
-
-
+        /*  Private element of the SpaList class which contains a list
+         *  of spaItemFulfillment items. Each item is a spa which 
+         *  contains a list of customers who the spa is applicable to
+         *  and a list of items that are applicable to this spa
+         * */
         private List<spaItemFulfillment> spaItems = new List<spaItemFulfillment>();
+        private bool isInitialized = false;
 
+        /*  Private function to add a spa item to
+         *  the spaItems list.
+         * */
         private void addNewSpaListItem(List<string> customers, List<itemFulfillment> items)
         {
             spaItems.Add(new spaItemFulfillment(customers, items));
         }
 
+        /*  Public function that will be used to get spa items for a customer 
+         * */
         public List<itemFulfillment> getCustomerSpaItems(string customerNumber)
         {
+            if(!isInitialized)
+            {
+                System.Windows.Forms.MessageBox.Show("Please initialize SpaList class before trying to use", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return null;
+            }
+
             List<int> spaIndecies = new List<int>();
             List<itemFulfillment> customerSpaItems = new List<itemFulfillment>();
             bool hasSpa = false;
@@ -65,6 +55,10 @@ namespace EpsonPOSReport
             else return null;
         }
 
+        /*  public function that will be used to initialize
+         *  spa list workbook which can be found at the 
+         *  location of the filepath
+         * */
         public bool initializeSpaList(string filePath)
         {
             int SPA_CUSTOMER_SHEET = 1;
@@ -206,9 +200,14 @@ namespace EpsonPOSReport
             releaseObject(spaCustomerSheet);
             releaseObject(spaItemsSheet);
 
+            isInitialized = _spaItemsAdded;
             return _spaItemsAdded;
         }
 
+        /*  Private function that is used to release
+         *  excel com objects - added for additional
+         *  garbage collection
+         * */
         private void releaseObject(object obj)
         {
             try
@@ -224,6 +223,37 @@ namespace EpsonPOSReport
             finally
             {
                 GC.Collect();
+            }
+        }
+
+        /*  A private class that contains a single spa.
+         *  It has a list of customers by customer number
+         *  and a list of spa items belonging to each of
+         *  all of those customers.
+         * */
+         private class spaItemFulfillment
+        {
+            private List<string> spaCustomers;
+            private List<itemFulfillment> spaItems;
+
+            public spaItemFulfillment(List<string> customers, List<itemFulfillment> items)
+            {
+                spaCustomers = customers;
+                spaItems = items;
+            }
+
+            public bool hasCustomer(string customerNumber)
+            {
+                for (int i = 0; i < spaCustomers.Count; i++)
+                {
+                    if (spaCustomers[i] == customerNumber) return true;
+                }
+                return false;
+            }
+
+            public List<itemFulfillment> getItems()
+            {
+                return spaItems;
             }
         }
     }
