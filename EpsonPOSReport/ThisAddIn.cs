@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,10 @@ namespace EpsonPOSReport
                 Task<bool>.Factory.StartNew(() => priceList.initializeEpsonPriceList("filepath"))
             };
 
+            //Consider using Task.Run() instead of Task.Factory.StartNew()
+
             Task.WaitAll(taskArray);
+            
 
             //Get bool value with taskArray[i].Result
 

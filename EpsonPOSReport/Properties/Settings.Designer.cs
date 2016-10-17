@@ -142,5 +142,17 @@ namespace EpsonPOSReport.Properties {
                 this["_plColumn_mSelectRebate"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=METRO-GP1;Integrated Security=SSPI;Initial Catalog=METRO")]
+        public string _DatabaseConnectionString {
+            get {
+                return ((string)(this["_DatabaseConnectionString"]));
+            }
+            set {
+                this["_DatabaseConnectionString"] = value;
+            }
+        }
     }
 }
