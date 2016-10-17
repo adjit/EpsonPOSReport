@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,19 @@ namespace EpsonPOSReport
 
         public void runReport()
         {
+            SpaList spaList = new SpaList();
+            epsonPriceList priceList = new epsonPriceList();
+
+            Task<bool>[] taskArray =
+            {
+                Task<bool>.Factory.StartNew(() => spaList.initializeSpaList("filepath")),
+                Task<bool>.Factory.StartNew(() => priceList.initializeEpsonPriceList("filepath"))
+            };
+
+            Task.WaitAll(taskArray);
+
+            //Get bool value with taskArray[i].Result
+
         }
 
         public bool initializePriceLevels()
