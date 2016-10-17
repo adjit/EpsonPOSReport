@@ -22,5 +22,125 @@ namespace EpsonPOSReport.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int _plColumn_itemNumber {
+            get {
+                return ((int)(this["_plColumn_itemNumber"]));
+            }
+            set {
+                this["_plColumn_itemNumber"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("12")]
+        public int _plColumn_unitCost {
+            get {
+                return ((int)(this["_plColumn_unitCost"]));
+            }
+            set {
+                this["_plColumn_unitCost"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("14")]
+        public int _plColumn_selectFFP {
+            get {
+                return ((int)(this["_plColumn_selectFFP"]));
+            }
+            set {
+                this["_plColumn_selectFFP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        public int _plColumn_selectRebate {
+            get {
+                return ((int)(this["_plColumn_selectRebate"]));
+            }
+            set {
+                this["_plColumn_selectRebate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("19")]
+        public int _plColumn_plusFFP {
+            get {
+                return ((int)(this["_plColumn_plusFFP"]));
+            }
+            set {
+                this["_plColumn_plusFFP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int _plColumn_plusRebate {
+            get {
+                return ((int)(this["_plColumn_plusRebate"]));
+            }
+            set {
+                this["_plColumn_plusRebate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("24")]
+        public int _plColumn_premierFFP {
+            get {
+                return ((int)(this["_plColumn_premierFFP"]));
+            }
+            set {
+                this["_plColumn_premierFFP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("25")]
+        public int _plColumn_premierRebate {
+            get {
+                return ((int)(this["_plColumn_premierRebate"]));
+            }
+            set {
+                this["_plColumn_premierRebate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("29")]
+        public int _plColumn_mSelectFFP {
+            get {
+                return ((int)(this["_plColumn_mSelectFFP"]));
+            }
+            set {
+                this["_plColumn_mSelectFFP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int _plColumn_mSelectRebate {
+            get {
+                return ((int)(this["_plColumn_mSelectRebate"]));
+            }
+            set {
+                this["_plColumn_mSelectRebate"] = value;
+            }
+        }
     }
 }

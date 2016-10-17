@@ -177,6 +177,7 @@
   <ItemGroup>
     <Compile Include="enVisionPartnerListClass.cs" />
     <Compile Include="epsonPriceListClass.cs" />
+    <Compile Include="itemFulfillmentClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
