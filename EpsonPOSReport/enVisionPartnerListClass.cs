@@ -101,6 +101,27 @@ namespace EpsonPOSReport
 
             return null;
         }
+
+        /*  This method is called by the ThisAddIn class, and is passed
+         *  progress and taskProgress to update the progress bar UI and
+         *  show the user that something is actually being worked on.
+         * */
+        public void runPartnerListInitialization(IProgress<int> progress, IProgress<string> taskProgress)
+        {
+            taskProgress.Report("Price List Initialization has begun...");
+            initializePartnerList(Properties.Settings.Default._PriceListFilePath);
+            taskProgress.Report("Price List Initialization finished.");
+            progress.Report(33);
+        }
+
+        /*  This method is a standalone initialization method for the enVision
+         *  partner list class which would take in a filename and
+         * 
+         * */
+        public bool initializePartnerList(string filename)
+        {
+            return false;
+        }
     }
 
     class enVisionCustomer

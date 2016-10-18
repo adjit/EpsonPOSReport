@@ -154,5 +154,41 @@ namespace EpsonPOSReport.Properties {
                 this["_DatabaseConnectionString"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string _SpaListFilePath {
+            get {
+                return ((string)(this["_SpaListFilePath"]));
+            }
+            set {
+                this["_SpaListFilePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string _PartnerListFilePath {
+            get {
+                return ((string)(this["_PartnerListFilePath"]));
+            }
+            set {
+                this["_PartnerListFilePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string _PriceListFilePath {
+            get {
+                return ((string)(this["_PriceListFilePath"]));
+            }
+            set {
+                this["_PriceListFilePath"] = value;
+            }
+        }
     }
 }

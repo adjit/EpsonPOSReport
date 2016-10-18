@@ -15,24 +15,37 @@ namespace EpsonPOSReport
     {
         private PriceLevels pls;
 
+        private bool reportsInitialized = false;
+
+        private SpaList spaList = new SpaList();
+        private epsonPriceList priceList = new epsonPriceList();
+        private enVisionPartnerList partnerList = new enVisionPartnerList();
+
+        public async void runReportInitialization()
+        {
+            MyProgressBar ui = new MyProgressBar();
+            ui.Show();
+            await Task.Factory.StartNew(() => initializeReports(ui));
+            ui.Close();
+        }
+
+        private void initializeReports(MyProgressBar ui)
+        {
+            Application.ScreenUpdating = false;
+
+            Task[] taskArray =
+            {
+                Task.Factory.StartNew(() => spaList.runSpaInitialization(ui.progress, ui.spaListProgress)),
+                Task.Factory.StartNew(() => priceList.runEpsonPriceListInitialization(ui.progress, ui.priceListProgress)),
+                Task.Factory.StartNew(() => partnerList.runPartnerListInitialization(ui.progress, ui.partnerListProgress))
+            };
+            Task.WhenAll(taskArray).Wait();
+            reportsInitialized = true;
+        }
+
         public void runReport()
         {
-            SpaList spaList = new SpaList();
-            epsonPriceList priceList = new epsonPriceList();
-
-            Task<bool>[] taskArray =
-            {
-                Task<bool>.Factory.StartNew(() => spaList.initializeSpaList("filepath")),
-                Task<bool>.Factory.StartNew(() => priceList.initializeEpsonPriceList("filepath"))
-            };
-
-            //Consider using Task.Run() instead of Task.Factory.StartNew()
-
-            Task.WaitAll(taskArray);
             
-
-            //Get bool value with taskArray[i].Result
-
         }
 
         public bool initializePriceLevels()

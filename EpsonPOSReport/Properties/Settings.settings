@@ -35,5 +35,14 @@
     <Setting Name="_DatabaseConnectionString" Type="System.String" Scope="User">
       <Value Profile="(Default)">Data Source=METRO-GP1;Integrated Security=SSPI;Initial Catalog=METRO</Value>
     </Setting>
+    <Setting Name="_SpaListFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="_PartnerListFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="_PriceListFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

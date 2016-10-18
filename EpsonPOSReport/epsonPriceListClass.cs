@@ -25,6 +25,14 @@ namespace EpsonPOSReport
             return null;
         }
 
+        public void runEpsonPriceListInitialization(IProgress<int> progress, IProgress<string> taskProgress)
+        {
+            taskProgress.Report("Price List Initialization has begun...");
+            initializeEpsonPriceList(Properties.Settings.Default._PriceListFilePath);
+            taskProgress.Report("Price List Initialization finished.");
+            progress.Report(33);
+        }
+
         public bool initializeEpsonPriceList(string filePath)
         {
             bool _hasItems = false;
