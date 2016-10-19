@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EpsonPOSReport
 {
+    /*  Will not be using this enum
+     *  To be deleted at program completion.
+     * */
     public enum enVisionLevels
     {
         COLORWORKS_OEM,
@@ -22,16 +26,20 @@ namespace EpsonPOSReport
         TECH
     }
 
-    public enum priceLevelIndex
+    public enum PriceLevelIndex
     {
-        SELECT = 0,     //2
-        PLUS = 1,       //3
-        PREMIER = 2,    //3
-        EFI = 3,        //4
-        MSELECT = 4,    //5
-        SPECIAL = 5     //6
+        SELECT      = 1,    //2
+        PLUS        = 2,    //3
+        PREMIER     = 3,    //3
+        MSELECT     = 4,    //5
     }
 
+
+    /*  Not going to use the PriceLevels class. This would have been
+     *  used to correlate the customer price level to the price level
+     *  as dictated by GP. However, now we are now instead using 
+     * 
+     * */
     class PriceLevels
     {
         public int[] priceLevels { get; }
@@ -75,8 +83,13 @@ namespace EpsonPOSReport
     {
         public List<enVisionCustomer> customers { get; }
 
+        public enVisionPartnerList()
+        {
+            customers = new List<enVisionCustomer>();
+        }
+
         public void addCustomer(string enVisionLevel, string customer,
-                                string enVisionNumber, int priceLevel)
+                                string enVisionNumber, PriceLevelIndex priceLevel)
         {
             customers.Add(new enVisionCustomer(enVisionLevel, customer,
                                                 enVisionNumber, priceLevel));
@@ -118,9 +131,69 @@ namespace EpsonPOSReport
          *  partner list class which would take in a filename and
          * 
          * */
-        public bool initializePartnerList(string filename)
+        public bool initializePartnerList(string filePath)
         {
-            return false;
+            int PARTNER_LIST_SHEET = 1;
+            int START_ROW = 3;
+            int CUSTOMER_NAME = 5;
+            int CUSTOMER_NUMBER = 6;
+            int PRICE_LEVEL = 9;
+
+            bool _partnersAdded = false;
+
+            Excel.Workbook partnerListWorkbook;
+            Excel.Worksheet pLS;
+
+            string priceLevel = "";
+            string customer = "";
+            string enVisionNumber = "";
+            PriceLevelIndex priceIndex = 0;
+
+            enVisionPartnerList epl = new enVisionPartnerList();
+
+            try
+            {
+                partnerListWorkbook = Globals.ThisAddIn.Application.Workbooks.Open(filePath, false, true);
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show("Error opening Partner List\n" + e, "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+
+                return false;
+            }
+
+            pLS = partnerListWorkbook.Worksheets[PARTNER_LIST_SHEET];
+
+            for(int i = START_ROW; i < pLS.UsedRange.Rows.Count; i++)
+            {
+                customer = Convert.ToString(pLS.Cells[i, CUSTOMER_NAME]);
+                enVisionNumber = Convert.ToString(pLS.Cells[i, CUSTOMER_NUMBER]);
+
+                priceLevel = Convert.ToString(pLS.Cells[i, PRICE_LEVEL]);
+                priceLevel = priceLevel.ToLower();
+
+                if(priceLevel.Contains(PriceLevelIndex.SELECT.ToString().ToLower()))
+                {
+                    priceIndex = PriceLevelIndex.SELECT;
+                }
+                else if (priceLevel.Contains(PriceLevelIndex.PLUS.ToString().ToLower()))
+                {
+                    priceIndex = PriceLevelIndex.PLUS;
+                }
+                else if (priceLevel.Contains(PriceLevelIndex.PREMIER.ToString().ToLower()))
+                {
+                    priceIndex = PriceLevelIndex.PREMIER;
+                }
+                else if (priceLevel.Contains(PriceLevelIndex.MSELECT.ToString().ToLower()))
+                {
+                    priceIndex = PriceLevelIndex.MSELECT;
+                }
+
+                epl.addCustomer(priceLevel, customer, enVisionNumber, priceIndex);
+                _partnersAdded = true;
+            }
+
+            return _partnersAdded;
         }
     }
 
@@ -129,10 +202,10 @@ namespace EpsonPOSReport
         public string enVisionLevel { get; }
         public string customer { get; }
         public string enVisionNumber { get; }
-        public int priceLevelIndex { get; }
+        public PriceLevelIndex priceLevelIndex { get; }
 
         public enVisionCustomer(string enVisionLevel, string customer,
-                                string enVisionNumber, int priceLevelIndex)
+                                string enVisionNumber, PriceLevelIndex priceLevelIndex)
         {
             this.enVisionLevel = enVisionLevel;
             this.customer = customer;

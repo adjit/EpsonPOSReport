@@ -11,6 +11,11 @@ namespace EpsonPOSReport
     {
         public List<Item> items { get; }
 
+        public epsonPriceList()
+        {
+            items = new List<Item>();
+        }
+
         public void addItem(Item newItem)
         {
             items.Add(newItem);
@@ -63,14 +68,16 @@ namespace EpsonPOSReport
                 Excel.Range itemNumberCell = pLWS.Cells[i, us._plColumn_itemNumber];
 
                 if(itemNumberCell.Font.Underline != (int)Excel.XlUnderlineStyle.xlUnderlineStyleNone ||
-                    itemNumberCell.Font.Strikethrough || itemNumberCell.Value2 == null)
+                    itemNumberCell.Font.Strikethrough ||
+                    itemNumberCell.Value2 == null ||
+                    Convert.ToString(itemNumberCell.Value2) == "")
                 {
                     continue;
                 }
 
                 Item item = new Item();
 
-                item.cCode = (string)itemNumberCell.Value2;
+                item.cCode = Convert.ToString(itemNumberCell.Value2);
                 item.Cost = getNumber(pLWS.Cells[i, us._plColumn_unitCost].Value2);
                 item.Select.fulfillment = getNumber(pLWS.Cells[i, us._plColumn_selectFFP].Value2);
                 item.Select.rebate = getNumber(pLWS.Cells[i, us._plColumn_selectRebate].Value2);
@@ -96,7 +103,7 @@ namespace EpsonPOSReport
         private double getNumber(object value)
         {
             double i = 0.00;
-            string v = (string)value;
+            string v = Convert.ToString(value);
             bool result = double.TryParse(v, out i);
             return i;                  
         }

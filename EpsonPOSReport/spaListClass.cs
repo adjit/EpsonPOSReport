@@ -125,7 +125,7 @@ namespace EpsonPOSReport
                                  *  is only 1 cell, which we get the value from - the customer
                                  *  number
                                  * */
-                                customers.Add((string)customerRows.Item[k].Range.Value2());
+                                customers.Add(Convert.ToString(customerRows.Item[k].Range.Value2));
                             }
 
                             /*  For loop iterating through the items Rows which should be
@@ -149,19 +149,19 @@ namespace EpsonPOSReport
                                     {
                                         case 0:
                                             {
-                                                itemNumber = (string)cell.Value2;
+                                                itemNumber = Convert.ToString(cell.Value2);
                                                 counter++;
                                                 break;
                                             }
                                         case 1:
                                             {
-                                                rebateAmount = (double)cell.Value2;
+                                                rebateAmount = Convert.ToDouble(cell.Value2);
                                                 counter++;
                                                 break;
                                             }
                                         case 2:
                                             {
-                                                fulfillmentPercent = (double)cell.Value2;
+                                                fulfillmentPercent = Convert.ToDouble(cell.Value2);
                                                 allValuesSet = true;
                                                 counter++;
                                                 break;
