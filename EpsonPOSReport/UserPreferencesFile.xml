@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <optionalReportColumns>
+    <column ColumnName="btAddress">FALSE</column>
+    <column ColumnName="btCity">FALSE</column>
+    <column ColumnName="btState">FALSE</column>
+    <column ColumnName="btZip">FALSE</column>
+    <column ColumnName="stCustomer">FALSE</column>
+    <column ColumnName="stAddress">FALSE</column>
+    <column ColumnName="stCity">FALSE</column>
+    <column ColumnName="stState">FALSE</column>
+    <column ColumnName="stZip">FALSE</column>
+  </optionalReportColumns>
+  
+  <posReportColumnIndecies>
+    <index ColumnName="itemNumber">3</index>
+    <index ColumnName="unitCost">12</index>
+    <index ColumnName="selectFFP">14</index>
+    <index ColumnName="selectRebate">15</index>
+    <index ColumnName="plusFFP">19</index>
+    <index ColumnName="plusRebate">20</index>
+    <index ColumnName="premierFFP">24</index>
+    <index ColumnName="premierRebate">25</index>
+    <index ColumnName="mSelectFFP">29</index>
+    <index ColumnName="mSelectRebate">30</index>
+  </posReportColumnIndecies>
+
+  <fileLocations>
+    <location FileName="spaList"></location>
+    <location FileName="partnerList"></location>
+    <location FileName="priceList"></location>
+  </fileLocations>
+</root>
