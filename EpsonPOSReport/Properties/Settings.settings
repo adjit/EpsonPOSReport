@@ -35,14 +35,41 @@
     <Setting Name="_DatabaseConnectionString" Type="System.String" Scope="User">
       <Value Profile="(Default)">Data Source=METRO-GP1;Integrated Security=SSPI;Initial Catalog=METRO</Value>
     </Setting>
-    <Setting Name="_SpaListFilePath" Type="System.String" Scope="User">
+    <Setting Name="_filePath_spaList" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="_PartnerListFilePath" Type="System.String" Scope="User">
+    <Setting Name="_filePath_partnerList" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="_PriceListFilePath" Type="System.String" Scope="User">
+    <Setting Name="_filePath_priceList" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="_showColumn_btAddress" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="_showColumn_btCity" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="_showColumn_btState" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="_showColumn_btZip" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="_showColumn_stCustomer" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="_showcolumn_stAddress" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="_showColumn_stCity" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="_showColumn_stState" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="_showColumn_stZip" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

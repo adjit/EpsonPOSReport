@@ -158,36 +158,144 @@ namespace EpsonPOSReport.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string _SpaListFilePath {
+        public string _filePath_spaList {
             get {
-                return ((string)(this["_SpaListFilePath"]));
+                return ((string)(this["_filePath_spaList"]));
             }
             set {
-                this["_SpaListFilePath"] = value;
+                this["_filePath_spaList"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string _PartnerListFilePath {
+        public string _filePath_partnerList {
             get {
-                return ((string)(this["_PartnerListFilePath"]));
+                return ((string)(this["_filePath_partnerList"]));
             }
             set {
-                this["_PartnerListFilePath"] = value;
+                this["_filePath_partnerList"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string _PriceListFilePath {
+        public string _filePath_priceList {
             get {
-                return ((string)(this["_PriceListFilePath"]));
+                return ((string)(this["_filePath_priceList"]));
             }
             set {
-                this["_PriceListFilePath"] = value;
+                this["_filePath_priceList"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool _showColumn_btAddress {
+            get {
+                return ((bool)(this["_showColumn_btAddress"]));
+            }
+            set {
+                this["_showColumn_btAddress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool _showColumn_btCity {
+            get {
+                return ((bool)(this["_showColumn_btCity"]));
+            }
+            set {
+                this["_showColumn_btCity"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool _showColumn_btState {
+            get {
+                return ((bool)(this["_showColumn_btState"]));
+            }
+            set {
+                this["_showColumn_btState"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool _showColumn_btZip {
+            get {
+                return ((bool)(this["_showColumn_btZip"]));
+            }
+            set {
+                this["_showColumn_btZip"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool _showColumn_stCustomer {
+            get {
+                return ((bool)(this["_showColumn_stCustomer"]));
+            }
+            set {
+                this["_showColumn_stCustomer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool _showcolumn_stAddress {
+            get {
+                return ((bool)(this["_showcolumn_stAddress"]));
+            }
+            set {
+                this["_showcolumn_stAddress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool _showColumn_stCity {
+            get {
+                return ((bool)(this["_showColumn_stCity"]));
+            }
+            set {
+                this["_showColumn_stCity"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool _showColumn_stState {
+            get {
+                return ((bool)(this["_showColumn_stState"]));
+            }
+            set {
+                this["_showColumn_stState"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool _showColumn_stZip {
+            get {
+                return ((bool)(this["_showColumn_stZip"]));
+            }
+            set {
+                this["_showColumn_stZip"] = value;
             }
         }
     }

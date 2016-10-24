@@ -30,15 +30,15 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.partnerListBrowseButton = new System.Windows.Forms.Button();
+            this.priceListBrowseButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.spaListFilePath = new System.Windows.Forms.TextBox();
             this.priceListFilePath = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.partnerListFilePath = new System.Windows.Forms.TextBox();
             this.spaBrowseButton = new System.Windows.Forms.Button();
-            this.priceListBrowseButton = new System.Windows.Forms.Button();
-            this.partnerListBrowseButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,7 +55,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.spaListFilePath, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.priceListFilePath, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.textBox1, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.partnerListFilePath, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.spaBrowseButton, 2, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -67,6 +67,26 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(559, 161);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // partnerListBrowseButton
+            // 
+            this.partnerListBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.partnerListBrowseButton.Location = new System.Drawing.Point(462, 88);
+            this.partnerListBrowseButton.Name = "partnerListBrowseButton";
+            this.partnerListBrowseButton.Size = new System.Drawing.Size(94, 23);
+            this.partnerListBrowseButton.TabIndex = 6;
+            this.partnerListBrowseButton.Text = "Browse";
+            this.partnerListBrowseButton.UseVisualStyleBackColor = true;
+            // 
+            // priceListBrowseButton
+            // 
+            this.priceListBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.priceListBrowseButton.Location = new System.Drawing.Point(462, 48);
+            this.priceListBrowseButton.Name = "priceListBrowseButton";
+            this.priceListBrowseButton.Size = new System.Drawing.Size(94, 23);
+            this.priceListBrowseButton.TabIndex = 4;
+            this.priceListBrowseButton.Text = "Browse";
+            this.priceListBrowseButton.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -119,14 +139,14 @@
             this.priceListFilePath.TabIndex = 3;
             this.priceListFilePath.Text = "File Path...";
             // 
-            // textBox1
+            // partnerListFilePath
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(132, 90);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(324, 20);
-            this.textBox1.TabIndex = 5;
-            this.textBox1.Text = "File Path...";
+            this.partnerListFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.partnerListFilePath.Location = new System.Drawing.Point(132, 90);
+            this.partnerListFilePath.Name = "partnerListFilePath";
+            this.partnerListFilePath.Size = new System.Drawing.Size(324, 20);
+            this.partnerListFilePath.TabIndex = 5;
+            this.partnerListFilePath.Text = "File Path...";
             // 
             // spaBrowseButton
             // 
@@ -137,26 +157,6 @@
             this.spaBrowseButton.TabIndex = 2;
             this.spaBrowseButton.Text = "Browse";
             this.spaBrowseButton.UseVisualStyleBackColor = true;
-            // 
-            // priceListBrowseButton
-            // 
-            this.priceListBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.priceListBrowseButton.Location = new System.Drawing.Point(462, 48);
-            this.priceListBrowseButton.Name = "priceListBrowseButton";
-            this.priceListBrowseButton.Size = new System.Drawing.Size(94, 23);
-            this.priceListBrowseButton.TabIndex = 4;
-            this.priceListBrowseButton.Text = "Browse";
-            this.priceListBrowseButton.UseVisualStyleBackColor = true;
-            // 
-            // partnerListBrowseButton
-            // 
-            this.partnerListBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.partnerListBrowseButton.Location = new System.Drawing.Point(462, 88);
-            this.partnerListBrowseButton.Name = "partnerListBrowseButton";
-            this.partnerListBrowseButton.Size = new System.Drawing.Size(94, 23);
-            this.partnerListBrowseButton.TabIndex = 6;
-            this.partnerListBrowseButton.Text = "Browse";
-            this.partnerListBrowseButton.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -184,7 +184,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox spaListFilePath;
         private System.Windows.Forms.TextBox priceListFilePath;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox partnerListFilePath;
         private System.Windows.Forms.Button spaBrowseButton;
     }
 }

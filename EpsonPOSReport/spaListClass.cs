@@ -58,7 +58,7 @@ namespace EpsonPOSReport
         public void runSpaInitialization(IProgress<int> progress, IProgress<string> taskProgress)
         {
             taskProgress.Report("Spa List Initialization has begun...");
-            initializeSpaList(Properties.Settings.Default._SpaListFilePath);
+            initializeSpaList(Properties.Settings.Default._filePath_spaList);
             taskProgress.Report("Spa List Initilaztion finished.");
             progress.Report(33);
         }

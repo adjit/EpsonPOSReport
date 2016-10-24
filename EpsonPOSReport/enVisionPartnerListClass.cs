@@ -122,7 +122,7 @@ namespace EpsonPOSReport
         public void runPartnerListInitialization(IProgress<int> progress, IProgress<string> taskProgress)
         {
             taskProgress.Report("Price List Initialization has begun...");
-            initializePartnerList(Properties.Settings.Default._PriceListFilePath);
+            initializePartnerList(Properties.Settings.Default._filePath_priceList);
             taskProgress.Report("Price List Initialization finished.");
             progress.Report(33);
         }

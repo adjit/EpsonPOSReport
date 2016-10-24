@@ -15,6 +15,14 @@ namespace EpsonPOSReport
         public SettingsForm()
         {
             InitializeComponent();
+            populateSettings();
+        }
+
+        private void populateSettings()
+        {
+            spaListFilePath.Text = Properties.Settings.Default._filePath_spaList;
+            partnerListFilePath.Text = Properties.Settings.Default._filePath_partnerList;
+            priceListFilePath.Text = Properties.Settings.Default._filePath_priceList;
         }
     }
 }
