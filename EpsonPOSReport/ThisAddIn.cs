@@ -1,10 +1,13 @@
 ﻿using System;
+using System.IO;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using System.Data.SqlClient;
 using Excel = Microsoft.Office.Interop.Excel;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools.Excel;
@@ -46,6 +49,66 @@ namespace EpsonPOSReport
         public void runReport()
         {
             
+        }
+
+        public void runQueryReport(DateTime date)
+        {
+            int month = date.Month;
+            int year = date.Year;
+
+            qRow thisRow;
+
+            string query = File.ReadAllText(@"EpsonQuery.sql");
+            query = string.Format(query, month, year);
+
+            Excel.Workbook thisWorkbook = Globals.ThisAddIn.Application.ActiveWorkbook;
+            Excel.Worksheet thisWorksheet = thisWorkbook.ActiveSheet;
+
+            SqlConnection dbConnection = new SqlConnection(Properties.Settings.Default._DatabaseConnectionString);
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader reader;
+
+            cmd.CommandText = query;
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = dbConnection;
+
+            dbConnection.Open();
+
+            reader = cmd.ExecuteReader();
+
+            if(reader.HasRows)
+            {
+                while(reader.Read())
+                {
+                    thisRow = new qRow( reader.GetValue((int)qCols.Cogs),
+                                        reader.GetValue((int)qCols.CustNo),
+                                        reader.GetValue((int)qCols.ResellerNo),
+                                        reader.GetValue((int)qCols.ResellerName),
+                                        reader.GetValue((int)qCols.EndUserName),
+                                        reader.GetValue((int)qCols.InvDt),
+                                        reader.GetValue((int)qCols.InvNo),
+                                        reader.GetValue((int)qCols.CCode),
+                                        reader.GetValue((int)qCols.ItemNo),
+                                        reader.GetValue((int)qCols.SerialNo),
+                                        reader.GetValue((int)qCols.QTY),
+                                        reader.GetValue((int)qCols.SalesRepID),
+                                        reader.GetValue((int)qCols.BtAddress),
+                                        reader.GetValue((int)qCols.BtCity),
+                                        reader.GetValue((int)qCols.BtState),
+                                        reader.GetValue((int)qCols.BtZip),
+                                        reader.GetValue((int)qCols.StAddress),
+                                        reader.GetValue((int)qCols.StCity),
+                                        reader.GetValue((int)qCols.StState),
+                                        reader.GetValue((int)qCols.StZip)
+                                      );
+
+                    thisRow.parseRow(thisWorksheet);
+                }
+            }
+            else System.Windows.Forms.MessageBox.Show("No Rows Found");
+
+            dbConnection.Close();
+
         }
 
         public bool initializePriceLevels()
@@ -127,24 +190,24 @@ namespace EpsonPOSReport
                     else if (i == serialNumbers.Length) break;
                     else currentSerial = serialNumbers[i];
 
-                    ws.Cells[rn, (int)qCols.ResellerNo].Value2 = enVisionNumber;
-                    ws.Cells[rn, (int)qCols.ResellerName].Value2 = customerName;
-                    ws.Cells[rn, (int)qCols.EndUserName].Value2 = endUserName;
-                    ws.Cells[rn, (int)qCols.InvDt].Value2 = invoiceDate;
-                    ws.Cells[rn, (int)qCols.InvNo].Value2 = invoiceNumber;
-                    ws.Cells[rn, (int)qCols.CCode].Value2 = cCode;
-                    ws.Cells[rn, (int)qCols.ItemNo].Value2 = itemNumber;
-                    ws.Cells[rn, (int)qCols.SerialNo].Value2 = currentSerial;
-                    ws.Cells[rn, (int)qCols.BtAddress].Value2 = billTo.address;
-                    ws.Cells[rn, (int)qCols.BtCity].Value2 = billTo.city;
-                    ws.Cells[rn, (int)qCols.BtState].Value2 = billTo.state;
-                    ws.Cells[rn, (int)qCols.BtZip].Value2 = billTo.zip;
-                    ws.Cells[rn, (int)qCols.StCompany].Value2 = endUserName;
-                    ws.Cells[rn, (int)qCols.StAddress].Value2 = shipTo.address;
-                    ws.Cells[rn, (int)qCols.StCity].Value2 = shipTo.city;
-                    ws.Cells[rn, (int)qCols.StState].Value2 = shipTo.state;
-                    ws.Cells[rn, (int)qCols.StZip].Value2 = shipTo.zip;
-                    ws.Cells[rn, (int)qCols.SalesRepID].Value2 = salesRepID;
+                    ws.Cells[rn, (int)xqCols.ResellerNo].Value2 = enVisionNumber;
+                    ws.Cells[rn, (int)xqCols.ResellerName].Value2 = customerName;
+                    ws.Cells[rn, (int)xqCols.EndUserName].Value2 = endUserName;
+                    ws.Cells[rn, (int)xqCols.InvDt].Value2 = invoiceDate;
+                    ws.Cells[rn, (int)xqCols.InvNo].Value2 = invoiceNumber;
+                    ws.Cells[rn, (int)xqCols.CCode].Value2 = cCode;
+                    ws.Cells[rn, (int)xqCols.ItemNo].Value2 = itemNumber;
+                    ws.Cells[rn, (int)xqCols.SerialNo].Value2 = currentSerial;
+                    ws.Cells[rn, (int)xqCols.BtAddress].Value2 = billTo.address;
+                    ws.Cells[rn, (int)xqCols.BtCity].Value2 = billTo.city;
+                    ws.Cells[rn, (int)xqCols.BtState].Value2 = billTo.state;
+                    ws.Cells[rn, (int)xqCols.BtZip].Value2 = billTo.zip;
+                    ws.Cells[rn, (int)xqCols.StCompany].Value2 = endUserName;
+                    ws.Cells[rn, (int)xqCols.StAddress].Value2 = shipTo.address;
+                    ws.Cells[rn, (int)xqCols.StCity].Value2 = shipTo.city;
+                    ws.Cells[rn, (int)xqCols.StState].Value2 = shipTo.state;
+                    ws.Cells[rn, (int)xqCols.StZip].Value2 = shipTo.zip;
+                    ws.Cells[rn, (int)xqCols.SalesRepID].Value2 = salesRepID;
                 }
             }
 
@@ -154,7 +217,8 @@ namespace EpsonPOSReport
             }
         }
 
-        private enum qCols
+        //This enum refers to the excel columns to print the query only
+        private enum xqCols
         {
             ZEROINDEX,
             ResellerNo,
@@ -177,9 +241,34 @@ namespace EpsonPOSReport
             SalesRepID
         }
 
+        //This enum refers to the columns produced by the query
+        private enum qCols
+        {
+            Cogs,
+            CustNo,
+            ResellerNo,
+            ResellerName,
+            EndUserName,
+            InvDt,
+            InvNo,
+            CCode,
+            ItemNo,
+            SerialNo,
+            QTY,
+            SalesRepID,
+            BtAddress,
+            BtCity,
+            BtState,
+            BtZip,
+            StAddress,
+            StCity,
+            StState,
+            StZip
+        }
+
         private class xRow
         {
-            private enum xCols
+            /*private enum xCols
             {
                 ZEROINDEX,
                 ResellerNo,
@@ -200,7 +289,7 @@ namespace EpsonPOSReport
                 TotalUnitRebate,
                 TotalExtRebate,
                 EpsonenVision
-            }
+            }*/
 
             private enum enVisionLevels
             {

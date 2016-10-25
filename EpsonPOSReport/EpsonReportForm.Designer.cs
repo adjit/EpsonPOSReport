@@ -32,7 +32,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.selectMonthLabel = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.monthPicker = new System.Windows.Forms.DateTimePicker();
             this.changeSettingsButton = new System.Windows.Forms.LinkLabel();
             this.runReportButton = new System.Windows.Forms.Button();
             this.runQueryOnlyBtn = new System.Windows.Forms.Button();
@@ -62,7 +62,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.selectMonthLabel, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.dateTimePicker1, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.monthPicker, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.changeSettingsButton, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.runReportButton, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -87,17 +87,17 @@
             this.selectMonthLabel.TabIndex = 0;
             this.selectMonthLabel.Text = "Select First of Month";
             // 
-            // dateTimePicker1
+            // monthPicker
             // 
-            this.dateTimePicker1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.monthPicker.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dateTimePicker1.CustomFormat = "MMMM-  yyyy";
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker1.Location = new System.Drawing.Point(154, 8);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(141, 20);
-            this.dateTimePicker1.TabIndex = 1;
+            this.monthPicker.CustomFormat = "MMMM-  yyyy";
+            this.monthPicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.monthPicker.Location = new System.Drawing.Point(154, 8);
+            this.monthPicker.Name = "monthPicker";
+            this.monthPicker.Size = new System.Drawing.Size(141, 20);
+            this.monthPicker.TabIndex = 1;
             // 
             // changeSettingsButton
             // 
@@ -135,6 +135,7 @@
             this.runQueryOnlyBtn.TabIndex = 1;
             this.runQueryOnlyBtn.Text = "Run Query Only";
             this.runQueryOnlyBtn.UseVisualStyleBackColor = true;
+            this.runQueryOnlyBtn.Click += new System.EventHandler(this.runQueryOnlyBtn_Click);
             // 
             // EpsonReportForm
             // 
@@ -164,7 +165,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label selectMonthLabel;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker monthPicker;
         private System.Windows.Forms.LinkLabel changeSettingsButton;
         private System.Windows.Forms.Button runReportButton;
         private System.Windows.Forms.Button runQueryOnlyBtn;

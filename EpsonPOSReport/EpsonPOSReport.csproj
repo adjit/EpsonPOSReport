@@ -175,6 +175,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="AddressClass.cs" />
     <Compile Include="enVisionPartnerListClass.cs" />
     <Compile Include="epsonPriceListClass.cs" />
     <Compile Include="EpsonReportForm.cs">

@@ -15,7 +15,7 @@ SELECT
 	custMaster.CITY AS [Cust City],
 	custMaster.STATE AS [Cust State],
 	custMaster.ZIP AS [Cust Zip],
-	lineItems.CNTCPRSN AS [ShipTo Cust],
+/*	lineItems.CNTCPRSN AS [ShipTo Cust],*/
 	lineItems.ADDRESS2 AS [ShipTo Address],
 	lineItems.CITY AS [ShipTo City],
 	lineItems.STATE AS [ShipTo State],
@@ -37,8 +37,8 @@ SELECT
 			
 			FROM METRO.dbo.SOP30200 tHeader
 			WHERE
-				MONTH(ACTLSHIP) = 6				/*CHANGE THIS for month*/
-				AND YEAR(ACTLSHIP) = 2016		/*CHANGE THIS for year*/
+				MONTH(ACTLSHIP) = {0}				/*CHANGE THIS for month*/
+				AND YEAR(ACTLSHIP) = {1}		/*CHANGE THIS for year*/
 				AND SOPNUMBE like 'I%') header
 		/*
 			This JOIN with a SELECT subquery gets
