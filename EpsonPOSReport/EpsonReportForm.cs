@@ -20,6 +20,7 @@ namespace EpsonPOSReport
         private void runQueryOnlyBtn_Click(object sender, EventArgs e)
         {
             Globals.ThisAddIn.runQueryReport(monthPicker.Value);
+            Close();
         }
     }
 }

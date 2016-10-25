@@ -20,6 +20,8 @@ namespace EpsonPOSReport
 
         private bool reportsInitialized = false;
 
+        public List<string> checkRows = new List<string>();
+
         private SpaList spaList = new SpaList();
         private epsonPriceList priceList = new epsonPriceList();
         private enVisionPartnerList partnerList = new enVisionPartnerList();
@@ -58,8 +60,11 @@ namespace EpsonPOSReport
 
             qRow thisRow;
 
-            string query = File.ReadAllText(@"EpsonQuery.sql");
+            //string query = File.ReadAllText(@"EpsonQuery.sql");
+            string query = Properties.Resources.EpsonQuery;
             query = string.Format(query, month, year);
+
+            List<string> checkRows = new List<string>();
 
             Excel.Workbook thisWorkbook = Globals.ThisAddIn.Application.ActiveWorkbook;
             Excel.Worksheet thisWorksheet = thisWorkbook.ActiveSheet;
@@ -102,13 +107,22 @@ namespace EpsonPOSReport
                                         reader.GetValue((int)qCols.StZip)
                                       );
 
-                    thisRow.parseRow(thisWorksheet);
+                    checkRows.AddRange(thisRow.parseRow(thisWorksheet));
                 }
             }
             else System.Windows.Forms.MessageBox.Show("No Rows Found");
 
-            dbConnection.Close();
+            if (checkRows.Count > 0)
+            {
+                string errorRows = string.Join(", ", checkRows);
 
+                System.Windows.Forms.MessageBox.Show("Please check the following rows: " + errorRows + "\nSerial Number Count does not equal Quantity",
+                                                        "Quantity Warning",
+                                                        System.Windows.Forms.MessageBoxButtons.OK,
+                                                        System.Windows.Forms.MessageBoxIcon.Warning);
+            }
+
+            dbConnection.Close();
         }
 
         public bool initializePriceLevels()
@@ -169,19 +183,19 @@ namespace EpsonPOSReport
                 //This method will be added later to do my comparisons
             }
 
-            public void parseRow(Excel.Worksheet ws)
+            public List<string> parseRow(Excel.Worksheet ws)
             {
                 int rn = ws.UsedRange.Row + ws.UsedRange.Rows.Count;
 
                 string currentSerial = "";
 
+                List<string> checkRows = new List<string>();
+
                 //If there is a mismatch between the number of serials and quantity warn user
                 if(serialNumbers.Length > 0 && serialNumbers.Length != quantity)
                 {
-                    System.Windows.Forms.MessageBox.Show(   "Please note to check row " + rn +"\n Serial Number Count does not equal Quantity",
-                                                            "Quantity Warning",
-                                                            System.Windows.Forms.MessageBoxButtons.OK,
-                                                            System.Windows.Forms.MessageBoxIcon.Warning);
+                    checkRows.Add(rn.ToString());
+                    
                 }
 
                 for(int i = 0; i <= serialNumbers.Length; i++)
@@ -208,7 +222,21 @@ namespace EpsonPOSReport
                     ws.Cells[rn, (int)xqCols.StState].Value2 = shipTo.state;
                     ws.Cells[rn, (int)xqCols.StZip].Value2 = shipTo.zip;
                     ws.Cells[rn, (int)xqCols.SalesRepID].Value2 = salesRepID;
+
+                    rn++;
                 }
+
+                return checkRows;
+
+                /*if(checkRows.Count > 0)
+                {
+                    string errorRows = string.Join(", ", checkRows);
+
+                    System.Windows.Forms.MessageBox.Show("Please check the following rows: " + errorRows + "\nSerial Number Count does not equal Quantity",
+                                                            "Quantity Warning",
+                                                            System.Windows.Forms.MessageBoxButtons.OK,
+                                                            System.Windows.Forms.MessageBoxIcon.Warning);
+                }*/
             }
 
             private void getFulfillment()
