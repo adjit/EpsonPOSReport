@@ -35,6 +35,7 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.changeSettingsButton = new System.Windows.Forms.LinkLabel();
             this.runReportButton = new System.Windows.Forms.Button();
+            this.runQueryOnlyBtn = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -43,11 +44,12 @@
             // 
             this.groupBox1.AutoSize = true;
             this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox1.Controls.Add(this.runQueryOnlyBtn);
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(5, 5);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(309, 87);
+            this.groupBox1.Size = new System.Drawing.Size(309, 124);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Run Epson Report";
@@ -125,17 +127,26 @@
             this.runReportButton.Text = "Run Report";
             this.runReportButton.UseVisualStyleBackColor = true;
             // 
+            // runQueryOnlyBtn
+            // 
+            this.runQueryOnlyBtn.Location = new System.Drawing.Point(157, 82);
+            this.runQueryOnlyBtn.Name = "runQueryOnlyBtn";
+            this.runQueryOnlyBtn.Size = new System.Drawing.Size(141, 23);
+            this.runQueryOnlyBtn.TabIndex = 1;
+            this.runQueryOnlyBtn.Text = "Run Query Only";
+            this.runQueryOnlyBtn.UseVisualStyleBackColor = true;
+            // 
             // EpsonReportForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(319, 96);
+            this.ClientSize = new System.Drawing.Size(319, 111);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(500, 135);
-            this.MinimumSize = new System.Drawing.Size(335, 135);
+            this.MaximumSize = new System.Drawing.Size(500, 150);
+            this.MinimumSize = new System.Drawing.Size(335, 150);
             this.Name = "EpsonReportForm";
             this.Padding = new System.Windows.Forms.Padding(5);
             this.Text = "Epson Report";
@@ -156,5 +167,6 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.LinkLabel changeSettingsButton;
         private System.Windows.Forms.Button runReportButton;
+        private System.Windows.Forms.Button runQueryOnlyBtn;
     }
 }

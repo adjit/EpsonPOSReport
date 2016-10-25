@@ -54,6 +54,129 @@ namespace EpsonPOSReport
             return false;
         }
 
+        private class qRow
+        {
+            public string cogs { get; }
+            public string customerNumber { get; }
+            public string enVisionNumber { get; }
+            public string customerName { get; }
+            public string endUserName { get; }
+            public DateTime invoiceDate { get; }
+            public string invoiceNumber { get; }
+            public string cCode { get; }
+            public string itemNumber { get; }
+            public string[] serialNumbers { get; }
+            public int quantity { get; }
+            public string salesRepID { get; }
+            public Address billTo { get; set; } = new Address();
+            public Address shipTo { get; set; } = new Address();
+            public double unitCost { get; }
+            public double unitRebate { get; }
+            public double fulfillmentPcnt { get; } 
+
+            private bool formattingSet = false;
+
+            public qRow (   object Cogs, object CustNum, object EnvNum, object CustName, object EndName, object Date, object InvNum,
+                            object CCode, object ItemNum, object delimittedSerials, object QTY, object SalesRepID, object CustAddress,
+                            object CustCity, object CustState, object CustZip, object StAddress, object StCity, object StState, object StZip
+                        )
+            {
+                cogs = Cogs.ToString().Trim();
+                customerNumber = CustNum.ToString().Trim();
+                enVisionNumber = EnvNum.ToString().Trim();
+                customerName = CustName.ToString().Trim();
+                endUserName = EndName.ToString().Trim();
+                invoiceDate = Convert.ToDateTime(Date);
+                invoiceNumber = InvNum.ToString().Trim();
+                cCode = CCode.ToString().Trim();
+                itemNumber = ItemNum.ToString().Trim();
+                serialNumbers = delimittedSerials.ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                quantity = Convert.ToInt32(QTY);
+                salesRepID = SalesRepID.ToString().Trim();
+                billTo.address = CustAddress.ToString().Trim();
+                billTo.city = CustCity.ToString().Trim();
+                billTo.state = CustState.ToString().Trim();
+                billTo.zip = CustZip.ToString().Trim();
+                shipTo.address = StAddress.ToString().Trim();
+                shipTo.city = StCity.ToString().Trim();
+                shipTo.state = StState.ToString().Trim();
+                shipTo.zip = StZip.ToString().Trim();
+
+                //getFulfillment();
+                //This method will be added later to do my comparisons
+            }
+
+            public void parseRow(Excel.Worksheet ws)
+            {
+                int rn = ws.UsedRange.Row + ws.UsedRange.Rows.Count;
+
+                string currentSerial = "";
+
+                //If there is a mismatch between the number of serials and quantity warn user
+                if(serialNumbers.Length > 0 && serialNumbers.Length != quantity)
+                {
+                    System.Windows.Forms.MessageBox.Show(   "Please note to check row " + rn +"\n Serial Number Count does not equal Quantity",
+                                                            "Quantity Warning",
+                                                            System.Windows.Forms.MessageBoxButtons.OK,
+                                                            System.Windows.Forms.MessageBoxIcon.Warning);
+                }
+
+                for(int i = 0; i <= serialNumbers.Length; i++)
+                {
+                    if (serialNumbers.Length == 0) currentSerial = "";
+                    else if (i == serialNumbers.Length) break;
+                    else currentSerial = serialNumbers[i];
+
+                    ws.Cells[rn, (int)qCols.ResellerNo].Value2 = enVisionNumber;
+                    ws.Cells[rn, (int)qCols.ResellerName].Value2 = customerName;
+                    ws.Cells[rn, (int)qCols.EndUserName].Value2 = endUserName;
+                    ws.Cells[rn, (int)qCols.InvDt].Value2 = invoiceDate;
+                    ws.Cells[rn, (int)qCols.InvNo].Value2 = invoiceNumber;
+                    ws.Cells[rn, (int)qCols.CCode].Value2 = cCode;
+                    ws.Cells[rn, (int)qCols.ItemNo].Value2 = itemNumber;
+                    ws.Cells[rn, (int)qCols.SerialNo].Value2 = currentSerial;
+                    ws.Cells[rn, (int)qCols.BtAddress].Value2 = billTo.address;
+                    ws.Cells[rn, (int)qCols.BtCity].Value2 = billTo.city;
+                    ws.Cells[rn, (int)qCols.BtState].Value2 = billTo.state;
+                    ws.Cells[rn, (int)qCols.BtZip].Value2 = billTo.zip;
+                    ws.Cells[rn, (int)qCols.StCompany].Value2 = endUserName;
+                    ws.Cells[rn, (int)qCols.StAddress].Value2 = shipTo.address;
+                    ws.Cells[rn, (int)qCols.StCity].Value2 = shipTo.city;
+                    ws.Cells[rn, (int)qCols.StState].Value2 = shipTo.state;
+                    ws.Cells[rn, (int)qCols.StZip].Value2 = shipTo.zip;
+                    ws.Cells[rn, (int)qCols.SalesRepID].Value2 = salesRepID;
+                }
+            }
+
+            private void getFulfillment()
+            {
+
+            }
+        }
+
+        private enum qCols
+        {
+            ZEROINDEX,
+            ResellerNo,
+            ResellerName,
+            EndUserName,
+            InvDt,
+            InvNo,
+            CCode,
+            ItemNo,
+            SerialNo,
+            BtAddress,
+            BtCity,
+            BtState,
+            BtZip,
+            StCompany,
+            StAddress,
+            StCity,
+            StState,
+            StZip,
+            SalesRepID
+        }
+
         private class xRow
         {
             private enum xCols
@@ -121,7 +244,7 @@ namespace EpsonPOSReport
                 customerNumber = custNum.ToString().Trim();
                 resellerName = rsName.ToString().Trim();
                 endUserName = esName.ToString().Trim();
-                invoiceDate = (DateTime)date;
+                invoiceDate = Convert.ToDateTime(date);
                 part = partNumber.ToString().Trim();
                 itemNumber = mfgNumber.ToString().Trim();
                 serialNumbers = delimittedSerials.ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
