@@ -83,6 +83,8 @@ namespace EpsonPOSReport
 
             if(reader.HasRows)
             {
+                setFormatting(thisWorksheet);
+
                 while(reader.Read())
                 {
                     thisRow = new qRow( reader.GetValue((int)qCols.Cogs),
@@ -123,6 +125,18 @@ namespace EpsonPOSReport
             }
 
             dbConnection.Close();
+
+            releaseObject(thisWorkbook);
+            releaseObject(thisWorksheet);
+        }
+
+        private void setFormatting(Excel.Worksheet ws)
+        {
+            ws.Cells[1, (int)xqCols.InvDt].EntireColumn.NumberFormat = "MM/DD/YYYY";
+            ws.Cells[1, (int)xqCols.SerialNo].EntireColumn.NumberFormat = "@";
+            ws.Cells[1, (int)xqCols.BtZip].EntireColumn.NumberFormat = "00000";
+            ws.Cells[1, (int)xqCols.StZip].EntireColumn.NumberFormat = "00000";
+            ws.Cells[1, (int)xqCols.SalesRepID].EntireColumn.NumberFormat = "000";
         }
 
         public bool initializePriceLevels()
@@ -149,10 +163,8 @@ namespace EpsonPOSReport
             public Address shipTo { get; set; } = new Address();
             public double unitCost { get; }
             public double unitRebate { get; }
-            public double fulfillmentPcnt { get; } 
-
-            private bool formattingSet = false;
-
+            public double fulfillmentPcnt { get; }
+            
             public qRow (   object Cogs, object CustNum, object EnvNum, object CustName, object EndName, object Date, object InvNum,
                             object CCode, object ItemNum, object delimittedSerials, object QTY, object SalesRepID, object CustAddress,
                             object CustCity, object CustState, object CustZip, object StAddress, object StCity, object StState, object StZip
@@ -186,6 +198,7 @@ namespace EpsonPOSReport
             public List<string> parseRow(Excel.Worksheet ws)
             {
                 int rn = ws.UsedRange.Row + ws.UsedRange.Rows.Count;
+                int thisQuantity;
 
                 string currentSerial = "";
 
@@ -208,6 +221,7 @@ namespace EpsonPOSReport
                     ws.Cells[1, (int)xqCols.CCode].Value2 = "Part";
                     ws.Cells[1, (int)xqCols.ItemNo].Value2 = "Item Number";
                     ws.Cells[1, (int)xqCols.SerialNo].Value2 = "Serial No.";
+                    ws.Cells[1, (int)xqCols.QTY].Value2 = "Quantity";
                     ws.Cells[1, (int)xqCols.BtAddress].Value2 = "Customer Address";
                     ws.Cells[1, (int)xqCols.BtCity].Value2 = "Customer City";
                     ws.Cells[1, (int)xqCols.BtState].Value2 = "Customer State";
@@ -222,9 +236,17 @@ namespace EpsonPOSReport
 
                 for(int i = 0; i <= serialNumbers.Length; i++)
                 {
-                    if (serialNumbers.Length == 0) currentSerial = "";
+                    if (serialNumbers.Length == 0)
+                    {
+                        currentSerial = "";
+                        thisQuantity = quantity;
+                    }
                     else if (i == serialNumbers.Length) break;
-                    else currentSerial = serialNumbers[i];
+                    else
+                    {
+                        currentSerial = serialNumbers[i];
+                        thisQuantity = 1;
+                    }
 
                     ws.Cells[rn, (int)xqCols.ResellerNo].Value2 = enVisionNumber;
                     ws.Cells[rn, (int)xqCols.ResellerName].Value2 = customerName;
@@ -234,6 +256,7 @@ namespace EpsonPOSReport
                     ws.Cells[rn, (int)xqCols.CCode].Value2 = cCode;
                     ws.Cells[rn, (int)xqCols.ItemNo].Value2 = itemNumber;
                     ws.Cells[rn, (int)xqCols.SerialNo].Value2 = currentSerial;
+                    ws.Cells[rn, (int)xqCols.QTY].Value2 = thisQuantity;
                     ws.Cells[rn, (int)xqCols.BtAddress].Value2 = billTo.address;
                     ws.Cells[rn, (int)xqCols.BtCity].Value2 = billTo.city;
                     ws.Cells[rn, (int)xqCols.BtState].Value2 = billTo.state;
@@ -279,6 +302,7 @@ namespace EpsonPOSReport
             CCode,
             ItemNo,
             SerialNo,
+            QTY,
             BtAddress,
             BtCity,
             BtState,
@@ -405,6 +429,23 @@ namespace EpsonPOSReport
             }
         }
 
+        private void releaseObject(object obj)
+        {
+            try
+            {
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch (Exception ex)
+            {
+                obj = null;
+                System.Windows.Forms.MessageBox.Show("Unable to release the Object " + ex.ToString());
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
