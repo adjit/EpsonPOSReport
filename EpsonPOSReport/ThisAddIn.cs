@@ -167,7 +167,7 @@ namespace EpsonPOSReport
                 invoiceNumber = InvNum.ToString().Trim();
                 cCode = CCode.ToString().Trim();
                 itemNumber = ItemNum.ToString().Trim();
-                serialNumbers = delimittedSerials.ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                serialNumbers = delimittedSerials.ToString().Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
                 quantity = Convert.ToInt32(QTY);
                 salesRepID = SalesRepID.ToString().Trim();
                 billTo.address = CustAddress.ToString().Trim();
@@ -195,7 +195,29 @@ namespace EpsonPOSReport
                 if(serialNumbers.Length > 0 && serialNumbers.Length != quantity)
                 {
                     checkRows.Add(rn.ToString());
-                    
+                }
+
+                //If the row is 2 (aka the very first row) add header
+                if(rn == 2)
+                {
+                    ws.Cells[1, (int)xqCols.ResellerNo].Value2 = "Reseller No.";
+                    ws.Cells[1, (int)xqCols.ResellerName].Value2 = "Reseller Name";
+                    ws.Cells[1, (int)xqCols.EndUserName].Value2 = "End User Name";
+                    ws.Cells[1, (int)xqCols.InvDt].Value2 = "Invoice Date";
+                    ws.Cells[1, (int)xqCols.InvNo].Value2 = "Invoice No.";
+                    ws.Cells[1, (int)xqCols.CCode].Value2 = "Part";
+                    ws.Cells[1, (int)xqCols.ItemNo].Value2 = "Item Number";
+                    ws.Cells[1, (int)xqCols.SerialNo].Value2 = "Serial No.";
+                    ws.Cells[1, (int)xqCols.BtAddress].Value2 = "Customer Address";
+                    ws.Cells[1, (int)xqCols.BtCity].Value2 = "Customer City";
+                    ws.Cells[1, (int)xqCols.BtState].Value2 = "Customer State";
+                    ws.Cells[1, (int)xqCols.BtZip].Value2 = "Customer Zip";
+                    ws.Cells[1, (int)xqCols.StCompany].Value2 = "Ship To Customer";
+                    ws.Cells[1, (int)xqCols.StAddress].Value2 = "Ship To Address";
+                    ws.Cells[1, (int)xqCols.StCity].Value2 = "Ship To City";
+                    ws.Cells[1, (int)xqCols.StState].Value2 = "Ship To State";
+                    ws.Cells[1, (int)xqCols.StZip].Value2 = "Ship To Zip";
+                    ws.Cells[1, (int)xqCols.SalesRepID].Value2 = "Salserep ID";
                 }
 
                 for(int i = 0; i <= serialNumbers.Length; i++)
