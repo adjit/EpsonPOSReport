@@ -11,12 +11,14 @@ namespace EpsonPOSReport
         public string item { get; }
         public double rebate { get; }
         public double fulfillment { get; }
+        public double unitCost { get; }
 
-        public itemFulfillment(string itemNumber, double rebateAmount, double fulfillmentPercent)
+        public itemFulfillment(string itemNumber, double rebateAmount, double fulfillmentPercent, double cost)
         {
             item = itemNumber;
             rebate = rebateAmount;
             fulfillment = fulfillmentPercent;
+            unitCost = cost;
         }
     }
 }

@@ -26,6 +26,9 @@ namespace EpsonPOSReport
         private epsonPriceList priceList = new epsonPriceList();
         private enVisionPartnerList partnerList = new enVisionPartnerList();
 
+        private enVisionCustomer lastCustomer = null;
+        private Item lastItem = null;
+
         public async void runReportInitialization()
         {
             MyProgressBar ui = new MyProgressBar();
@@ -85,60 +88,272 @@ namespace EpsonPOSReport
 
             if(reader.HasRows)
             {
-                setFormatting(thisWorksheet);
+                setQueryColumnFormatting(thisWorksheet);
 
                 while(reader.Read())
                 {
-                    thisRow = new qRow( reader.GetValue((int)qCols.Cogs),
-                                        reader.GetValue((int)qCols.CustNo),
-                                        reader.GetValue((int)qCols.ResellerNo),
-                                        reader.GetValue((int)qCols.ResellerName),
-                                        reader.GetValue((int)qCols.EndUserName),
-                                        reader.GetValue((int)qCols.InvDt),
-                                        reader.GetValue((int)qCols.InvNo),
-                                        reader.GetValue((int)qCols.CCode),
-                                        reader.GetValue((int)qCols.ItemNo),
-                                        reader.GetValue((int)qCols.SerialNo),
-                                        reader.GetValue((int)qCols.QTY),
-                                        reader.GetValue((int)qCols.SalesRepID),
-                                        reader.GetValue((int)qCols.BtAddress),
-                                        reader.GetValue((int)qCols.BtCity),
-                                        reader.GetValue((int)qCols.BtState),
-                                        reader.GetValue((int)qCols.BtZip),
-                                        reader.GetValue((int)qCols.StAddress),
-                                        reader.GetValue((int)qCols.StCity),
-                                        reader.GetValue((int)qCols.StState),
-                                        reader.GetValue((int)qCols.StZip)
-                                      );
-
-                    checkRows.AddRange(thisRow.parseRow(thisWorksheet));
+                    thisRow = GetQueryRow(reader);
+                    checkRows.AddRange(thisRow.parseQueryRow(thisWorksheet));
                 }
             }
             else System.Windows.Forms.MessageBox.Show("No Rows Found");
 
             if (checkRows.Count > 0)
             {
-                string errorRows = string.Join(", ", checkRows);
-
-                System.Windows.Forms.MessageBox.Show("Please check the following rows: " + errorRows + "\nSerial Number Count does not equal Quantity",
-                                                        "Quantity Warning",
-                                                        System.Windows.Forms.MessageBoxButtons.OK,
-                                                        System.Windows.Forms.MessageBoxIcon.Warning);
+                WarnMismatchedRows(checkRows);
             }
-
+            
             dbConnection.Close();
 
             releaseObject(thisWorkbook);
             releaseObject(thisWorksheet);
         }
 
-        private void setFormatting(Excel.Worksheet ws)
+        private static void WarnMismatchedRows(List<string> checkRows)
+        {
+            string errorRows = string.Join(", ", checkRows);
+
+            System.Windows.Forms.MessageBox.Show("Please check the following rows: " + errorRows + "\nSerial Number Count does not equal Quantity",
+                                                    "Quantity Warning",
+                                                    System.Windows.Forms.MessageBoxButtons.OK,
+                                                    System.Windows.Forms.MessageBoxIcon.Warning);
+        }
+
+        private static qRow GetQueryRow(SqlDataReader reader)
+        {
+            return new qRow(    reader.GetValue((int)qCols.Cogs),
+                                reader.GetValue((int)qCols.CustNo),
+                                reader.GetValue((int)qCols.ResellerNo),
+                                reader.GetValue((int)qCols.ResellerName),
+                                reader.GetValue((int)qCols.EndUserName),
+                                reader.GetValue((int)qCols.InvDt),
+                                reader.GetValue((int)qCols.InvNo),
+                                reader.GetValue((int)qCols.CCode),
+                                reader.GetValue((int)qCols.ItemNo),
+                                reader.GetValue((int)qCols.SerialNo),
+                                reader.GetValue((int)qCols.QTY),
+                                reader.GetValue((int)qCols.SalesRepID),
+                                reader.GetValue((int)qCols.BtAddress),
+                                reader.GetValue((int)qCols.BtCity),
+                                reader.GetValue((int)qCols.BtState),
+                                reader.GetValue((int)qCols.BtZip),
+                                reader.GetValue((int)qCols.StAddress),
+                                reader.GetValue((int)qCols.StCity),
+                                reader.GetValue((int)qCols.StState),
+                                reader.GetValue((int)qCols.StZip)
+                            );
+        }
+
+        private List<string> ParseRow(qRow row, Excel.Worksheet ws)
+        {
+            List<string> checkRows = new List<string>();
+
+            int rn = ws.UsedRange.Row + ws.UsedRange.Rows.Count;
+            int thisQuantity;
+
+            double rebateAmount = 0.00;
+            double ffpcnt = 0.00;
+            double unitCost = 0.00;
+
+            string currentSerial = "";
+
+            bool _hasSpa = false;
+
+            enVisionCustomer thisCustomer = null;
+            Item thisItem = null;
+
+            List<itemFulfillment> spaItems;
+
+            if(row.serialNumbers.Length > 0 && row.serialNumbers.Length != row.quantity)
+            {
+                checkRows.Add(rn.ToString());
+            }
+
+            if(rn == 2)
+            {
+                AddRunHeader(ws);
+                setRunColumnFormatting(ws);
+            }
+
+            if (lastCustomer == null) thisCustomer = lastCustomer = partnerList.getCustomer(row.enVisionNumber, true);
+            else if (lastCustomer.enVisionNumber == row.enVisionNumber) thisCustomer = lastCustomer;
+            else thisCustomer = partnerList.getCustomer(row.enVisionNumber, true);
+
+            /*   UNCOMMENT WHEN SPA LIST CLASS IS COMPLETE
+             * 
+            
+            spaItems = spaList.getCustomerSpaItems(thisCustomer.customer);
+
+            if(spaItems != null)
+            {
+                for(int i = 0; i < spaItems.Count; i++)
+                {
+                    if(spaItems[i].item == row.cCode)
+                    {
+                        rebateAmount = spaItems[i].rebate;
+                        ffpcnt = spaItems[i].fulfillment;
+                        unitCost = spaItems[i].unitCost;
+                        _hasSpa = true;
+                    }
+                }
+            }*/
+
+            if (!_hasSpa)
+            {
+                if (lastItem == null) thisItem = lastItem = priceList.getItem(row.cCode);
+                else if (lastItem.cCode == row.cCode && thisCustomer == lastCustomer) thisItem = lastItem;
+                else thisItem = priceList.getItem(row.cCode);
+
+                switch (thisCustomer.priceLevelIndex)
+                {
+                    case PriceLevelIndex.SELECT:
+                        rebateAmount = thisItem.Select.rebate;
+                        ffpcnt = thisItem.Select.fulfillment;
+                        break;
+                    case PriceLevelIndex.PLUS:
+                        rebateAmount = thisItem.Plus.rebate;
+                        ffpcnt = thisItem.Plus.fulfillment;
+                        break;
+                    case PriceLevelIndex.PREMIER:
+                        rebateAmount = thisItem.Premier.rebate;
+                        ffpcnt = thisItem.Premier.fulfillment;
+                        break;
+                    case PriceLevelIndex.MSELECT:
+                        rebateAmount = thisItem.mSelect.rebate;
+                        ffpcnt = thisItem.mSelect.fulfillment;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            int serialLength = row.serialNumbers.Length;
+
+            for (int i = 0; i <= serialLength; i++)
+            {
+                if (serialLength == 0)
+                {
+                    currentSerial = "";
+                    thisQuantity = row.quantity;
+                }
+                else if (i == serialLength) break;
+                else
+                {
+                    currentSerial = row.serialNumbers[i];
+                    thisQuantity = 1;
+                }
+
+                double adjUnitCost = unitCost - rebateAmount;
+                double ffUnitRebate = adjUnitCost * ffpcnt;
+                double totalUnitRebate = rebateAmount + ffUnitRebate;
+                double totalExtRebate = totalUnitRebate * thisQuantity;
+
+                ws.Cells[rn, (int)xrCols.ResellerNo].Value2 = row.enVisionNumber;
+                ws.Cells[rn, (int)xrCols.ResellerName].Value2 = row.customerName;
+                ws.Cells[rn, (int)xrCols.EndUserName].Value2 = row.endUserName;
+                ws.Cells[rn, (int)xrCols.InvDt].Value2 = row.invoiceDate;
+                ws.Cells[rn, (int)xrCols.InvNo].Value2 = row.invoiceNumber;
+                ws.Cells[rn, (int)xrCols.CCode].Value2 = row.cCode;
+                ws.Cells[rn, (int)xrCols.ItemNo].Value2 = row.itemNumber;
+                ws.Cells[rn, (int)xrCols.SerialNo].Value2 = currentSerial;
+                ws.Cells[rn, (int)xrCols.PgrmCd].Value2 = "";
+                ws.Cells[rn, (int)xrCols.QTY].Value2 = thisQuantity;
+                ws.Cells[rn, (int)xrCols.UnitCost].Value2 = unitCost;
+                ws.Cells[rn, (int)xrCols.UnitRebate].Value2 = rebateAmount;
+                ws.Cells[rn, (int)xrCols.AdjUnitCost].Value2 = adjUnitCost;
+                ws.Cells[rn, (int)xrCols.FFUnitPcnt].Value2 = ffpcnt;
+                ws.Cells[rn, (int)xrCols.FFUnitRebate].Value2 = ffUnitRebate;
+                ws.Cells[rn, (int)xrCols.TotalUnitRebate].Value2 = totalUnitRebate;
+                ws.Cells[rn, (int)xrCols.TotalExtRebate].Value2 = totalExtRebate;
+                ws.Cells[rn, (int)xrCols.EnvisionLevel].Value2 = thisCustomer.enVisionLevel;
+                ws.Cells[rn, (int)xrCols.BtAddress].Value2 = row.billTo.address;
+                ws.Cells[rn, (int)xrCols.BtCity].Value2 = row.billTo.city;
+                ws.Cells[rn, (int)xrCols.BtState].Value2 = row.billTo.state;
+                ws.Cells[rn, (int)xrCols.BtZip].Value2 = row.billTo.zip;
+                ws.Cells[rn, (int)xrCols.StAddress].Value2 = row.shipTo.address;
+                ws.Cells[rn, (int)xrCols.StCity].Value2 = row.shipTo.city;
+                ws.Cells[rn, (int)xrCols.StState].Value2 = row.shipTo.state;
+                ws.Cells[rn, (int)xrCols.StZip].Value2 = row.shipTo.zip;
+                ws.Cells[rn, (int)xrCols.SalesRepID].Value2 = row.salesRepID;
+
+                rn++;
+            }
+
+            lastCustomer = thisCustomer;
+            lastItem = thisItem;
+            RemoveOptionalColumns(ws);
+            return checkRows;
+        }
+
+        private static void RemoveOptionalColumns(Excel.Worksheet ws)
+        {
+            Properties.Settings sets = Properties.Settings.Default;
+
+            if (!sets._showColumn_btAddress) ws.Cells[1, (int)xrCols.BtAddress].EntireColumn.Delete();
+            if (!sets._showColumn_btCity) ws.Cells[1, (int)xrCols.BtCity].EntireColumn.Delete();
+            if (!sets._showColumn_btState) ws.Cells[1, (int)xrCols.BtState].EntireColumn.Delete();
+            if (!sets._showColumn_btZip) ws.Cells[1, (int)xrCols.BtZip].EntireColumn.Delete();
+            if (!sets._showColumn_stAddress) ws.Cells[1, (int)xrCols.StAddress].EntireColumn.Delete();
+            if (!sets._showColumn_stCity) ws.Cells[1, (int)xrCols.StCity].EntireColumn.Delete();
+            if (!sets._showColumn_stState) ws.Cells[1, (int)xrCols.StState].EntireColumn.Delete();
+            if (!sets._showColumn_stZip) ws.Cells[1, (int)xrCols.StZip].EntireColumn.Delete();
+
+        }
+
+        private static void AddRunHeader(Excel.Worksheet ws)
+        {
+            ws.Cells[1, (int)xrCols.ResellerNo].Value2 = "Reseller No.";
+            ws.Cells[1, (int)xrCols.ResellerName].Value2 = "Reseller Name";
+            ws.Cells[1, (int)xrCols.EndUserName].Value2 = "End User Name";
+            ws.Cells[1, (int)xrCols.InvDt].Value2 = "Invoice Date";
+            ws.Cells[1, (int)xrCols.InvNo].Value2 = "Invoice No.";
+            ws.Cells[1, (int)xrCols.CCode].Value2 = "Part";
+            ws.Cells[1, (int)xrCols.ItemNo].Value2 = "Item Number";
+            ws.Cells[1, (int)xrCols.SerialNo].Value2 = "Serial No.";
+            ws.Cells[1, (int)xrCols.PgrmCd].Value2 = "PgrmCd";
+            ws.Cells[1, (int)xrCols.QTY].Value2 = "Quantity";
+            ws.Cells[1, (int)xrCols.UnitCost].Value2 = "Unit Cost";
+            ws.Cells[1, (int)xrCols.UnitRebate].Value2 = "Unit Rebate";
+            ws.Cells[1, (int)xrCols.AdjUnitCost].Value2 = "Adjusted Unit Cost";
+            ws.Cells[1, (int)xrCols.FFUnitPcnt].Value2 = "FF Unit Pcnt";
+            ws.Cells[1, (int)xrCols.FFUnitRebate].Value2 = "FF Unit Rebate";
+            ws.Cells[1, (int)xrCols.TotalUnitRebate].Value2 = "Total Unit Rebate";
+            ws.Cells[1, (int)xrCols.TotalExtRebate].Value2 = "Total Ext Rebate";
+            ws.Cells[1, (int)xrCols.EnvisionLevel].Value2 = "Epson enVision";
+            ws.Cells[1, (int)xrCols.BtAddress].Value2 = "Customer Address";
+            ws.Cells[1, (int)xrCols.BtCity].Value2 = "Customer City";
+            ws.Cells[1, (int)xrCols.BtState].Value2 = "Customer State";
+            ws.Cells[1, (int)xrCols.BtZip].Value2 = "Customer Zip";
+            ws.Cells[1, (int)xrCols.StAddress].Value2 = "Ship To Address";
+            ws.Cells[1, (int)xrCols.StCity].Value2 = "Ship To City";
+            ws.Cells[1, (int)xrCols.StState].Value2 = "Ship To State";
+            ws.Cells[1, (int)xrCols.StZip].Value2 = "Ship To Zip";
+            ws.Cells[1, (int)xrCols.SalesRepID].Value2 = "Salserep ID";
+        }
+
+        private void setQueryColumnFormatting(Excel.Worksheet ws)
         {
             ws.Cells[1, (int)xqCols.InvDt].EntireColumn.NumberFormat = "MM/DD/YYYY";
             ws.Cells[1, (int)xqCols.SerialNo].EntireColumn.NumberFormat = "@";
             ws.Cells[1, (int)xqCols.BtZip].EntireColumn.NumberFormat = "00000";
             ws.Cells[1, (int)xqCols.StZip].EntireColumn.NumberFormat = "00000";
             ws.Cells[1, (int)xqCols.SalesRepID].EntireColumn.NumberFormat = "000";
+        }
+
+        private void setRunColumnFormatting(Excel.Worksheet ws)
+        {
+            ws.Cells[1, (int)xrCols.InvDt].EntireColumn.NumberFormat = "MM/DD/YYYY";
+            ws.Cells[1, (int)xrCols.SerialNo].EntireColumn.NumberFormat = "@";
+            ws.Cells[1, (int)xrCols.BtZip].EntireColumn.NumberFormat = "00000";
+            ws.Cells[1, (int)xrCols.StZip].EntireColumn.NumberFormat = "00000";
+            ws.Cells[1, (int)xrCols.UnitCost].EntireColumn.NumberFormat = "$0.00";
+            ws.Cells[1, (int)xrCols.UnitRebate].EntireColumn.NumberFormat = "$0.00";
+            ws.Cells[1, (int)xrCols.AdjUnitCost].EntireColumn.NumberFormat = "$0.00";
+            ws.Cells[1, (int)xrCols.FFUnitPcnt].EntireColumn.NumberFormat = "0.00%";
+            ws.Cells[1, (int)xrCols.FFUnitRebate].EntireColumn.NumberFormat = "$0.00";
+            ws.Cells[1, (int)xrCols.TotalUnitRebate].EntireColumn.NumberFormat = "$0.00";
+            ws.Cells[1, (int)xrCols.TotalExtRebate].EntireColumn.NumberFormat = "$0.00";
+            ws.Cells[1, (int)xrCols.SalesRepID].EntireColumn.NumberFormat = "000";
         }
 
         public bool initializePriceLevels()
@@ -197,7 +412,7 @@ namespace EpsonPOSReport
                 //This method will be added later to do my comparisons
             }
 
-            public List<string> parseRow(Excel.Worksheet ws)
+            public List<string> parseQueryRow(Excel.Worksheet ws)
             {
                 int rn = ws.UsedRange.Row + ws.UsedRange.Rows.Count;
                 int thisQuantity;
@@ -211,32 +426,14 @@ namespace EpsonPOSReport
                 {
                     checkRows.Add(rn.ToString());
                 }
-
+                
                 //If the row is 2 (aka the very first row) add header
                 if(rn == 2)
                 {
-                    ws.Cells[1, (int)xqCols.ResellerNo].Value2 = "Reseller No.";
-                    ws.Cells[1, (int)xqCols.ResellerName].Value2 = "Reseller Name";
-                    ws.Cells[1, (int)xqCols.EndUserName].Value2 = "End User Name";
-                    ws.Cells[1, (int)xqCols.InvDt].Value2 = "Invoice Date";
-                    ws.Cells[1, (int)xqCols.InvNo].Value2 = "Invoice No.";
-                    ws.Cells[1, (int)xqCols.CCode].Value2 = "Part";
-                    ws.Cells[1, (int)xqCols.ItemNo].Value2 = "Item Number";
-                    ws.Cells[1, (int)xqCols.SerialNo].Value2 = "Serial No.";
-                    ws.Cells[1, (int)xqCols.QTY].Value2 = "Quantity";
-                    ws.Cells[1, (int)xqCols.BtAddress].Value2 = "Customer Address";
-                    ws.Cells[1, (int)xqCols.BtCity].Value2 = "Customer City";
-                    ws.Cells[1, (int)xqCols.BtState].Value2 = "Customer State";
-                    ws.Cells[1, (int)xqCols.BtZip].Value2 = "Customer Zip";
-                    ws.Cells[1, (int)xqCols.StCompany].Value2 = "Ship To Customer";
-                    ws.Cells[1, (int)xqCols.StAddress].Value2 = "Ship To Address";
-                    ws.Cells[1, (int)xqCols.StCity].Value2 = "Ship To City";
-                    ws.Cells[1, (int)xqCols.StState].Value2 = "Ship To State";
-                    ws.Cells[1, (int)xqCols.StZip].Value2 = "Ship To Zip";
-                    ws.Cells[1, (int)xqCols.SalesRepID].Value2 = "Salserep ID";
+                    AddQueryHeaderTo(ws);
                 }
 
-                for(int i = 0; i <= serialNumbers.Length; i++)
+                for (int i = 0; i <= serialNumbers.Length; i++)
                 {
                     if (serialNumbers.Length == 0)
                     {
@@ -269,21 +466,34 @@ namespace EpsonPOSReport
                     ws.Cells[rn, (int)xqCols.StState].Value2 = shipTo.state;
                     ws.Cells[rn, (int)xqCols.StZip].Value2 = shipTo.zip;
                     ws.Cells[rn, (int)xqCols.SalesRepID].Value2 = salesRepID;
-
+                    
                     rn++;
                 }
 
                 return checkRows;
+            }
 
-                /*if(checkRows.Count > 0)
-                {
-                    string errorRows = string.Join(", ", checkRows);
-
-                    System.Windows.Forms.MessageBox.Show("Please check the following rows: " + errorRows + "\nSerial Number Count does not equal Quantity",
-                                                            "Quantity Warning",
-                                                            System.Windows.Forms.MessageBoxButtons.OK,
-                                                            System.Windows.Forms.MessageBoxIcon.Warning);
-                }*/
+            private static void AddQueryHeaderTo(Excel.Worksheet ws)
+            {
+                ws.Cells[1, (int)xqCols.ResellerNo].Value2 = "Reseller No.";
+                ws.Cells[1, (int)xqCols.ResellerName].Value2 = "Reseller Name";
+                ws.Cells[1, (int)xqCols.EndUserName].Value2 = "End User Name";
+                ws.Cells[1, (int)xqCols.InvDt].Value2 = "Invoice Date";
+                ws.Cells[1, (int)xqCols.InvNo].Value2 = "Invoice No.";
+                ws.Cells[1, (int)xqCols.CCode].Value2 = "Part";
+                ws.Cells[1, (int)xqCols.ItemNo].Value2 = "Item Number";
+                ws.Cells[1, (int)xqCols.SerialNo].Value2 = "Serial No.";
+                ws.Cells[1, (int)xqCols.QTY].Value2 = "Quantity";
+                ws.Cells[1, (int)xqCols.BtAddress].Value2 = "Customer Address";
+                ws.Cells[1, (int)xqCols.BtCity].Value2 = "Customer City";
+                ws.Cells[1, (int)xqCols.BtState].Value2 = "Customer State";
+                ws.Cells[1, (int)xqCols.BtZip].Value2 = "Customer Zip";
+                ws.Cells[1, (int)xqCols.StCompany].Value2 = "Ship To Customer";
+                ws.Cells[1, (int)xqCols.StAddress].Value2 = "Ship To Address";
+                ws.Cells[1, (int)xqCols.StCity].Value2 = "Ship To City";
+                ws.Cells[1, (int)xqCols.StState].Value2 = "Ship To State";
+                ws.Cells[1, (int)xqCols.StZip].Value2 = "Ship To Zip";
+                ws.Cells[1, (int)xqCols.SalesRepID].Value2 = "Salserep ID";
             }
 
             private void getFulfillment()
@@ -317,6 +527,38 @@ namespace EpsonPOSReport
             SalesRepID
         }
 
+        private enum xrCols
+        {
+            ZEROINDEX,
+            ResellerNo,
+            ResellerName,
+            EndUserName,
+            InvDt,
+            InvNo,
+            CCode,
+            ItemNo,
+            SerialNo,
+            PgrmCd,
+            QTY,
+            UnitCost,
+            UnitRebate,
+            AdjUnitCost,
+            FFUnitPcnt,
+            FFUnitRebate,
+            TotalUnitRebate,
+            TotalExtRebate,
+            EnvisionLevel,
+            BtAddress,
+            BtCity,
+            BtState,
+            BtZip,
+            StAddress,
+            StCity,
+            StState,
+            StZip,
+            SalesRepID
+        }
+
         //This enum refers to the columns produced by the query
         private enum qCols
         {
@@ -340,95 +582,6 @@ namespace EpsonPOSReport
             StCity,
             StState,
             StZip
-        }
-
-        private class xRow
-        {
-            /*private enum xCols
-            {
-                ZEROINDEX,
-                ResellerNo,
-                ResellerName,
-                EndUserName,
-                InvDt,
-                InvNo,
-                Part,
-                ItemNumber,
-                SerialNo,
-                PgrmCd,
-                Units,
-                UnitCost,
-                UnitRebate,
-                AdjUnitCost,
-                FFUnitPcnt,
-                FFUnitRebate,
-                TotalUnitRebate,
-                TotalExtRebate,
-                EpsonenVision
-            }*/
-
-            private enum enVisionLevels
-            {
-                ZEROINDEX,
-                NO,
-                PartnerSelect,
-                PlusPremier,
-                eFi,
-                Member,
-                Special,
-                Colorworks
-            }
-
-            public string resellerNo { get; }
-            public string customerNumber { get; }
-            public string resellerName { get; }
-            public string endUserName { get; }
-            public DateTime invoiceDate { get; }
-            public string invoiceNo { get; }
-            public string part { get; }
-            public string itemNumber { get; }
-            public string[] serialNumbers { get; }
-            public int pgrmCd { get; }
-            public int quantity { get; }
-            public int unitCost { get; }
-            public int unitRebate { get; }
-            public int adjUnitCost { get; }
-            public int ffUnitPcnt { get; }
-            public int ffUnitRebate { get; }
-            public int totalUnitRebate { get; }
-            public int totalExtRebate { get; }
-            public string enVisionStatus { get; }
-
-            private bool formattingSet = false;
-
-            public xRow(
-                object rsNumber, object custNum, object rsName, object esName, object date, object invoice, object partNumber, object mfgNumber,
-                object delimittedSerials, object enVisionCode, object qty, object cost, object rebate, object fulfillmentPcnt)
-            {
-                resellerNo = rsNumber.ToString().Trim();
-                customerNumber = custNum.ToString().Trim();
-                resellerName = rsName.ToString().Trim();
-                endUserName = esName.ToString().Trim();
-                invoiceDate = Convert.ToDateTime(date);
-                part = partNumber.ToString().Trim();
-                itemNumber = mfgNumber.ToString().Trim();
-                serialNumbers = delimittedSerials.ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                pgrmCd = Convert.ToInt32(enVisionCode);
-                quantity = Convert.ToInt32(qty);
-                unitCost = Convert.ToInt32(cost);
-                unitRebate = Convert.ToInt32(rebate);
-
-                switch (pgrmCd)
-                {
-                    case (int)enVisionLevels.PartnerSelect:
-                        ffUnitPcnt = 0; enVisionStatus = "Partner-Select"; break;
-                    case (int)enVisionLevels.PlusPremier:
-                        ffUnitPcnt = Convert.ToInt32(fulfillmentPcnt); break;
-                    case (int)enVisionLevels.eFi:
-
-                    default: ffUnitPcnt = 0; enVisionStatus = "Plus/Premier"; break;
-                }
-            }
         }
 
         private void releaseObject(object obj)

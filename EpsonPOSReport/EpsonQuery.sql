@@ -3,9 +3,9 @@ SELECT
 	header.CUSTNMBR AS [Customer No],
 	isnull(enVisionNumber.ResellerNo, '') AS [Reseller No],
 	header.CUSTNAME AS [Reseller Name],
-	lineItems.CNTCPRSN AS [End User Name],
-	header.[Invoice Date],
-	header.[Invoice Number],
+	header.CNTCPRSN AS [End User Name],
+	header.ACTLSHIP AS [Invoice Date],
+	header.SOPNUMBE AS [Invoice Number],
 	isnull(gpItems.ITMSHNAM, lineItems.ITEMNMBR) AS [Part],
 	lineItems.ITEMNMBR AS [Item Number],
 	serialTable.CMMTTEXT AS [Serial No.],
@@ -16,10 +16,10 @@ SELECT
 	custMaster.STATE AS [Cust State],
 	custMaster.ZIP AS [Cust Zip],
 /*	lineItems.CNTCPRSN AS [ShipTo Cust],*/
-	lineItems.ADDRESS2 AS [ShipTo Address],
-	lineItems.CITY AS [ShipTo City],
-	lineItems.STATE AS [ShipTo State],
-	lineItems.ZIPCODE AS [ShipTo Zip]
+	header.ADDRESS2 AS [ShipTo Address],
+	header.CITY AS [ShipTo City],
+	header.STATE AS [ShipTo State],
+	header.ZIPCODE AS [ShipTo Zip]
 
 	FROM
 		/*
@@ -29,11 +29,16 @@ SELECT
 		  	left-most table
 		 */
 		(SELECT
-			tHeader.SOPNUMBE AS [Invoice Number],
-			tHeader.ACTLSHIP AS [Invoice Date],
+			tHeader.SOPNUMBE,
+			tHeader.ACTLSHIP,
 			tHeader.CUSTNMBR,
 			tHeader.CUSTNAME,
-			tHeader.SLPRSNID
+			tHeader.CNTCPRSN,
+			tHeader.SLPRSNID,
+			tHeader.ADDRESS2,
+			tHeader.CITY,
+			tHeader.STATE,
+			tHeader.ZIPCODE
 			
 			FROM METRO.dbo.SOP30200 tHeader
 			WHERE
@@ -56,7 +61,7 @@ SELECT
 			WHERE CSLSINDX = 137
 		) lineItems
 		on
-			lineItems.SOPNUMBE = header.[Invoice Number]
+			lineItems.SOPNUMBE = header.SOPNUMBE
 
 		/*
 			This select gets all of the CCodes (ITMSHNAM) for stock
@@ -120,4 +125,4 @@ SELECT
 	Order the report alphabetically by customer name and
 	by invoice date
 */
-ORDER BY custMaster.CUSTNAME, header.[Invoice Number]
+ORDER BY custMaster.CUSTNAME, header.SOPNUMBE

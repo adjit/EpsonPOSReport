@@ -254,12 +254,12 @@ namespace EpsonPOSReport.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool _showcolumn_stAddress {
+        public bool _showColumn_stAddress {
             get {
-                return ((bool)(this["_showcolumn_stAddress"]));
+                return ((bool)(this["_showColumn_stAddress"]));
             }
             set {
-                this["_showcolumn_stAddress"] = value;
+                this["_showColumn_stAddress"] = value;
             }
         }
         

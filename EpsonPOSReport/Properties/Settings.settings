@@ -59,7 +59,7 @@
     <Setting Name="_showColumn_stCustomer" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="_showcolumn_stAddress" Type="System.Boolean" Scope="User">
+    <Setting Name="_showColumn_stAddress" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="_showColumn_stCity" Type="System.Boolean" Scope="User">

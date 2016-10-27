@@ -136,8 +136,6 @@ namespace EpsonPOSReport
         public enVisionPriceLevel Plus { get; set; }
         public enVisionPriceLevel Premier { get; set; }
         public enVisionPriceLevel mSelect { get; set; }
-        public enVisionPriceLevel eFi { get; set; }
-        public enVisionPriceLevel Colorworks { get; set; }
     }
 
     class enVisionPriceLevel

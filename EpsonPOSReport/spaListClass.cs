@@ -140,6 +140,7 @@ namespace EpsonPOSReport
                                 string itemNumber = "";
                                 double rebateAmount = 0.00;
                                 double fulfillmentPercent = 0.00;
+                                double unitCost = 0.00;
                                 int counter = 0;
                                 bool allValuesSet = false;
 
@@ -162,6 +163,12 @@ namespace EpsonPOSReport
                                         case 2:
                                             {
                                                 fulfillmentPercent = Convert.ToDouble(cell.Value2);
+                                                counter++;
+                                                break;
+                                            }
+                                        case 3:
+                                            {
+                                                unitCost = Convert.ToDouble(cell.Value2);
                                                 allValuesSet = true;
                                                 counter++;
                                                 break;
@@ -177,7 +184,7 @@ namespace EpsonPOSReport
 
                                 if (allValuesSet)
                                 {
-                                    items.Add(new itemFulfillment(itemNumber, rebateAmount, fulfillmentPercent));
+                                    items.Add(new itemFulfillment(itemNumber, rebateAmount, fulfillmentPercent, unitCost));
                                 }
                                 else continue;
                             }  //End for loop looping through item table rows
