@@ -46,6 +46,8 @@ namespace EpsonPOSReport
             };
             Task.WhenAll(taskArray).Wait();
             reportsInitialized = true;
+
+            foreach (var task in taskArray) task.Dispose();
         }
 
         public void runReport()
