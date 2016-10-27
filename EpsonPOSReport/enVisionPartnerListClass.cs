@@ -95,6 +95,13 @@ namespace EpsonPOSReport
                                                 enVisionNumber, priceLevel));
         }
 
+        public void addCustomer(string enVisionLevel, string customer,
+                                string enVisionNumber, PriceLevelIndex priceLevel, bool isColorworks)
+        {
+            customers.Add(new enVisionCustomer(enVisionLevel, customer,
+                                                enVisionNumber, priceLevel, isColorworks));
+        }
+
         public enVisionCustomer getCustomer(string identifier, bool isEnVisionNumber)
         {
             if(isEnVisionNumber)
@@ -135,11 +142,13 @@ namespace EpsonPOSReport
         {
             int PARTNER_LIST_SHEET = 1;
             int START_ROW = 3;
+            int PRICE_GROUP = 4;
             int CUSTOMER_NAME = 5;
             int CUSTOMER_NUMBER = 6;
             int PRICE_LEVEL = 9;
 
             bool _partnersAdded = false;
+            bool _isColorworks = false;
 
             Excel.Workbook partnerListWorkbook;
             Excel.Worksheet pLS;
@@ -147,6 +156,7 @@ namespace EpsonPOSReport
             string priceLevel = "";
             string customer = "";
             string enVisionNumber = "";
+            string priceGroup = "";
             PriceLevelIndex priceIndex = 0;
 
             enVisionPartnerList epl = new enVisionPartnerList();
@@ -166,11 +176,16 @@ namespace EpsonPOSReport
 
             for(int i = START_ROW; i < pLS.UsedRange.Rows.Count; i++)
             {
-                customer = Convert.ToString(pLS.Cells[i, CUSTOMER_NAME]);
-                enVisionNumber = Convert.ToString(pLS.Cells[i, CUSTOMER_NUMBER]);
+                customer = pLS.Cells[i, CUSTOMER_NAME].Value2.ToString();
+                enVisionNumber = pLS.Cells[i, CUSTOMER_NUMBER].Value2.ToString();
 
-                priceLevel = Convert.ToString(pLS.Cells[i, PRICE_LEVEL]);
+                priceLevel = pLS.Cells[i, PRICE_LEVEL].Value2.ToString();
                 priceLevel = priceLevel.ToLower();
+
+                priceGroup = pLS.Cells[i, PRICE_GROUP].Value2.ToString();
+                priceGroup = priceGroup.ToLower();
+
+                if (priceGroup == "colorworks") _isColorworks = true;
 
                 if(priceLevel.Contains(PriceLevelIndex.SELECT.ToString().ToLower()))
                 {
@@ -189,7 +204,8 @@ namespace EpsonPOSReport
                     priceIndex = PriceLevelIndex.MSELECT;
                 }
 
-                epl.addCustomer(priceLevel, customer, enVisionNumber, priceIndex);
+                if(_isColorworks) epl.addCustomer(priceLevel, customer, enVisionNumber, priceIndex, _isColorworks);
+                else epl.addCustomer(priceLevel, customer, enVisionNumber, priceIndex);
                 _partnersAdded = true;
             }
 
@@ -203,6 +219,7 @@ namespace EpsonPOSReport
         public string customer { get; }
         public string enVisionNumber { get; }
         public PriceLevelIndex priceLevelIndex { get; }
+        public bool isColorworks { get; } = false;
 
         public enVisionCustomer(string enVisionLevel, string customer,
                                 string enVisionNumber, PriceLevelIndex priceLevelIndex)
@@ -211,6 +228,16 @@ namespace EpsonPOSReport
             this.customer = customer;
             this.enVisionNumber = enVisionNumber;
             this.priceLevelIndex= priceLevelIndex;
+        }
+
+        public enVisionCustomer(string enVisionLevel, string customer,
+                                string enVisionNumber, PriceLevelIndex priceLevelIndex, bool isColorworks)
+        {
+            this.enVisionLevel = enVisionLevel;
+            this.customer = customer;
+            this.enVisionNumber = enVisionNumber;
+            this.priceLevelIndex = priceLevelIndex;
+            this.isColorworks = isColorworks;
         }
     }
 }

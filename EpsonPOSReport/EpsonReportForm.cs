@@ -16,5 +16,12 @@ namespace EpsonPOSReport
         {
             InitializeComponent();
         }
+
+        private void runQueryOnlyBtn_Click(object sender, EventArgs e)
+        {
+            runningLabel.Text = "Running...";
+            Globals.ThisAddIn.runQueryReport(monthPicker.Value);
+            Close();
+        }
     }
 }

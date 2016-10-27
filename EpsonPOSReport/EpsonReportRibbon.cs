@@ -12,5 +12,11 @@ namespace EpsonPOSReport
         {
 
         }
+
+        private void runReportButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            EpsonReportForm epf = new EpsonReportForm();
+            epf.Show();
+        }
     }
 }

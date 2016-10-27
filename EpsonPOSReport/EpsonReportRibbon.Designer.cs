@@ -62,6 +62,7 @@
             this.runReportButton.Label = "Run Epson Report";
             this.runReportButton.Name = "runReportButton";
             this.runReportButton.ShowImage = true;
+            this.runReportButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.runReportButton_Click);
             // 
             // EpsonReportRibbon
             // 

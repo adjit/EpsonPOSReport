@@ -1,10 +1,13 @@
 ﻿using System;
+using System.IO;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using System.Data.SqlClient;
 using Excel = Microsoft.Office.Interop.Excel;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools.Excel;
@@ -16,6 +19,8 @@ namespace EpsonPOSReport
         private PriceLevels pls;
 
         private bool reportsInitialized = false;
+
+        public List<string> checkRows = new List<string>();
 
         private SpaList spaList = new SpaList();
         private epsonPriceList priceList = new epsonPriceList();
@@ -41,11 +46,99 @@ namespace EpsonPOSReport
             };
             Task.WhenAll(taskArray).Wait();
             reportsInitialized = true;
+
+            foreach (var task in taskArray) task.Dispose();
         }
 
         public void runReport()
         {
             
+        }
+
+        public void runQueryReport(DateTime date)
+        {
+            int month = date.Month;
+            int year = date.Year;
+
+            qRow thisRow;
+
+            //string query = File.ReadAllText(@"EpsonQuery.sql");
+            string query = Properties.Resources.EpsonQuery;
+            query = string.Format(query, month, year);
+
+            List<string> checkRows = new List<string>();
+
+            Excel.Workbook thisWorkbook = Globals.ThisAddIn.Application.ActiveWorkbook;
+            Excel.Worksheet thisWorksheet = thisWorkbook.ActiveSheet;
+
+            SqlConnection dbConnection = new SqlConnection(Properties.Settings.Default._DatabaseConnectionString);
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader reader;
+
+            cmd.CommandText = query;
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = dbConnection;
+
+            dbConnection.Open();
+
+            reader = cmd.ExecuteReader();
+
+            if(reader.HasRows)
+            {
+                setFormatting(thisWorksheet);
+
+                while(reader.Read())
+                {
+                    thisRow = new qRow( reader.GetValue((int)qCols.Cogs),
+                                        reader.GetValue((int)qCols.CustNo),
+                                        reader.GetValue((int)qCols.ResellerNo),
+                                        reader.GetValue((int)qCols.ResellerName),
+                                        reader.GetValue((int)qCols.EndUserName),
+                                        reader.GetValue((int)qCols.InvDt),
+                                        reader.GetValue((int)qCols.InvNo),
+                                        reader.GetValue((int)qCols.CCode),
+                                        reader.GetValue((int)qCols.ItemNo),
+                                        reader.GetValue((int)qCols.SerialNo),
+                                        reader.GetValue((int)qCols.QTY),
+                                        reader.GetValue((int)qCols.SalesRepID),
+                                        reader.GetValue((int)qCols.BtAddress),
+                                        reader.GetValue((int)qCols.BtCity),
+                                        reader.GetValue((int)qCols.BtState),
+                                        reader.GetValue((int)qCols.BtZip),
+                                        reader.GetValue((int)qCols.StAddress),
+                                        reader.GetValue((int)qCols.StCity),
+                                        reader.GetValue((int)qCols.StState),
+                                        reader.GetValue((int)qCols.StZip)
+                                      );
+
+                    checkRows.AddRange(thisRow.parseRow(thisWorksheet));
+                }
+            }
+            else System.Windows.Forms.MessageBox.Show("No Rows Found");
+
+            if (checkRows.Count > 0)
+            {
+                string errorRows = string.Join(", ", checkRows);
+
+                System.Windows.Forms.MessageBox.Show("Please check the following rows: " + errorRows + "\nSerial Number Count does not equal Quantity",
+                                                        "Quantity Warning",
+                                                        System.Windows.Forms.MessageBoxButtons.OK,
+                                                        System.Windows.Forms.MessageBoxIcon.Warning);
+            }
+
+            dbConnection.Close();
+
+            releaseObject(thisWorkbook);
+            releaseObject(thisWorksheet);
+        }
+
+        private void setFormatting(Excel.Worksheet ws)
+        {
+            ws.Cells[1, (int)xqCols.InvDt].EntireColumn.NumberFormat = "MM/DD/YYYY";
+            ws.Cells[1, (int)xqCols.SerialNo].EntireColumn.NumberFormat = "@";
+            ws.Cells[1, (int)xqCols.BtZip].EntireColumn.NumberFormat = "00000";
+            ws.Cells[1, (int)xqCols.StZip].EntireColumn.NumberFormat = "00000";
+            ws.Cells[1, (int)xqCols.SalesRepID].EntireColumn.NumberFormat = "000";
         }
 
         public bool initializePriceLevels()
@@ -54,9 +147,204 @@ namespace EpsonPOSReport
             return false;
         }
 
+        private class qRow
+        {
+            public string cogs { get; }
+            public string customerNumber { get; }
+            public string enVisionNumber { get; }
+            public string customerName { get; }
+            public string endUserName { get; }
+            public DateTime invoiceDate { get; }
+            public string invoiceNumber { get; }
+            public string cCode { get; }
+            public string itemNumber { get; }
+            public string[] serialNumbers { get; }
+            public int quantity { get; }
+            public string salesRepID { get; }
+            public Address billTo { get; set; } = new Address();
+            public Address shipTo { get; set; } = new Address();
+            public double unitCost { get; }
+            public double unitRebate { get; }
+            public double fulfillmentPcnt { get; }
+            
+            public qRow (   object Cogs, object CustNum, object EnvNum, object CustName, object EndName, object Date, object InvNum,
+                            object CCode, object ItemNum, object delimittedSerials, object QTY, object SalesRepID, object CustAddress,
+                            object CustCity, object CustState, object CustZip, object StAddress, object StCity, object StState, object StZip
+                        )
+            {
+                cogs = Cogs.ToString().Trim();
+                customerNumber = CustNum.ToString().Trim();
+                enVisionNumber = EnvNum.ToString().Trim();
+                customerName = CustName.ToString().Trim();
+                endUserName = EndName.ToString().Trim();
+                invoiceDate = Convert.ToDateTime(Date);
+                invoiceNumber = InvNum.ToString().Trim();
+                cCode = CCode.ToString().Trim();
+                itemNumber = ItemNum.ToString().Trim();
+                serialNumbers = delimittedSerials.ToString().Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                quantity = Convert.ToInt32(QTY);
+                salesRepID = SalesRepID.ToString().Trim();
+                billTo.address = CustAddress.ToString().Trim();
+                billTo.city = CustCity.ToString().Trim();
+                billTo.state = CustState.ToString().Trim();
+                billTo.zip = CustZip.ToString().Trim();
+                shipTo.address = StAddress.ToString().Trim();
+                shipTo.city = StCity.ToString().Trim();
+                shipTo.state = StState.ToString().Trim();
+                shipTo.zip = StZip.ToString().Trim();
+
+                //getFulfillment();
+                //This method will be added later to do my comparisons
+            }
+
+            public List<string> parseRow(Excel.Worksheet ws)
+            {
+                int rn = ws.UsedRange.Row + ws.UsedRange.Rows.Count;
+                int thisQuantity;
+
+                string currentSerial = "";
+
+                List<string> checkRows = new List<string>();
+
+                //If there is a mismatch between the number of serials and quantity warn user
+                if(serialNumbers.Length > 0 && serialNumbers.Length != quantity)
+                {
+                    checkRows.Add(rn.ToString());
+                }
+
+                //If the row is 2 (aka the very first row) add header
+                if(rn == 2)
+                {
+                    ws.Cells[1, (int)xqCols.ResellerNo].Value2 = "Reseller No.";
+                    ws.Cells[1, (int)xqCols.ResellerName].Value2 = "Reseller Name";
+                    ws.Cells[1, (int)xqCols.EndUserName].Value2 = "End User Name";
+                    ws.Cells[1, (int)xqCols.InvDt].Value2 = "Invoice Date";
+                    ws.Cells[1, (int)xqCols.InvNo].Value2 = "Invoice No.";
+                    ws.Cells[1, (int)xqCols.CCode].Value2 = "Part";
+                    ws.Cells[1, (int)xqCols.ItemNo].Value2 = "Item Number";
+                    ws.Cells[1, (int)xqCols.SerialNo].Value2 = "Serial No.";
+                    ws.Cells[1, (int)xqCols.QTY].Value2 = "Quantity";
+                    ws.Cells[1, (int)xqCols.BtAddress].Value2 = "Customer Address";
+                    ws.Cells[1, (int)xqCols.BtCity].Value2 = "Customer City";
+                    ws.Cells[1, (int)xqCols.BtState].Value2 = "Customer State";
+                    ws.Cells[1, (int)xqCols.BtZip].Value2 = "Customer Zip";
+                    ws.Cells[1, (int)xqCols.StCompany].Value2 = "Ship To Customer";
+                    ws.Cells[1, (int)xqCols.StAddress].Value2 = "Ship To Address";
+                    ws.Cells[1, (int)xqCols.StCity].Value2 = "Ship To City";
+                    ws.Cells[1, (int)xqCols.StState].Value2 = "Ship To State";
+                    ws.Cells[1, (int)xqCols.StZip].Value2 = "Ship To Zip";
+                    ws.Cells[1, (int)xqCols.SalesRepID].Value2 = "Salserep ID";
+                }
+
+                for(int i = 0; i <= serialNumbers.Length; i++)
+                {
+                    if (serialNumbers.Length == 0)
+                    {
+                        currentSerial = "";
+                        thisQuantity = quantity;
+                    }
+                    else if (i == serialNumbers.Length) break;
+                    else
+                    {
+                        currentSerial = serialNumbers[i];
+                        thisQuantity = 1;
+                    }
+
+                    ws.Cells[rn, (int)xqCols.ResellerNo].Value2 = enVisionNumber;
+                    ws.Cells[rn, (int)xqCols.ResellerName].Value2 = customerName;
+                    ws.Cells[rn, (int)xqCols.EndUserName].Value2 = endUserName;
+                    ws.Cells[rn, (int)xqCols.InvDt].Value2 = invoiceDate;
+                    ws.Cells[rn, (int)xqCols.InvNo].Value2 = invoiceNumber;
+                    ws.Cells[rn, (int)xqCols.CCode].Value2 = cCode;
+                    ws.Cells[rn, (int)xqCols.ItemNo].Value2 = itemNumber;
+                    ws.Cells[rn, (int)xqCols.SerialNo].Value2 = currentSerial;
+                    ws.Cells[rn, (int)xqCols.QTY].Value2 = thisQuantity;
+                    ws.Cells[rn, (int)xqCols.BtAddress].Value2 = billTo.address;
+                    ws.Cells[rn, (int)xqCols.BtCity].Value2 = billTo.city;
+                    ws.Cells[rn, (int)xqCols.BtState].Value2 = billTo.state;
+                    ws.Cells[rn, (int)xqCols.BtZip].Value2 = billTo.zip;
+                    ws.Cells[rn, (int)xqCols.StCompany].Value2 = endUserName;
+                    ws.Cells[rn, (int)xqCols.StAddress].Value2 = shipTo.address;
+                    ws.Cells[rn, (int)xqCols.StCity].Value2 = shipTo.city;
+                    ws.Cells[rn, (int)xqCols.StState].Value2 = shipTo.state;
+                    ws.Cells[rn, (int)xqCols.StZip].Value2 = shipTo.zip;
+                    ws.Cells[rn, (int)xqCols.SalesRepID].Value2 = salesRepID;
+
+                    rn++;
+                }
+
+                return checkRows;
+
+                /*if(checkRows.Count > 0)
+                {
+                    string errorRows = string.Join(", ", checkRows);
+
+                    System.Windows.Forms.MessageBox.Show("Please check the following rows: " + errorRows + "\nSerial Number Count does not equal Quantity",
+                                                            "Quantity Warning",
+                                                            System.Windows.Forms.MessageBoxButtons.OK,
+                                                            System.Windows.Forms.MessageBoxIcon.Warning);
+                }*/
+            }
+
+            private void getFulfillment()
+            {
+
+            }
+        }
+
+        //This enum refers to the excel columns to print the query only
+        private enum xqCols
+        {
+            ZEROINDEX,
+            ResellerNo,
+            ResellerName,
+            EndUserName,
+            InvDt,
+            InvNo,
+            CCode,
+            ItemNo,
+            SerialNo,
+            QTY,
+            BtAddress,
+            BtCity,
+            BtState,
+            BtZip,
+            StCompany,
+            StAddress,
+            StCity,
+            StState,
+            StZip,
+            SalesRepID
+        }
+
+        //This enum refers to the columns produced by the query
+        private enum qCols
+        {
+            Cogs,
+            CustNo,
+            ResellerNo,
+            ResellerName,
+            EndUserName,
+            InvDt,
+            InvNo,
+            CCode,
+            ItemNo,
+            SerialNo,
+            QTY,
+            SalesRepID,
+            BtAddress,
+            BtCity,
+            BtState,
+            BtZip,
+            StAddress,
+            StCity,
+            StState,
+            StZip
+        }
+
         private class xRow
         {
-            private enum xCols
+            /*private enum xCols
             {
                 ZEROINDEX,
                 ResellerNo,
@@ -77,7 +365,7 @@ namespace EpsonPOSReport
                 TotalUnitRebate,
                 TotalExtRebate,
                 EpsonenVision
-            }
+            }*/
 
             private enum enVisionLevels
             {
@@ -121,7 +409,7 @@ namespace EpsonPOSReport
                 customerNumber = custNum.ToString().Trim();
                 resellerName = rsName.ToString().Trim();
                 endUserName = esName.ToString().Trim();
-                invoiceDate = (DateTime)date;
+                invoiceDate = Convert.ToDateTime(date);
                 part = partNumber.ToString().Trim();
                 itemNumber = mfgNumber.ToString().Trim();
                 serialNumbers = delimittedSerials.ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -143,6 +431,23 @@ namespace EpsonPOSReport
             }
         }
 
+        private void releaseObject(object obj)
+        {
+            try
+            {
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch (Exception ex)
+            {
+                obj = null;
+                System.Windows.Forms.MessageBox.Show("Unable to release the Object " + ex.ToString());
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
