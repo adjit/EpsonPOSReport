@@ -298,5 +298,89 @@ namespace EpsonPOSReport.Properties {
                 this["_showColumn_stZip"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int _pgrmCode_select {
+            get {
+                return ((int)(this["_pgrmCode_select"]));
+            }
+            set {
+                this["_pgrmCode_select"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int _pgrmCode_plus {
+            get {
+                return ((int)(this["_pgrmCode_plus"]));
+            }
+            set {
+                this["_pgrmCode_plus"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int _pgrmCode_premier {
+            get {
+                return ((int)(this["_pgrmCode_premier"]));
+            }
+            set {
+                this["_pgrmCode_premier"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public int _pgrmCode_mSelect {
+            get {
+                return ((int)(this["_pgrmCode_mSelect"]));
+            }
+            set {
+                this["_pgrmCode_mSelect"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int _pgrmCode_colorSelect {
+            get {
+                return ((int)(this["_pgrmCode_colorSelect"]));
+            }
+            set {
+                this["_pgrmCode_colorSelect"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int _pgrmCode_colorPlus {
+            get {
+                return ((int)(this["_pgrmCode_colorPlus"]));
+            }
+            set {
+                this["_pgrmCode_colorPlus"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int _pgrmCode_colorPremier {
+            get {
+                return ((int)(this["_pgrmCode_colorPremier"]));
+            }
+            set {
+                this["_pgrmCode_colorPremier"] = value;
+            }
+        }
     }
 }
