@@ -42,12 +42,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.saveBtn = new System.Windows.Forms.Button();
-            this.cancelBtn = new System.Windows.Forms.Button();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -59,8 +54,6 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.label14 = new System.Windows.Forms.Label();
             this.NUD_itemNumber = new System.Windows.Forms.NumericUpDown();
             this.NUD_unitCost = new System.Windows.Forms.NumericUpDown();
             this.NUD_selectFFP = new System.Windows.Forms.NumericUpDown();
@@ -71,6 +64,8 @@
             this.NUD_premierRebate = new System.Windows.Forms.NumericUpDown();
             this.NUD_mSelectFFP = new System.Windows.Forms.NumericUpDown();
             this.NUD_mSelectRebate = new System.Windows.Forms.NumericUpDown();
+            this.label14 = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.label15 = new System.Windows.Forms.Label();
@@ -91,19 +86,20 @@
             this.NUD_colorPremierPgrmCd = new System.Windows.Forms.NumericUpDown();
             this.NUD_mSelectPgrmCd = new System.Windows.Forms.NumericUpDown();
             this.label25 = new System.Windows.Forms.Label();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.label36 = new System.Windows.Forms.Label();
             this.optionalColumnsChecklistBox = new System.Windows.Forms.CheckedListBox();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.saveBtn = new System.Windows.Forms.Button();
+            this.cancelBtn = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.tabPage4.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUD_itemNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUD_unitCost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUD_selectFFP)).BeginInit();
@@ -114,6 +110,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.NUD_premierRebate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUD_mSelectFFP)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUD_mSelectRebate)).BeginInit();
+            this.tabPage3.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUD_selectPgrmCd)).BeginInit();
@@ -123,7 +120,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.NUD_premierPgrmCd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUD_colorPremierPgrmCd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUD_mSelectPgrmCd)).BeginInit();
+            this.tabPage4.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -143,7 +143,7 @@
             this.tableLayoutPanel1.Controls.Add(this.spaBrowseButton, 2, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
@@ -157,7 +157,7 @@
             // 
             this.partnerListBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.partnerListBrowseButton.Location = new System.Drawing.Point(594, 123);
-            this.partnerListBrowseButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.partnerListBrowseButton.Margin = new System.Windows.Forms.Padding(4);
             this.partnerListBrowseButton.Name = "partnerListBrowseButton";
             this.partnerListBrowseButton.Size = new System.Drawing.Size(125, 28);
             this.partnerListBrowseButton.TabIndex = 6;
@@ -168,7 +168,7 @@
             // 
             this.priceListBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.priceListBrowseButton.Location = new System.Drawing.Point(594, 68);
-            this.priceListBrowseButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.priceListBrowseButton.Margin = new System.Windows.Forms.Padding(4);
             this.priceListBrowseButton.Name = "priceListBrowseButton";
             this.priceListBrowseButton.Size = new System.Drawing.Size(125, 28);
             this.priceListBrowseButton.TabIndex = 4;
@@ -215,7 +215,7 @@
             // 
             this.spaListFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.spaListFilePath.Location = new System.Drawing.Point(177, 16);
-            this.spaListFilePath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spaListFilePath.Margin = new System.Windows.Forms.Padding(4);
             this.spaListFilePath.Name = "spaListFilePath";
             this.spaListFilePath.Size = new System.Drawing.Size(409, 22);
             this.spaListFilePath.TabIndex = 1;
@@ -225,7 +225,7 @@
             // 
             this.priceListFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.priceListFilePath.Location = new System.Drawing.Point(177, 71);
-            this.priceListFilePath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.priceListFilePath.Margin = new System.Windows.Forms.Padding(4);
             this.priceListFilePath.Name = "priceListFilePath";
             this.priceListFilePath.Size = new System.Drawing.Size(409, 22);
             this.priceListFilePath.TabIndex = 3;
@@ -235,7 +235,7 @@
             // 
             this.partnerListFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.partnerListFilePath.Location = new System.Drawing.Point(177, 126);
-            this.partnerListFilePath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.partnerListFilePath.Margin = new System.Windows.Forms.Padding(4);
             this.partnerListFilePath.Name = "partnerListFilePath";
             this.partnerListFilePath.Size = new System.Drawing.Size(409, 22);
             this.partnerListFilePath.TabIndex = 5;
@@ -245,7 +245,7 @@
             // 
             this.spaBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.spaBrowseButton.Location = new System.Drawing.Point(594, 13);
-            this.spaBrowseButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spaBrowseButton.Margin = new System.Windows.Forms.Padding(4);
             this.spaBrowseButton.Name = "spaBrowseButton";
             this.spaBrowseButton.Size = new System.Drawing.Size(125, 28);
             this.spaBrowseButton.TabIndex = 2;
@@ -287,77 +287,20 @@
             this.tabPage2.Text = "Price List Columns";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // tableLayoutPanel2
+            // tableLayoutPanel5
             // 
-            this.tableLayoutPanel2.ColumnCount = 1;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.tabControl1, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 1);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(743, 303);
-            this.tableLayoutPanel2.TabIndex = 8;
-            // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.ColumnCount = 4;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
-            this.tableLayoutPanel3.Controls.Add(this.saveBtn, 3, 0);
-            this.tableLayoutPanel3.Controls.Add(this.cancelBtn, 1, 0);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 266);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 1;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(737, 34);
-            this.tableLayoutPanel3.TabIndex = 8;
-            // 
-            // saveBtn
-            // 
-            this.saveBtn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.saveBtn.Location = new System.Drawing.Point(590, 3);
-            this.saveBtn.Name = "saveBtn";
-            this.saveBtn.Size = new System.Drawing.Size(144, 28);
-            this.saveBtn.TabIndex = 0;
-            this.saveBtn.Text = "Save";
-            this.saveBtn.UseVisualStyleBackColor = true;
-            // 
-            // cancelBtn
-            // 
-            this.cancelBtn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cancelBtn.Location = new System.Drawing.Point(420, 3);
-            this.cancelBtn.Name = "cancelBtn";
-            this.cancelBtn.Size = new System.Drawing.Size(144, 28);
-            this.cancelBtn.TabIndex = 1;
-            this.cancelBtn.Text = "Cancel";
-            this.cancelBtn.UseVisualStyleBackColor = true;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.tableLayoutPanel6);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(729, 228);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Program Codes";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.tableLayoutPanel8);
-            this.tabPage4.Location = new System.Drawing.Point(4, 25);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(729, 228);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Optional Columns";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.tableLayoutPanel5.ColumnCount = 1;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel4, 0, 1);
+            this.tableLayoutPanel5.Controls.Add(this.label14, 0, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 2;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(723, 222);
+            this.tableLayoutPanel5.TabIndex = 1;
             // 
             // tableLayoutPanel4
             // 
@@ -511,31 +454,6 @@
             this.label13.Text = "mSelect Rebate Amount";
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.ColumnCount = 1;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel4, 0, 1);
-            this.tableLayoutPanel5.Controls.Add(this.label14, 0, 0);
-            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 2;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(723, 222);
-            this.tableLayoutPanel5.TabIndex = 1;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(3, 0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(285, 17);
-            this.label14.TabIndex = 1;
-            this.label14.Text = "Set column indecies for the Epson Price LIst";
-            // 
             // NUD_itemNumber
             // 
             this.NUD_itemNumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -665,6 +583,26 @@
             0,
             0,
             0});
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(3, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(285, 17);
+            this.label14.TabIndex = 1;
+            this.label14.Text = "Set column indecies for the Epson Price LIst";
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.tableLayoutPanel6);
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(729, 228);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Program Codes";
+            this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel6
             // 
@@ -963,6 +901,16 @@
             this.label25.TabIndex = 1;
             this.label25.Text = "Set Base Program Codes";
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.tableLayoutPanel8);
+            this.tabPage4.Location = new System.Drawing.Point(4, 25);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(729, 228);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Optional Columns";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
             // tableLayoutPanel8
             // 
             this.tableLayoutPanel8.ColumnCount = 1;
@@ -1007,6 +955,60 @@
             this.optionalColumnsChecklistBox.Size = new System.Drawing.Size(719, 188);
             this.optionalColumnsChecklistBox.TabIndex = 2;
             // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 1;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.tabControl1, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 1);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(743, 303);
+            this.tableLayoutPanel2.TabIndex = 8;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 4;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel3.Controls.Add(this.saveBtn, 3, 0);
+            this.tableLayoutPanel3.Controls.Add(this.cancelBtn, 1, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 266);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(737, 34);
+            this.tableLayoutPanel3.TabIndex = 8;
+            // 
+            // saveBtn
+            // 
+            this.saveBtn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.saveBtn.Location = new System.Drawing.Point(590, 3);
+            this.saveBtn.Name = "saveBtn";
+            this.saveBtn.Size = new System.Drawing.Size(144, 28);
+            this.saveBtn.TabIndex = 0;
+            this.saveBtn.Text = "Save";
+            this.saveBtn.UseVisualStyleBackColor = true;
+            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
+            // 
+            // cancelBtn
+            // 
+            this.cancelBtn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cancelBtn.Location = new System.Drawing.Point(420, 3);
+            this.cancelBtn.Name = "cancelBtn";
+            this.cancelBtn.Size = new System.Drawing.Size(144, 28);
+            this.cancelBtn.TabIndex = 1;
+            this.cancelBtn.Text = "Cancel";
+            this.cancelBtn.UseVisualStyleBackColor = true;
+            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1014,7 +1016,7 @@
             this.ClientSize = new System.Drawing.Size(743, 303);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(761, 350);
             this.Name = "SettingsForm";
             this.Text = "Report Settings";
@@ -1023,14 +1025,10 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage4.ResumeLayout(false);
-            this.tableLayoutPanel4.ResumeLayout(false);
-            this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUD_itemNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUD_unitCost)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUD_selectFFP)).EndInit();
@@ -1041,6 +1039,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.NUD_premierRebate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUD_mSelectFFP)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUD_mSelectRebate)).EndInit();
+            this.tabPage3.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
             this.tableLayoutPanel7.ResumeLayout(false);
@@ -1052,8 +1051,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.NUD_premierPgrmCd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUD_colorPremierPgrmCd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUD_mSelectPgrmCd)).EndInit();
+            this.tabPage4.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel8.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
