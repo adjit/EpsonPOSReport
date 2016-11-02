@@ -150,6 +150,7 @@ namespace EpsonPOSReport
 
             int rn = ws.UsedRange.Row + ws.UsedRange.Rows.Count;
             int thisQuantity;
+            int pgrmCd = 0;
 
             double rebateAmount = 0.00;
             double ffpcnt = 0.00;
@@ -209,18 +210,22 @@ namespace EpsonPOSReport
                     case PriceLevelIndex.SELECT:
                         rebateAmount = thisItem.Select.rebate;
                         ffpcnt = thisItem.Select.fulfillment;
+                        pgrmCd = Properties.Settings.Default._pgrmCode_select;
                         break;
                     case PriceLevelIndex.PLUS:
                         rebateAmount = thisItem.Plus.rebate;
                         ffpcnt = thisItem.Plus.fulfillment;
+                        pgrmCd = Properties.Settings.Default._pgrmCode_plus;
                         break;
                     case PriceLevelIndex.PREMIER:
                         rebateAmount = thisItem.Premier.rebate;
                         ffpcnt = thisItem.Premier.fulfillment;
+                        pgrmCd = Properties.Settings.Default._pgrmCode_premier;
                         break;
                     case PriceLevelIndex.MSELECT:
                         rebateAmount = thisItem.mSelect.rebate;
                         ffpcnt = thisItem.mSelect.fulfillment;
+                        pgrmCd = Properties.Settings.Default._pgrmCode_mSelect;
                         break;
                     default:
                         break;
@@ -256,7 +261,7 @@ namespace EpsonPOSReport
                 ws.Cells[rn, (int)xrCols.CCode].Value2 = row.cCode;
                 ws.Cells[rn, (int)xrCols.ItemNo].Value2 = row.itemNumber;
                 ws.Cells[rn, (int)xrCols.SerialNo].Value2 = currentSerial;
-                ws.Cells[rn, (int)xrCols.PgrmCd].Value2 = "";
+                ws.Cells[rn, (int)xrCols.PgrmCd].Value2 = pgrmCd;
                 ws.Cells[rn, (int)xrCols.QTY].Value2 = thisQuantity;
                 ws.Cells[rn, (int)xrCols.UnitCost].Value2 = unitCost;
                 ws.Cells[rn, (int)xrCols.UnitRebate].Value2 = rebateAmount;
