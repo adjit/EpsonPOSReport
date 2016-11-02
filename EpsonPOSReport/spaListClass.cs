@@ -32,6 +32,10 @@ namespace EpsonPOSReport
          * */
         public List<itemFulfillment> getCustomerSpaItems(string customerNumber)
         {
+            //Issue with this error message. Potential to repeatedly produce error for every single line
+            //that is output by the query. Need to think of alternate method for warning the user about
+            //the initialization of the spaItems. Most likely will change this to check before anything
+            //runs in order to prevent multiple errors, and the program continuing corruptly
             if(!isInitialized)
             {
                 System.Windows.Forms.MessageBox.Show("Please initialize SpaList class before trying to use", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
@@ -219,6 +223,20 @@ namespace EpsonPOSReport
             return _spaItemsAdded;
         }
 
+        private void initializeAllSpas()
+        {
+            Task[] taskArray = new Task[spaItems.Count];
+
+            for(int i = 0; i < spaItems.Count; i++)
+            {
+                taskArray[i] = Task.Factory.StartNew(() => spaItems[i].initializeThisSpa());
+            }
+
+            Task.WhenAll(taskArray).Wait();
+
+            foreach (var task in taskArray) task.Dispose();
+        }
+
         /*  Private function that is used to release
          *  excel com objects - added for additional
          *  garbage collection
@@ -250,6 +268,7 @@ namespace EpsonPOSReport
         {
             private List<string> spaCustomers;
             private List<itemFulfillment> spaItems;
+            private string spaFilePath;
 
             public spaItemFulfillment(List<string> customers, List<itemFulfillment> items)
             {
@@ -269,6 +288,22 @@ namespace EpsonPOSReport
             public List<itemFulfillment> getItems()
             {
                 return spaItems;
+            }
+
+            public void initializeThisSpa()
+            {
+                Excel.Workbook spaListWorkbook;
+                Excel.Worksheet spaCustomerSheet;
+                Excel.Worksheet spaItemsSheet;
+
+                try
+                {
+                    spaListWorkbook = Globals.ThisAddIn.Application.Workbooks.Open(spaFilePath, false, true);
+                }
+                catch (Exception e)
+                {
+                    System.Windows.Forms.MessageBox.Show("Error opening Spa List\n" + e, "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                }
             }
         }
     }
