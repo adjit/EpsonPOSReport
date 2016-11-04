@@ -16,8 +16,6 @@ namespace EpsonPOSReport
 {
     public partial class ThisAddIn
     {
-        private PriceLevels pls;
-
         private bool reportsInitialized = false;
 
         public List<string> checkRows = new List<string>();
@@ -412,7 +410,7 @@ namespace EpsonPOSReport
                 shipTo.city = StCity.ToString().Trim();
                 shipTo.state = StState.ToString().Trim();
                 shipTo.zip = StZip.ToString().Trim();
-
+                
                 //getFulfillment();
                 //This method will be added later to do my comparisons
             }

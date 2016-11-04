@@ -7,76 +7,12 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EpsonPOSReport
 {
-    /*  Will not be using this enum
-     *  To be deleted at program completion.
-     * */
-    public enum enVisionLevels
-    {
-        COLORWORKS_OEM,
-        COLORWORKS_PLUS,
-        COLORWORKS_PREMIER,
-        DISCPRODUCER,
-        M_SELECT_ISV,
-        PLUS_OEM,
-        PLUS_VAR,
-        PREMIER_OEM,
-        PREMIER_VAR,
-        SELECT_VAR,
-        SOFTWARE_SOLUTION,
-        TECH
-    }
-
     public enum PriceLevelIndex
     {
         SELECT      = 1,    //2
         PLUS        = 2,    //3
         PREMIER     = 3,    //3
         MSELECT     = 4,    //5
-    }
-
-
-    /*  Not going to use the PriceLevels class. This would have been
-     *  used to correlate the customer price level to the price level
-     *  as dictated by GP. However, now we are now instead using 
-     * 
-     * */
-    class PriceLevels
-    {
-        public int[] priceLevels { get; }
-        private readonly int[] defaultPriceLevels = { 2, 3, 3, 4, 5, 6 };
-
-        /*public PriceLevels(int[] newPriceLevels = defaultPriceLevels)
-        {
-            priceLevels = newPriceLevels;
-        }*/
-
-        public PriceLevels()
-        {
-            priceLevels = defaultPriceLevels;
-        }
-        
-        public PriceLevels(int[] newPriceLevels)
-        {
-            priceLevels = newPriceLevels;
-        }
-        /*Decided not to use the PriceLevel class for each customer
-         * Instead - going to keep it simple, and in the main program
-         * contain an integer array in which the priceLevel enum
-         * will be responsible for the proper indecies
-         * 
-         * public override string ToString()
-        {
-            string myString = "No Level Set";
-
-            if (priceLevelIndex == (int)priceLevel.SELECT) return "Partner-Select";
-            if (priceLevelIndex == (int)priceLevel.PLUS) return "Plus/Premier";
-            if (priceLevelIndex == (int)priceLevel.PREMIER) return "Plus/Premier";
-            if (priceLevelIndex == (int)priceLevel.EFI) return "eFi Plus-SPA";
-            if (priceLevelIndex == (int)priceLevel.MSELECT) return "mSelect";
-            if (priceLevelIndex == (int)priceLevel.SPECIAL) return "Special";
-
-            return myString;
-        }*/
     }
 
     class enVisionPartnerList
@@ -159,8 +95,6 @@ namespace EpsonPOSReport
             string priceGroup = "";
             PriceLevelIndex priceIndex = 0;
 
-            enVisionPartnerList epl = new enVisionPartnerList();
-
             try
             {
                 partnerListWorkbook = Globals.ThisAddIn.Application.Workbooks.Open(filePath, false, true);
@@ -204,40 +138,12 @@ namespace EpsonPOSReport
                     priceIndex = PriceLevelIndex.MSELECT;
                 }
 
-                if(_isColorworks) epl.addCustomer(priceLevel, customer, enVisionNumber, priceIndex, _isColorworks);
-                else epl.addCustomer(priceLevel, customer, enVisionNumber, priceIndex);
+                if(_isColorworks) addCustomer(priceLevel, customer, enVisionNumber, priceIndex, _isColorworks);
+                else addCustomer(priceLevel, customer, enVisionNumber, priceIndex);
                 _partnersAdded = true;
             }
 
             return _partnersAdded;
-        }
-    }
-
-    class enVisionCustomer
-    {
-        public string enVisionLevel { get; }
-        public string customer { get; }
-        public string enVisionNumber { get; }
-        public PriceLevelIndex priceLevelIndex { get; }
-        public bool isColorworks { get; } = false;
-
-        public enVisionCustomer(string enVisionLevel, string customer,
-                                string enVisionNumber, PriceLevelIndex priceLevelIndex)
-        {
-            this.enVisionLevel = enVisionLevel;
-            this.customer = customer;
-            this.enVisionNumber = enVisionNumber;
-            this.priceLevelIndex= priceLevelIndex;
-        }
-
-        public enVisionCustomer(string enVisionLevel, string customer,
-                                string enVisionNumber, PriceLevelIndex priceLevelIndex, bool isColorworks)
-        {
-            this.enVisionLevel = enVisionLevel;
-            this.customer = customer;
-            this.enVisionNumber = enVisionNumber;
-            this.priceLevelIndex = priceLevelIndex;
-            this.isColorworks = isColorworks;
         }
     }
 }

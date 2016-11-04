@@ -145,5 +145,40 @@ namespace EpsonPOSReport
         {
             Close();
         }
+
+        private void spaBrowseButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Excel Files|*.xl;*.xls;*xlsx;*.xlsm";
+            DialogResult dr = ofd.ShowDialog();
+
+            if (dr == DialogResult.OK) spaListFilePath.Text = ofd.FileName;
+        }
+
+        private void priceListBrowseButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Excel Files|*.xl;*.xls;*xlsx;*.xlsm";
+            DialogResult dr = ofd.ShowDialog();
+
+            if (dr == DialogResult.OK) priceListFilePath.Text = ofd.FileName;
+        }
+
+        private void partnerListBrowseButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Excel Files|*.xl;*.xls;*xlsx;*.xlsm";
+            DialogResult dr = ofd.ShowDialog();
+
+            if (dr == DialogResult.OK) partnerListFilePath.Text = ofd.FileName;
+        }
+
+        private void spaListFolderBrowseBtn_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            DialogResult dr = fbd.ShowDialog();
+
+            if (dr == DialogResult.OK) spaListFolderPath.Text = fbd.SelectedPath;
+        }
     }
 }

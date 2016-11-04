@@ -125,22 +125,5 @@ namespace EpsonPOSReport
                 GC.Collect();
             }
         }
-
-    }
-
-    class Item
-    {
-        public string cCode { get; set; }
-        public double Cost { get; set; }
-        public enVisionPriceLevel Select { get; set; }
-        public enVisionPriceLevel Plus { get; set; }
-        public enVisionPriceLevel Premier { get; set; }
-        public enVisionPriceLevel mSelect { get; set; }
-    }
-
-    class enVisionPriceLevel
-    {
-        public double rebate { get; set; }
-        public double fulfillment { get; set; }
     }
 }
