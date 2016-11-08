@@ -47,11 +47,9 @@
             this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox1.Location = new System.Drawing.Point(7, 6);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Location = new System.Drawing.Point(5, 5);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(411, 161);
+            this.groupBox1.Size = new System.Drawing.Size(309, 131);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Run Epson Report";
@@ -69,27 +67,25 @@
             this.tableLayoutPanel1.Controls.Add(this.runReportButton, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.runQueryOnlyBtn, 1, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(4, 19);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
-            this.tableLayoutPanel1.MinimumSize = new System.Drawing.Size(400, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutPanel1.MinimumSize = new System.Drawing.Size(300, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(403, 138);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(303, 112);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // selectMonthLabel
             // 
             this.selectMonthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.selectMonthLabel.AutoSize = true;
-            this.selectMonthLabel.Location = new System.Drawing.Point(11, 18);
-            this.selectMonthLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.selectMonthLabel.MinimumSize = new System.Drawing.Size(160, 0);
+            this.selectMonthLabel.Location = new System.Drawing.Point(8, 15);
+            this.selectMonthLabel.MinimumSize = new System.Drawing.Size(120, 0);
             this.selectMonthLabel.Name = "selectMonthLabel";
-            this.selectMonthLabel.Size = new System.Drawing.Size(186, 17);
+            this.selectMonthLabel.Size = new System.Drawing.Size(140, 13);
             this.selectMonthLabel.TabIndex = 0;
             this.selectMonthLabel.Text = "Select First of Month";
             // 
@@ -100,10 +96,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.monthPicker.CustomFormat = "MMMM-  yyyy";
             this.monthPicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.monthPicker.Location = new System.Drawing.Point(205, 10);
-            this.monthPicker.Margin = new System.Windows.Forms.Padding(4);
+            this.monthPicker.Location = new System.Drawing.Point(154, 8);
             this.monthPicker.Name = "monthPicker";
-            this.monthPicker.Size = new System.Drawing.Size(187, 22);
+            this.monthPicker.Size = new System.Drawing.Size(141, 20);
             this.monthPicker.TabIndex = 1;
             // 
             // changeSettingsButton
@@ -112,16 +107,15 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.changeSettingsButton.AutoSize = true;
-            this.changeSettingsButton.Enabled = false;
-            this.changeSettingsButton.Location = new System.Drawing.Point(11, 48);
-            this.changeSettingsButton.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.changeSettingsButton.Location = new System.Drawing.Point(8, 39);
             this.changeSettingsButton.Name = "changeSettingsButton";
-            this.changeSettingsButton.Size = new System.Drawing.Size(186, 42);
+            this.changeSettingsButton.Size = new System.Drawing.Size(140, 34);
             this.changeSettingsButton.TabIndex = 2;
             this.changeSettingsButton.TabStop = true;
             this.changeSettingsButton.Text = "Change Report Settings...";
             this.changeSettingsButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.changeSettingsButton.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.changeSettingsButton.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.changeSettingsButton_LinkClicked);
             // 
             // runReportButton
             // 
@@ -129,24 +123,22 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.runReportButton.AutoSize = true;
-            this.runReportButton.Enabled = false;
-            this.runReportButton.Location = new System.Drawing.Point(205, 52);
-            this.runReportButton.Margin = new System.Windows.Forms.Padding(4);
+            this.runReportButton.Location = new System.Drawing.Point(154, 42);
             this.runReportButton.Name = "runReportButton";
-            this.runReportButton.Size = new System.Drawing.Size(187, 34);
+            this.runReportButton.Size = new System.Drawing.Size(141, 28);
             this.runReportButton.TabIndex = 3;
             this.runReportButton.Text = "Run Report";
             this.runReportButton.UseVisualStyleBackColor = true;
+            this.runReportButton.Click += new System.EventHandler(this.runReportButton_Click);
             // 
             // runQueryOnlyBtn
             // 
             this.runQueryOnlyBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.runQueryOnlyBtn.Location = new System.Drawing.Point(205, 94);
-            this.runQueryOnlyBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.runQueryOnlyBtn.Location = new System.Drawing.Point(154, 76);
             this.runQueryOnlyBtn.Name = "runQueryOnlyBtn";
-            this.runQueryOnlyBtn.Size = new System.Drawing.Size(187, 34);
+            this.runQueryOnlyBtn.Size = new System.Drawing.Size(141, 28);
             this.runQueryOnlyBtn.TabIndex = 1;
             this.runQueryOnlyBtn.Text = "Run Query Only";
             this.runQueryOnlyBtn.UseVisualStyleBackColor = true;
@@ -155,27 +147,25 @@
             // runningLabel
             // 
             this.runningLabel.AutoSize = true;
-            this.runningLabel.Location = new System.Drawing.Point(11, 149);
-            this.runningLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.runningLabel.Location = new System.Drawing.Point(8, 121);
             this.runningLabel.Name = "runningLabel";
-            this.runningLabel.Size = new System.Drawing.Size(0, 17);
+            this.runningLabel.Size = new System.Drawing.Size(0, 13);
             this.runningLabel.TabIndex = 1;
             // 
             // EpsonReportForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(425, 167);
+            this.ClientSize = new System.Drawing.Size(319, 136);
             this.Controls.Add(this.runningLabel);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MaximumSize = new System.Drawing.Size(661, 297);
-            this.MinimumSize = new System.Drawing.Size(441, 174);
+            this.MaximumSize = new System.Drawing.Size(500, 249);
+            this.MinimumSize = new System.Drawing.Size(335, 149);
             this.Name = "EpsonReportForm";
-            this.Padding = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.Text = "Epson Report";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

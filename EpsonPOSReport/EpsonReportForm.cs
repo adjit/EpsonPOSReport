@@ -23,5 +23,18 @@ namespace EpsonPOSReport
             Globals.ThisAddIn.runQueryReport(monthPicker.Value);
             Close();
         }
+
+        private void changeSettingsButton_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            SettingsForm sf = new SettingsForm();
+            sf.ShowDialog();
+        }
+
+        private void runReportButton_Click(object sender, EventArgs e)
+        {
+            runningLabel.Text = "Running...";
+            Globals.ThisAddIn.runReport(monthPicker.Value);
+            Close();
+        }
     }
 }

@@ -34,10 +34,10 @@ namespace EpsonPOSReport
     {
         public string cCode { get; set; }
         public double Cost { get; set; }
-        public PriceLevel Select { get; set; }
-        public PriceLevel Plus { get; set; }
-        public PriceLevel Premier { get; set; }
-        public PriceLevel mSelect { get; set; }
+        public PriceLevel Select { get; set; } = new PriceLevel();
+        public PriceLevel Plus { get; set; } = new PriceLevel();
+        public PriceLevel Premier { get; set; } = new PriceLevel();
+        public PriceLevel mSelect { get; set; } = new PriceLevel();
     }
 
     /*  PRICE LEVEL CLASS
@@ -59,7 +59,7 @@ namespace EpsonPOSReport
         public string enVisionLevel { get; }
         public string customer { get; }
         public string enVisionNumber { get; }
-        public PriceLevelIndex priceLevelIndex { get; }
+        public PriceLevelIndex priceLevelIndex { get; } = new PriceLevelIndex();
         public bool isColorworks { get; } = false;
 
         public enVisionCustomer(string enVisionLevel, string customer,

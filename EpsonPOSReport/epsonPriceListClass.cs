@@ -56,7 +56,7 @@ namespace EpsonPOSReport
             }
             catch (Exception e)
             {
-                System.Windows.Forms.MessageBox.Show("Error opening Spa List\n" + e, "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Error opening Price List\n" + e, "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
 
                 return false;
             }
@@ -68,25 +68,35 @@ namespace EpsonPOSReport
                 Excel.Range itemNumberCell = pLWS.Cells[i, us._plColumn_itemNumber];
 
                 if(itemNumberCell.Font.Underline != (int)Excel.XlUnderlineStyle.xlUnderlineStyleNone ||
-                    itemNumberCell.Font.Strikethrough ||
-                    itemNumberCell.Value2 == null ||
-                    Convert.ToString(itemNumberCell.Value2) == "")
+                    //itemNumberCell.Font.Strikethrough ||
+                    itemNumberCell.Value2 == null /*||
+                    string.IsNullOrEmpty((string)itemNumberCell.Value2)*/)
                 {
                     continue;
                 }
 
                 Item item = new Item();
 
-                item.cCode = Convert.ToString(itemNumberCell.Value2);
-                item.Cost = getNumber(pLWS.Cells[i, us._plColumn_unitCost].Value2);
-                item.Select.fulfillment = getNumber(pLWS.Cells[i, us._plColumn_selectFFP].Value2);
-                item.Select.rebate = getNumber(pLWS.Cells[i, us._plColumn_selectRebate].Value2);
-                item.Plus.fulfillment = getNumber(pLWS.Cells[i, us._plColumn_plusFFP].Value2);
-                item.Plus.rebate = getNumber(pLWS.Cells[i, us._plColumn_plusRebate].Value2);
-                item.Premier.fulfillment = getNumber(pLWS.Cells[i, us._plColumn_premierFFP].Value2);
-                item.Premier.rebate = getNumber(pLWS.Cells[i, us._plColumn_premierRebate].Value2);
-                item.mSelect.fulfillment = getNumber(pLWS.Cells[i, us._plColumn_mSelectFFP].Value2);
-                item.mSelect.rebate = getNumber(pLWS.Cells[i, us._plColumn_mSelectRebate].Value2);
+                item.cCode = /*string.IsNullOrEmpty(itemNumberCell.Value2) ? "" :*/ Convert.ToString(itemNumberCell.Value2);
+                item.Cost = (pLWS.Cells[i, us._plColumn_unitCost].Value2 == null ? 0 : getNumber(pLWS.Cells[i, us._plColumn_unitCost].Value2));
+                item.Select.fulfillment = (pLWS.Cells[i, us._plColumn_selectFFP].Value2 == null ? 0 : getNumber(pLWS.Cells[i, us._plColumn_selectFFP].Value2));
+                item.Select.rebate = (pLWS.Cells[i, us._plColumn_selectRebate].Value2 == null ? 0 : -getNumber(pLWS.Cells[i, us._plColumn_selectRebate].Value2));
+                item.Plus.fulfillment = (pLWS.Cells[i, us._plColumn_plusFFP].Value2 == null ? 0 : getNumber(pLWS.Cells[i, us._plColumn_plusFFP].Value2));
+                item.Plus.rebate = (pLWS.Cells[i, us._plColumn_plusRebate].Value2 == null ? 0 : -getNumber(pLWS.Cells[i, us._plColumn_plusRebate].Value2));
+                item.Premier.fulfillment = (pLWS.Cells[i, us._plColumn_premierFFP].Value2 == null ? 0 : getNumber(pLWS.Cells[i, us._plColumn_premierFFP].Value2));
+                item.Premier.rebate = (pLWS.Cells[i, us._plColumn_premierRebate].Value2 == null ? 0 : -getNumber(pLWS.Cells[i, us._plColumn_premierRebate].Value2));
+                item.mSelect.fulfillment = (pLWS.Cells[i, us._plColumn_mSelectFFP].Value2 == null ? 0 : getNumber(pLWS.Cells[i, us._plColumn_mSelectFFP].Value2));
+                item.mSelect.rebate = (pLWS.Cells[i, us._plColumn_mSelectRebate].Value2 == null ? 0 : -getNumber(pLWS.Cells[i, us._plColumn_mSelectRebate].Value2));
+
+                /*item.Cost = (double)pLWS.Cells[i, us._plColumn_unitCost].Value2;
+                item.Select.fulfillment = (double)pLWS.Cells[i, us._plColumn_selectFFP].Value2;
+                item.Select.rebate = (double)pLWS.Cells[i, us._plColumn_selectRebate].Value2;
+                item.Plus.fulfillment = (double)pLWS.Cells[i, us._plColumn_plusFFP].Value2;
+                item.Plus.rebate = (double)pLWS.Cells[i, us._plColumn_plusRebate].Value2;
+                item.Premier.fulfillment = (double)pLWS.Cells[i, us._plColumn_premierFFP].Value2;
+                item.Premier.rebate = (double)pLWS.Cells[i, us._plColumn_premierRebate].Value2;
+                item.mSelect.fulfillment = (double)pLWS.Cells[i, us._plColumn_mSelectFFP].Value2;
+                item.mSelect.rebate = (double)pLWS.Cells[i, us._plColumn_mSelectRebate].Value2;*/
 
                 items.Add(item);
                 _hasItems = true;

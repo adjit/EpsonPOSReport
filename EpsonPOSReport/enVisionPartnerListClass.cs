@@ -110,13 +110,15 @@ namespace EpsonPOSReport
 
             for(int i = START_ROW; i < pLS.UsedRange.Rows.Count; i++)
             {
-                customer = pLS.Cells[i, CUSTOMER_NAME].Value2.ToString();
-                enVisionNumber = pLS.Cells[i, CUSTOMER_NUMBER].Value2.ToString();
+                customer = string.IsNullOrEmpty(pLS.Cells[i, CUSTOMER_NAME].Value2) ? "" : Convert.ToString(pLS.Cells[i, CUSTOMER_NAME].Value2);
+                enVisionNumber = string.IsNullOrEmpty(pLS.Cells[i, CUSTOMER_NUMBER].Value2) ? "" : Convert.ToString(pLS.Cells[i, CUSTOMER_NUMBER].Value2);
 
-                priceLevel = pLS.Cells[i, PRICE_LEVEL].Value2.ToString();
+                if(enVisionNumber == null) continue;
+
+                priceLevel = string.IsNullOrEmpty(pLS.Cells[i, PRICE_LEVEL].Value2) ? "" : Convert.ToString(pLS.Cells[i, PRICE_LEVEL].Value2);
                 priceLevel = priceLevel.ToLower();
 
-                priceGroup = pLS.Cells[i, PRICE_GROUP].Value2.ToString();
+                priceGroup = Convert.ToString(pLS.Cells[i, PRICE_GROUP].Value2);
                 priceGroup = priceGroup.ToLower();
 
                 if (priceGroup == "colorworks") _isColorworks = true;
@@ -142,6 +144,8 @@ namespace EpsonPOSReport
                 else addCustomer(priceLevel, customer, enVisionNumber, priceIndex);
                 _partnersAdded = true;
             }
+
+            partnerListWorkbook.Close(false, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
 
             return _partnersAdded;
         }

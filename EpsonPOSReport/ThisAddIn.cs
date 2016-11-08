@@ -41,7 +41,7 @@ namespace EpsonPOSReport
 
             Task[] taskArray =
             {
-                Task.Factory.StartNew(() => spaList.runSpaInitialization(ui.progress, ui.spaListProgress)),
+                //Task.Factory.StartNew(() => spaList.runSpaInitialization(ui.progress, ui.spaListProgress)),
                 Task.Factory.StartNew(() => priceList.runEpsonPriceListInitialization(ui.progress, ui.priceListProgress)),
                 Task.Factory.StartNew(() => partnerList.runPartnerListInitialization(ui.progress, ui.partnerListProgress))
             };
@@ -51,9 +51,63 @@ namespace EpsonPOSReport
             foreach (var task in taskArray) task.Dispose();
         }
 
-        public void runReport()
+        public void runReport(DateTime date)
         {
-            
+            //runReportInitialization();
+            Application.ScreenUpdating = false;
+
+            partnerList.initializePartnerList(Properties.Settings.Default._filePath_partnerList);
+            priceList.initializeEpsonPriceList(Properties.Settings.Default._filePath_priceList);
+
+            int month = date.Month;
+            int year = date.Year;
+
+            qRow thisRow;
+
+            string query = Properties.Resources.EpsonQuery;
+            query = string.Format(query, month, year);
+
+            List<string> checkRows = new List<string>();
+
+            Excel.Workbook thisWorkbook = Globals.ThisAddIn.Application.ActiveWorkbook;
+            Excel.Worksheet thisWorksheet = thisWorkbook.ActiveSheet;
+
+            SqlConnection dbConnection = new SqlConnection(Properties.Settings.Default._DatabaseConnectionString);
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader reader;
+
+            cmd.CommandText = query;
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = dbConnection;
+
+            dbConnection.Open();
+
+            reader = cmd.ExecuteReader();
+
+            if(reader.HasRows)
+            {
+                setRunColumnFormatting(thisWorksheet);
+                AddRunHeader(thisWorksheet);
+
+                while(reader.Read())
+                {
+                    thisRow = GetQueryRow(reader);
+                    checkRows.AddRange(ParseRow(thisRow, thisWorksheet));
+                }
+            }
+            else System.Windows.Forms.MessageBox.Show("No Rows Found");
+
+            dbConnection.Close();
+
+            if(checkRows.Count > 0)
+            {
+                WarnMismatchedRows(checkRows);
+            }
+
+            releaseObject(thisWorkbook);
+            releaseObject(thisWorksheet);
+
+            Application.ScreenUpdating = true;
         }
 
         public void runQueryReport(DateTime date)
@@ -197,36 +251,41 @@ namespace EpsonPOSReport
                 }
             }*/
 
-            if (!_hasSpa)
+            if (!_hasSpa && thisCustomer != null)
             {
                 if (lastItem == null) thisItem = lastItem = priceList.getItem(row.cCode);
                 else if (lastItem.cCode == row.cCode && thisCustomer == lastCustomer) thisItem = lastItem;
                 else thisItem = priceList.getItem(row.cCode);
 
-                switch (thisCustomer.priceLevelIndex)
+                if (thisItem != null)
                 {
-                    case PriceLevelIndex.SELECT:
-                        rebateAmount = thisItem.Select.rebate;
-                        ffpcnt = thisItem.Select.fulfillment;
-                        pgrmCd = Properties.Settings.Default._pgrmCode_select;
-                        break;
-                    case PriceLevelIndex.PLUS:
-                        rebateAmount = thisItem.Plus.rebate;
-                        ffpcnt = thisItem.Plus.fulfillment;
-                        pgrmCd = Properties.Settings.Default._pgrmCode_plus;
-                        break;
-                    case PriceLevelIndex.PREMIER:
-                        rebateAmount = thisItem.Premier.rebate;
-                        ffpcnt = thisItem.Premier.fulfillment;
-                        pgrmCd = Properties.Settings.Default._pgrmCode_premier;
-                        break;
-                    case PriceLevelIndex.MSELECT:
-                        rebateAmount = thisItem.mSelect.rebate;
-                        ffpcnt = thisItem.mSelect.fulfillment;
-                        pgrmCd = Properties.Settings.Default._pgrmCode_mSelect;
-                        break;
-                    default:
-                        break;
+                    unitCost = thisItem.Cost;
+
+                    switch (thisCustomer.priceLevelIndex)
+                    {
+                        case PriceLevelIndex.SELECT:
+                            rebateAmount = thisItem.Select.rebate;
+                            ffpcnt = thisItem.Select.fulfillment;
+                            pgrmCd = Properties.Settings.Default._pgrmCode_select;
+                            break;
+                        case PriceLevelIndex.PLUS:
+                            rebateAmount = thisItem.Plus.rebate;
+                            ffpcnt = thisItem.Plus.fulfillment;
+                            pgrmCd = Properties.Settings.Default._pgrmCode_plus;
+                            break;
+                        case PriceLevelIndex.PREMIER:
+                            rebateAmount = thisItem.Premier.rebate;
+                            ffpcnt = thisItem.Premier.fulfillment;
+                            pgrmCd = Properties.Settings.Default._pgrmCode_premier;
+                            break;
+                        case PriceLevelIndex.MSELECT:
+                            rebateAmount = thisItem.mSelect.rebate;
+                            ffpcnt = thisItem.mSelect.fulfillment;
+                            pgrmCd = Properties.Settings.Default._pgrmCode_mSelect;
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
 
@@ -251,6 +310,8 @@ namespace EpsonPOSReport
                 double totalUnitRebate = rebateAmount + ffUnitRebate;
                 double totalExtRebate = totalUnitRebate * thisQuantity;
 
+                string envisionLevel = thisCustomer == null ? "" : thisCustomer.enVisionLevel;
+
                 ws.Cells[rn, (int)xrCols.ResellerNo].Value2 = row.enVisionNumber;
                 ws.Cells[rn, (int)xrCols.ResellerName].Value2 = row.customerName;
                 ws.Cells[rn, (int)xrCols.EndUserName].Value2 = row.endUserName;
@@ -268,7 +329,7 @@ namespace EpsonPOSReport
                 ws.Cells[rn, (int)xrCols.FFUnitRebate].Value2 = ffUnitRebate;
                 ws.Cells[rn, (int)xrCols.TotalUnitRebate].Value2 = totalUnitRebate;
                 ws.Cells[rn, (int)xrCols.TotalExtRebate].Value2 = totalExtRebate;
-                ws.Cells[rn, (int)xrCols.EnvisionLevel].Value2 = thisCustomer.enVisionLevel;
+                ws.Cells[rn, (int)xrCols.EnvisionLevel].Value2 = envisionLevel;
                 ws.Cells[rn, (int)xrCols.BtAddress].Value2 = row.billTo.address;
                 ws.Cells[rn, (int)xrCols.BtCity].Value2 = row.billTo.city;
                 ws.Cells[rn, (int)xrCols.BtState].Value2 = row.billTo.state;
