@@ -68,13 +68,13 @@ namespace EpsonPOSReport.Properties {
         ///	header.CUSTNAME AS [Reseller Name],
         ///	header.CNTCPRSN AS [End User Name],
         ///	header.ACTLSHIP AS [Invoice Date],
-        ///	header.SOPNUMBE AS [Invoice Number],
+        ///	header.SOPNUMBE AS [Invoice No.],
         ///	isnull(gpItems.ITMSHNAM, lineItems.ITEMNMBR) AS [Part],
         ///	lineItems.ITEMNMBR AS [Item Number],
         ///	serialTable.CMMTTEXT AS [Serial No.],
         ///	lineItems.QTYFULFI AS [Units],
         ///	header.SLPRSNID AS [SALESREPID],
-        ///	custMaster.ADDRE [rest of string was truncated]&quot;;.
+        ///	custMaster.ADDRESS1 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string EpsonQuery {
             get {

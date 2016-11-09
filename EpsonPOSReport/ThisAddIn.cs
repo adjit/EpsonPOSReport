@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools.Excel;
@@ -56,8 +57,23 @@ namespace EpsonPOSReport
             //runReportInitialization();
             Application.ScreenUpdating = false;
 
-            partnerList.initializePartnerList(Properties.Settings.Default._filePath_partnerList);
-            priceList.initializeEpsonPriceList(Properties.Settings.Default._filePath_priceList);
+            bool partnerListInitialized = partnerList.initializePartnerList(Properties.Settings.Default._filePath_partnerList);
+            bool priceListInitialized = priceList.initializeEpsonPriceList(Properties.Settings.Default._filePath_priceList);
+
+            if(!partnerListInitialized || !priceListInitialized)
+            {
+                DialogResult dr = MessageBox.Show(@"Failure to initialize supporting workbooks. Would you like to proceed
+                    with the query only?", "Initialization Error",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Error);
+
+                if (dr == DialogResult.Yes)
+                {
+                    runQueryReport(date);
+                    return;
+                }
+                else return;
+            }
 
             int month = date.Month;
             int year = date.Year;
@@ -95,7 +111,7 @@ namespace EpsonPOSReport
                     checkRows.AddRange(ParseRow(thisRow, thisWorksheet));
                 }
             }
-            else System.Windows.Forms.MessageBox.Show("No Rows Found");
+            else MessageBox.Show("No Rows Found");
 
             dbConnection.Close();
 
@@ -148,7 +164,7 @@ namespace EpsonPOSReport
                     checkRows.AddRange(thisRow.parseQueryRow(thisWorksheet));
                 }
             }
-            else System.Windows.Forms.MessageBox.Show("No Rows Found");
+            else MessageBox.Show("No Rows Found");
 
             if (checkRows.Count > 0)
             {
@@ -165,10 +181,10 @@ namespace EpsonPOSReport
         {
             string errorRows = string.Join(", ", checkRows);
 
-            System.Windows.Forms.MessageBox.Show("Please check the following rows: " + errorRows + "\nSerial Number Count does not equal Quantity",
+            MessageBox.Show("Please check the following rows: " + errorRows + "\nSerial Number Count does not equal Quantity",
                                                     "Quantity Warning",
-                                                    System.Windows.Forms.MessageBoxButtons.OK,
-                                                    System.Windows.Forms.MessageBoxIcon.Warning);
+                                                    MessageBoxButtons.OK,
+                                                    MessageBoxIcon.Warning);
         }
 
         private static qRow GetQueryRow(SqlDataReader reader)
@@ -478,7 +494,9 @@ namespace EpsonPOSReport
 
             public List<string> parseQueryRow(Excel.Worksheet ws)
             {
-                int rn = ws.UsedRange.Row + ws.UsedRange.Rows.Count;
+                //int rn = ws.UsedRange.Row + ws.UsedRange.Rows.Count;
+                int rn = ws.UsedRange.Rows.Count + 1;
+
                 int thisQuantity;
 
                 string currentSerial = "";
@@ -658,7 +676,7 @@ namespace EpsonPOSReport
             catch (Exception ex)
             {
                 obj = null;
-                System.Windows.Forms.MessageBox.Show("Unable to release the Object " + ex.ToString());
+                MessageBox.Show("Unable to release the Object " + ex.ToString());
             }
             finally
             {
@@ -666,11 +684,11 @@ namespace EpsonPOSReport
             }
         }
 
-        private void ThisAddIn_Startup(object sender, System.EventArgs e)
+        private void ThisAddIn_Startup(object sender, EventArgs e)
         {
         }
 
-        private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
+        private void ThisAddIn_Shutdown(object sender, EventArgs e)
         {
         }
 
@@ -682,8 +700,8 @@ namespace EpsonPOSReport
         /// </summary>
         private void InternalStartup()
         {
-            this.Startup += new System.EventHandler(ThisAddIn_Startup);
-            this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
+            this.Startup += new EventHandler(ThisAddIn_Startup);
+            this.Shutdown += new EventHandler(ThisAddIn_Shutdown);
         }
         
         #endregion

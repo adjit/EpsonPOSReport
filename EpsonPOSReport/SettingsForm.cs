@@ -25,6 +25,7 @@ namespace EpsonPOSReport
             spaListFilePath.Text = s._filePath_spaList;
             partnerListFilePath.Text = s._filePath_partnerList;
             priceListFilePath.Text = s._filePath_priceList;
+            spaListFolderPath.Text = s._folderPath_spaList;
 
             NUD_itemNumber.Value = s._plColumn_itemNumber;
             NUD_unitCost.Value = s._plColumn_unitCost;
@@ -85,6 +86,7 @@ namespace EpsonPOSReport
             s._filePath_spaList = spaListFilePath.Text;
             s._filePath_partnerList = partnerListFilePath.Text;
             s._filePath_priceList = priceListFilePath.Text;
+            s._folderPath_spaList = spaListFolderPath.Text;
 
             s._plColumn_itemNumber = (int)NUD_itemNumber.Value;
             s._plColumn_unitCost = (int)NUD_unitCost.Value;

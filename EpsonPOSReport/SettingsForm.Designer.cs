@@ -30,15 +30,18 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.partnerListBrowseButton = new System.Windows.Forms.Button();
-            this.priceListBrowseButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.spaListFilePath = new System.Windows.Forms.TextBox();
-            this.priceListFilePath = new System.Windows.Forms.TextBox();
-            this.partnerListFilePath = new System.Windows.Forms.TextBox();
             this.spaBrowseButton = new System.Windows.Forms.Button();
+            this.partnerListBrowseButton = new System.Windows.Forms.Button();
+            this.partnerListFilePath = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.priceListFilePath = new System.Windows.Forms.TextBox();
+            this.priceListBrowseButton = new System.Windows.Forms.Button();
+            this.label26 = new System.Windows.Forms.Label();
+            this.spaListFolderPath = new System.Windows.Forms.TextBox();
+            this.spaListFolderBrowseBtn = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -94,9 +97,6 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.saveBtn = new System.Windows.Forms.Button();
             this.cancelBtn = new System.Windows.Forms.Button();
-            this.label26 = new System.Windows.Forms.Label();
-            this.spaListFolderPath = new System.Windows.Forms.TextBox();
-            this.spaListFolderBrowseBtn = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -159,28 +159,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(543, 187);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // partnerListBrowseButton
-            // 
-            this.partnerListBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.partnerListBrowseButton.Location = new System.Drawing.Point(446, 151);
-            this.partnerListBrowseButton.Name = "partnerListBrowseButton";
-            this.partnerListBrowseButton.Size = new System.Drawing.Size(94, 23);
-            this.partnerListBrowseButton.TabIndex = 8;
-            this.partnerListBrowseButton.Text = "Browse";
-            this.partnerListBrowseButton.UseVisualStyleBackColor = true;
-            this.partnerListBrowseButton.Click += new System.EventHandler(this.partnerListBrowseButton_Click);
-            // 
-            // priceListBrowseButton
-            // 
-            this.priceListBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.priceListBrowseButton.Location = new System.Drawing.Point(446, 103);
-            this.priceListBrowseButton.Name = "priceListBrowseButton";
-            this.priceListBrowseButton.Size = new System.Drawing.Size(94, 23);
-            this.priceListBrowseButton.TabIndex = 6;
-            this.priceListBrowseButton.Text = "Browse";
-            this.priceListBrowseButton.UseVisualStyleBackColor = true;
-            this.priceListBrowseButton.Click += new System.EventHandler(this.priceListBrowseButton_Click);
-            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -192,16 +170,47 @@
             this.label1.Text = "Spa List File Location";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label2
+            // spaListFilePath
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 108);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(123, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Price List File Location";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.spaListFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.spaListFilePath.Enabled = false;
+            this.spaListFilePath.Location = new System.Drawing.Point(132, 13);
+            this.spaListFilePath.Name = "spaListFilePath";
+            this.spaListFilePath.Size = new System.Drawing.Size(308, 20);
+            this.spaListFilePath.TabIndex = 1;
+            this.spaListFilePath.Text = "File Path...";
+            // 
+            // spaBrowseButton
+            // 
+            this.spaBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.spaBrowseButton.Enabled = false;
+            this.spaBrowseButton.Location = new System.Drawing.Point(446, 11);
+            this.spaBrowseButton.Name = "spaBrowseButton";
+            this.spaBrowseButton.Size = new System.Drawing.Size(94, 23);
+            this.spaBrowseButton.TabIndex = 2;
+            this.spaBrowseButton.Text = "Browse";
+            this.spaBrowseButton.UseVisualStyleBackColor = true;
+            this.spaBrowseButton.Click += new System.EventHandler(this.spaBrowseButton_Click);
+            // 
+            // partnerListBrowseButton
+            // 
+            this.partnerListBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.partnerListBrowseButton.Location = new System.Drawing.Point(446, 151);
+            this.partnerListBrowseButton.Name = "partnerListBrowseButton";
+            this.partnerListBrowseButton.Size = new System.Drawing.Size(94, 23);
+            this.partnerListBrowseButton.TabIndex = 8;
+            this.partnerListBrowseButton.Text = "Browse";
+            this.partnerListBrowseButton.UseVisualStyleBackColor = true;
+            this.partnerListBrowseButton.Click += new System.EventHandler(this.partnerListBrowseButton_Click);
+            // 
+            // partnerListFilePath
+            // 
+            this.partnerListFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.partnerListFilePath.Location = new System.Drawing.Point(132, 152);
+            this.partnerListFilePath.Name = "partnerListFilePath";
+            this.partnerListFilePath.Size = new System.Drawing.Size(308, 20);
+            this.partnerListFilePath.TabIndex = 7;
+            this.partnerListFilePath.Text = "File Path...";
             // 
             // label3
             // 
@@ -214,14 +223,16 @@
             this.label3.Text = "Partner List File Location";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // spaListFilePath
+            // label2
             // 
-            this.spaListFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.spaListFilePath.Location = new System.Drawing.Point(132, 13);
-            this.spaListFilePath.Name = "spaListFilePath";
-            this.spaListFilePath.Size = new System.Drawing.Size(308, 20);
-            this.spaListFilePath.TabIndex = 1;
-            this.spaListFilePath.Text = "File Path...";
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 108);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(123, 13);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Price List File Location";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // priceListFilePath
             // 
@@ -232,25 +243,48 @@
             this.priceListFilePath.TabIndex = 5;
             this.priceListFilePath.Text = "File Path...";
             // 
-            // partnerListFilePath
+            // priceListBrowseButton
             // 
-            this.partnerListFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.partnerListFilePath.Location = new System.Drawing.Point(132, 152);
-            this.partnerListFilePath.Name = "partnerListFilePath";
-            this.partnerListFilePath.Size = new System.Drawing.Size(308, 20);
-            this.partnerListFilePath.TabIndex = 7;
-            this.partnerListFilePath.Text = "File Path...";
+            this.priceListBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.priceListBrowseButton.Location = new System.Drawing.Point(446, 103);
+            this.priceListBrowseButton.Name = "priceListBrowseButton";
+            this.priceListBrowseButton.Size = new System.Drawing.Size(94, 23);
+            this.priceListBrowseButton.TabIndex = 6;
+            this.priceListBrowseButton.Text = "Browse";
+            this.priceListBrowseButton.UseVisualStyleBackColor = true;
+            this.priceListBrowseButton.Click += new System.EventHandler(this.priceListBrowseButton_Click);
             // 
-            // spaBrowseButton
+            // label26
             // 
-            this.spaBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.spaBrowseButton.Location = new System.Drawing.Point(446, 11);
-            this.spaBrowseButton.Name = "spaBrowseButton";
-            this.spaBrowseButton.Size = new System.Drawing.Size(94, 23);
-            this.spaBrowseButton.TabIndex = 2;
-            this.spaBrowseButton.Text = "Browse";
-            this.spaBrowseButton.UseVisualStyleBackColor = true;
-            this.spaBrowseButton.Click += new System.EventHandler(this.spaBrowseButton_Click);
+            this.label26.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(3, 62);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(123, 13);
+            this.label26.TabIndex = 7;
+            this.label26.Text = "Spa Lists Root Folder";
+            // 
+            // spaListFolderPath
+            // 
+            this.spaListFolderPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.spaListFolderPath.Enabled = false;
+            this.spaListFolderPath.Location = new System.Drawing.Point(132, 59);
+            this.spaListFolderPath.Name = "spaListFolderPath";
+            this.spaListFolderPath.Size = new System.Drawing.Size(308, 20);
+            this.spaListFolderPath.TabIndex = 3;
+            this.spaListFolderPath.Text = "Folder Path...";
+            // 
+            // spaListFolderBrowseBtn
+            // 
+            this.spaListFolderBrowseBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.spaListFolderBrowseBtn.Enabled = false;
+            this.spaListFolderBrowseBtn.Location = new System.Drawing.Point(446, 57);
+            this.spaListFolderBrowseBtn.Name = "spaListFolderBrowseBtn";
+            this.spaListFolderBrowseBtn.Size = new System.Drawing.Size(94, 23);
+            this.spaListFolderBrowseBtn.TabIndex = 4;
+            this.spaListFolderBrowseBtn.Text = "Browse";
+            this.spaListFolderBrowseBtn.UseVisualStyleBackColor = true;
+            this.spaListFolderBrowseBtn.Click += new System.EventHandler(this.spaListFolderBrowseBtn_Click);
             // 
             // tabControl1
             // 
@@ -612,7 +646,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label14.Location = new System.Drawing.Point(2, 0);
             this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label14.Name = "label14";
@@ -940,7 +974,7 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label25.Location = new System.Drawing.Point(2, 0);
             this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label25.Name = "label25";
@@ -978,7 +1012,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label36.Location = new System.Drawing.Point(2, 0);
             this.label36.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label36.Name = "label36";
@@ -1062,36 +1096,6 @@
             this.cancelBtn.Text = "Cancel";
             this.cancelBtn.UseVisualStyleBackColor = true;
             this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
-            // 
-            // label26
-            // 
-            this.label26.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(3, 62);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(123, 13);
-            this.label26.TabIndex = 7;
-            this.label26.Text = "Spa Lists Root Folder";
-            // 
-            // spaListFolderPath
-            // 
-            this.spaListFolderPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.spaListFolderPath.Location = new System.Drawing.Point(132, 59);
-            this.spaListFolderPath.Name = "spaListFolderPath";
-            this.spaListFolderPath.Size = new System.Drawing.Size(308, 20);
-            this.spaListFolderPath.TabIndex = 3;
-            this.spaListFolderPath.Text = "Folder Path...";
-            // 
-            // spaListFolderBrowseBtn
-            // 
-            this.spaListFolderBrowseBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.spaListFolderBrowseBtn.Location = new System.Drawing.Point(446, 57);
-            this.spaListFolderBrowseBtn.Name = "spaListFolderBrowseBtn";
-            this.spaListFolderBrowseBtn.Size = new System.Drawing.Size(94, 23);
-            this.spaListFolderBrowseBtn.TabIndex = 4;
-            this.spaListFolderBrowseBtn.Text = "Browse";
-            this.spaListFolderBrowseBtn.UseVisualStyleBackColor = true;
-            this.spaListFolderBrowseBtn.Click += new System.EventHandler(this.spaListFolderBrowseBtn_Click);
             // 
             // SettingsForm
             // 

@@ -382,5 +382,17 @@ namespace EpsonPOSReport.Properties {
                 this["_pgrmCode_colorPremier"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string _folderPath_spaList {
+            get {
+                return ((string)(this["_folderPath_spaList"]));
+            }
+            set {
+                this["_folderPath_spaList"] = value;
+            }
+        }
     }
 }

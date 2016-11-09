@@ -5,7 +5,7 @@ SELECT
 	header.CUSTNAME AS [Reseller Name],
 	header.CNTCPRSN AS [End User Name],
 	header.ACTLSHIP AS [Invoice Date],
-	header.SOPNUMBE AS [Invoice Number],
+	header.SOPNUMBE AS [Invoice No.],
 	isnull(gpItems.ITMSHNAM, lineItems.ITEMNMBR) AS [Part],
 	lineItems.ITEMNMBR AS [Item Number],
 	serialTable.CMMTTEXT AS [Serial No.],
@@ -15,7 +15,6 @@ SELECT
 	custMaster.CITY AS [Cust City],
 	custMaster.STATE AS [Cust State],
 	custMaster.ZIP AS [Cust Zip],
-/*	lineItems.CNTCPRSN AS [ShipTo Cust],*/
 	header.ADDRESS2 AS [ShipTo Address],
 	header.CITY AS [ShipTo City],
 	header.STATE AS [ShipTo State],
@@ -28,7 +27,7 @@ SELECT
 		  	a specific month & year, and is our primary
 		  	left-most table
 		 */
-		(SELECT
+		(SELECT 
 			tHeader.SOPNUMBE,
 			tHeader.ACTLSHIP,
 			tHeader.CUSTNMBR,
@@ -42,8 +41,8 @@ SELECT
 			
 			FROM METRO.dbo.SOP30200 tHeader
 			WHERE
-				MONTH(ACTLSHIP) = {0}				/*CHANGE THIS for month*/
-				AND YEAR(ACTLSHIP) = {1}		/*CHANGE THIS for year*/
+				MONTH(ACTLSHIP) = {0}
+				AND YEAR(ACTLSHIP) = {1}
 				AND SOPNUMBE like 'I%') header
 		/*
 			This JOIN with a SELECT subquery gets
@@ -58,11 +57,11 @@ SELECT
 	JOIN
 		(SELECT *
 			FROM METRO.dbo.SOP30300
-			WHERE CSLSINDX = 137
+			WHERE CSLSINDX = 137 AND MKDNINDX <> 5
 		) lineItems
 		on
 			lineItems.SOPNUMBE = header.SOPNUMBE
-
+			
 		/*
 			This select gets all of the CCodes (ITMSHNAM) for stock
 			items. If this is null, the query will use the
@@ -78,7 +77,7 @@ SELECT
 				cogs.IVCOGSIX = 137
 		) gpItems
 		on gpItems.ITEMNMBR = lineItems.ITEMNMBR
-
+		
 		/*
 			JOIN the serial number table which has the 
 			comma delimited serial numbers
@@ -93,7 +92,7 @@ SELECT
 		*/
 	LEFT JOIN METRO.dbo.RM00101 custMaster
 		ON	custMaster.CUSTNMBR = header.CUSTNMBR
-
+		
 		/*
 			JOIN the enVision numbers to the left most table
 		*/
@@ -110,7 +109,7 @@ SELECT
 				envisionNumberTable.Field_ID = 240
 		) enVisionNumber
 		ON enVisionNumber.CUSTNAME = header.CUSTNAME
-
+		
 		/*
 			Filter out any rows that have the ITMSHNAM of
 			TM or Rebate, but include NULL ITMSHNAM rows.
@@ -120,7 +119,7 @@ SELECT
 		  (gpItems.ITMSHNAM NOT IN ('TM', 'Rebate')
 		  OR gpItems.ITMSHNAM IS NULL)
 		  AND lineItems.QTYFULFI <> 0
-
+		  
 /*
 	Order the report alphabetically by customer name and
 	by invoice date
