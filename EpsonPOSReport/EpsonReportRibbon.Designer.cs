@@ -35,19 +35,19 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EpsonReportRibbon));
-            this.tab1 = this.Factory.CreateRibbonTab();
+            this.TabAddIns = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.runReportButton = this.Factory.CreateRibbonButton();
-            this.tab1.SuspendLayout();
+            this.TabAddIns.SuspendLayout();
             this.group1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tab1
+            // TabAddIns
             // 
-            this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
-            this.tab1.Groups.Add(this.group1);
-            this.tab1.Label = "TabAddIns";
-            this.tab1.Name = "tab1";
+            this.TabAddIns.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
+            this.TabAddIns.Groups.Add(this.group1);
+            this.TabAddIns.Label = "TabAddIns";
+            this.TabAddIns.Name = "TabAddIns";
             // 
             // group1
             // 
@@ -68,10 +68,10 @@
             // 
             this.Name = "EpsonReportRibbon";
             this.RibbonType = "Microsoft.Excel.Workbook";
-            this.Tabs.Add(this.tab1);
+            this.Tabs.Add(this.TabAddIns);
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.EpsonReportRibbon_Load);
-            this.tab1.ResumeLayout(false);
-            this.tab1.PerformLayout();
+            this.TabAddIns.ResumeLayout(false);
+            this.TabAddIns.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
             this.ResumeLayout(false);
@@ -80,7 +80,7 @@
 
         #endregion
 
-        internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonTab TabAddIns;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton runReportButton;
     }

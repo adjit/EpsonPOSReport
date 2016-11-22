@@ -69,7 +69,7 @@ namespace EpsonPOSReport.Properties {
         ///	header.CNTCPRSN AS [End User Name],
         ///	header.ACTLSHIP AS [Invoice Date],
         ///	header.SOPNUMBE AS [Invoice No.],
-        ///	isnull(gpItems.ITMSHNAM, lineItems.ITEMNMBR) AS [Part],
+        ///	isnull(gpItems.VNDITNUM, lineItems.ITEMNMBR) AS [Part],
         ///	lineItems.ITEMNMBR AS [Item Number],
         ///	serialTable.CMMTTEXT AS [Serial No.],
         ///	lineItems.QTYFULFI AS [Units],

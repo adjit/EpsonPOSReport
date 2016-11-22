@@ -41,8 +41,8 @@ SELECT
 			
 			FROM METRO.dbo.SOP30200 tHeader
 			WHERE
-				MONTH(ACTLSHIP) = {0}
-				AND YEAR(ACTLSHIP) = {1}
+				MONTH(ACTLSHIP) = 8
+				AND YEAR(ACTLSHIP) = 2016
 				AND SOPNUMBE like 'I%') header
 		/*
 			This JOIN with a SELECT subquery gets
