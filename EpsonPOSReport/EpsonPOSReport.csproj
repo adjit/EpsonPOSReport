@@ -31,14 +31,14 @@
     <DefineConstants>VSTO40</DefineConstants>
     <IsWebBootstrapper>False</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>\\METRO_MARKET1\1- Deployment\Epson_POS_Report\</PublishUrl>
-    <InstallUrl />
+    <PublishUrl>\\METRO-FILE1\Metropolitan Sales Docs\1-Deployment\Epson_POS_Report\</PublishUrl>
+    <InstallUrl>\\METRO-FILE1\Metropolitan Sales Docs\1-Deployment\Epson_POS_Report\</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.2.6</ApplicationVersion>
+    <ApplicationVersion>1.0.3.1</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
-    <UpdateInterval>3</UpdateInterval>
-    <UpdateIntervalUnits>days</UpdateIntervalUnits>
+    <UpdateInterval>1</UpdateInterval>
+    <UpdateIntervalUnits>weeks</UpdateIntervalUnits>
     <ProductName>Epson POS Report Excel Add-In</ProductName>
     <PublisherName>Aaron Tawil</PublisherName>
     <SupportUrl />

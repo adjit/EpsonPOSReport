@@ -107,14 +107,22 @@ SELECT
 			envisionNumberTable.Field_ID,
 			envisionNumberTable.Extender_Record_ID,
 			envisionNumberTable.STRGA255 AS [ResellerNo],
-			customerNameTable.Extender_Key_Values_1 AS [CUSTNAME]
+			customerNameTable.Extender_Key_Values_1 AS [CUSTNAME],
+			customerNameTable.CUSTNMBR
 			FROM METRO.dbo.EXT01101 envisionNumberTable
-			JOIN METRO.dbo.EXT01100 customerNameTable
+			JOIN (SELECT
+					extenderT.Extender_Record_ID,
+					extenderT.Extender_Key_Values_1,
+					custMaster.CUSTNMBR
+					FROM METRO.dbo.EXT01100 extenderT
+					JOIN Metro.dbo.RM00101 custMaster
+					ON extenderT.Extender_Key_Values_1 = custMaster.CUSTNAME
+				) customerNameTable
 			ON customerNameTable.Extender_Record_ID = envisionNumberTable.Extender_Record_ID
 			WHERE
-				envisionNumberTable.Field_ID = 240
+				envisionNumberTable.Field_ID = 240 and STRGA255 <> ''
 		) enVisionNumber
-		ON enVisionNumber.CUSTNAME = header.CUSTNAME
+		ON enVisionNumber.CUSTNMBR = header.CUSTNMBR
 		
 		/*
 			Filter out any rows that have the ITMSHNAM of

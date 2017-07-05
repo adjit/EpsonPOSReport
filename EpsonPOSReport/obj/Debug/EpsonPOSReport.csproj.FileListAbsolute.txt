@@ -42,3 +42,4 @@ D:\Users\atawil\Documents\Visual Studio 2015\Projects\EpsonPOSReport\EpsonPOSRep
 D:\Users\atawil\Documents\Visual Studio 2015\Projects\EpsonPOSReport\EpsonPOSReport\obj\Debug\EpsonPOSReport.csproj.GenerateResource.Cache
 D:\Users\atawil\Documents\Visual Studio 2015\Projects\EpsonPOSReport\EpsonPOSReport\obj\Debug\EpsonPOSReport.dll
 D:\Users\atawil\Documents\Visual Studio 2015\Projects\EpsonPOSReport\EpsonPOSReport\obj\Debug\EpsonPOSReport.pdb
+D:\Users\atawil\Documents\Visual Studio 2015\Projects\EpsonPOSReport\EpsonPOSReport\obj\Debug\EpsonPOSReport.csprojResolveAssemblyReference.cache
