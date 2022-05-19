@@ -100,6 +100,14 @@
             <setting name="_folderPath_spaList" serializeAs="String">
                 <value />
             </setting>
+            <setting name="_groupMembers" serializeAs="Xml">
+                <value>
+                    <ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                        <string>RS1085;BlueStone Restaurant Systems Ltd.</string>
+                    </ArrayOfString>
+                </value>
+            </setting>
         </EpsonPOSReport.Properties.Settings>
     </userSettings>
 </configuration>

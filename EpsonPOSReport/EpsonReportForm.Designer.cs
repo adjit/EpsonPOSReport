@@ -70,7 +70,7 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel1.MinimumSize = new System.Drawing.Size(300, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(5);
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -123,6 +123,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.runReportButton.AutoSize = true;
+            this.runReportButton.Enabled = false;
             this.runReportButton.Location = new System.Drawing.Point(154, 42);
             this.runReportButton.Name = "runReportButton";
             this.runReportButton.Size = new System.Drawing.Size(141, 28);
@@ -165,7 +166,7 @@
             this.MaximumSize = new System.Drawing.Size(500, 249);
             this.MinimumSize = new System.Drawing.Size(335, 149);
             this.Name = "EpsonReportForm";
-            this.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Padding = new System.Windows.Forms.Padding(5);
             this.Text = "Epson Report";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

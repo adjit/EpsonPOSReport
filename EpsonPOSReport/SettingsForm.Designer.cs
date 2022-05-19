@@ -97,6 +97,9 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.saveBtn = new System.Windows.Forms.Button();
             this.cancelBtn = new System.Windows.Forms.Button();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+            this.groupNumberGrid = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -127,6 +130,9 @@
             this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            this.tableLayoutPanel9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.groupNumberGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -292,6 +298,7 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(2, 2);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
@@ -1097,6 +1104,40 @@
             this.cancelBtn.UseVisualStyleBackColor = true;
             this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.tableLayoutPanel9);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(547, 191);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Group Numbers";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel9
+            // 
+            this.tableLayoutPanel9.ColumnCount = 1;
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel9.Controls.Add(this.groupNumberGrid, 0, 0);
+            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
+            this.tableLayoutPanel9.RowCount = 1;
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(541, 185);
+            this.tableLayoutPanel9.TabIndex = 0;
+            // 
+            // groupNumberGrid
+            // 
+            this.groupNumberGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.groupNumberGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupNumberGrid.Location = new System.Drawing.Point(3, 3);
+            this.groupNumberGrid.Name = "groupNumberGrid";
+            this.groupNumberGrid.Size = new System.Drawing.Size(535, 179);
+            this.groupNumberGrid.TabIndex = 1;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1143,6 +1184,9 @@
             this.tableLayoutPanel8.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
+            this.tableLayoutPanel9.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.groupNumberGrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1217,5 +1261,8 @@
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.TextBox spaListFolderPath;
         private System.Windows.Forms.Button spaListFolderBrowseBtn;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
+        private System.Windows.Forms.DataGridView groupNumberGrid;
     }
 }

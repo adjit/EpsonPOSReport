@@ -25,6 +25,9 @@ namespace EpsonPOSReport
         private epsonPriceList priceList = new epsonPriceList();
         private enVisionPartnerList partnerList = new enVisionPartnerList();
 
+
+        private Dictionary<string, string> groupNames = new Dictionary<string, string>();
+
         private enVisionCustomer lastCustomer = null;
         private Item lastItem = null;
 
@@ -107,7 +110,7 @@ namespace EpsonPOSReport
 
                 while(reader.Read())
                 {
-                    thisRow = GetQueryRow(reader);
+                    thisRow = GetQueryRow(reader, groupNames);
                     checkRows.AddRange(ParseRow(thisRow, thisWorksheet));
                 }
             }
@@ -132,6 +135,14 @@ namespace EpsonPOSReport
             int year = date.Year;
 
             qRow thisRow;
+
+            Properties.Settings s = Properties.Settings.Default;
+
+            for(int i = 0; i < s._groupMembers.Count; i++)
+            {
+                string[] arr = s._groupMembers[i].Split(';');
+                if (arr.Length == 2) groupNames.Add(arr[0], arr[1]);
+            }
 
             //string query = File.ReadAllText(@"EpsonQuery.sql");
             string query = Properties.Resources.EpsonQuery;
@@ -160,7 +171,7 @@ namespace EpsonPOSReport
 
                 while(reader.Read())
                 {
-                    thisRow = GetQueryRow(reader);
+                    thisRow = GetQueryRow(reader, groupNames);
                     checkRows.AddRange(thisRow.parseQueryRow(thisWorksheet));
                 }
             }
@@ -187,12 +198,23 @@ namespace EpsonPOSReport
                                                     MessageBoxIcon.Warning);
         }
 
-        private static qRow GetQueryRow(SqlDataReader reader)
+        private static qRow GetQueryRow(SqlDataReader reader, Dictionary<string, string> groupDict)
         {
+            string resellerNo = reader.GetValue((int)qCols.ResellerNo).ToString().Trim();
+            string resellerName = reader.GetValue((int)qCols.ResellerName).ToString().Trim();
+            string resellerOut;
+
+            if(groupDict.TryGetValue(resellerNo, out resellerOut))
+            {
+                if (!Equals(resellerOut, resellerName)) resellerName = resellerOut;
+
+            }
+            
             return new qRow(    reader.GetValue((int)qCols.Cogs),
                                 reader.GetValue((int)qCols.CustNo),
                                 reader.GetValue((int)qCols.ResellerNo),
-                                reader.GetValue((int)qCols.ResellerName),
+                                //reader.GetValue((int)qCols.ResellerName),
+                                resellerName,
                                 reader.GetValue((int)qCols.EndUserName),
                                 reader.GetValue((int)qCols.InvDt),
                                 reader.GetValue((int)qCols.InvNo),
@@ -528,7 +550,7 @@ namespace EpsonPOSReport
                         currentSerial = serialNumbers[i];
                         thisQuantity = 1;
                     }
-
+                    
                     ws.Cells[rn, (int)xqCols.ResellerNo].Value2 = enVisionNumber;
                     ws.Cells[rn, (int)xqCols.ResellerName].Value2 = customerName;
                     ws.Cells[rn, (int)xqCols.EndUserName].Value2 = endUserName;

@@ -46,6 +46,23 @@ namespace EpsonPOSReport
             NUD_colorPlusPgrmCd.Value = s._pgrmCode_colorPlus;
             NUD_colorPremierPgrmCd.Value = s._pgrmCode_colorPremier;
 
+            /*------------   Group Number Settings Load   ---------------*/
+            var gMs = s._groupMembers;
+            DataTable dt = new DataTable();
+            dt.Columns.Add("RS Number", typeof(string));
+            dt.Columns.Add("Group Name", typeof(string));
+
+            for(int i = 0; i < gMs.Count; i++)
+            {
+                string[] arr = gMs[i].Split(';');
+                if (arr.Length == 2) dt.Rows.Add(arr[0], arr[1]);
+                else if (arr.Length == 1) dt.Rows.Add(arr[0]);
+            }
+
+            groupNumberGrid.DataSource = dt;
+            groupNumberGrid.Columns[0].Width = 125;
+            groupNumberGrid.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
             for(int i = 0; i < optionalColumnsChecklistBox.Items.Count; i++)
             {
                 switch (optionalColumnsChecklistBox.Items[i].ToString())
@@ -87,7 +104,7 @@ namespace EpsonPOSReport
             s._filePath_partnerList = partnerListFilePath.Text;
             s._filePath_priceList = priceListFilePath.Text;
             s._folderPath_spaList = spaListFolderPath.Text;
-
+            
             s._plColumn_itemNumber = (int)NUD_itemNumber.Value;
             s._plColumn_unitCost = (int)NUD_unitCost.Value;
             s._plColumn_selectFFP = (int)NUD_selectFFP.Value;
@@ -106,6 +123,22 @@ namespace EpsonPOSReport
             s._pgrmCode_colorSelect = (int)NUD_colorSelectPgrmCd.Value;
             s._pgrmCode_colorPlus = (int)NUD_colorPlusPgrmCd.Value;
             s._pgrmCode_colorPremier = (int)NUD_colorPremierPgrmCd.Value;
+
+            string newGroupMember = "";
+
+            s._groupMembers.Clear();
+
+            for(int i = 0; i < groupNumberGrid.Rows.Count; i++)
+            {
+                if (groupNumberGrid.Rows[i].Cells[0].Value == null) continue;
+                else
+                {
+                    newGroupMember = groupNumberGrid.Rows[i].Cells[0].Value.ToString() + ";";
+                    newGroupMember += groupNumberGrid.Rows[i].Cells[1].Value.ToString();
+                    if (s._groupMembers.Contains(newGroupMember)) continue;
+                    else s._groupMembers.Add(newGroupMember);
+                }
+            }
 
             for (int i = 0; i < optionalColumnsChecklistBox.Items.Count; i++)
             {
